@@ -1,18 +1,21 @@
 <template>
   <div>
-    <app-header v-if="this.$route.meta.header !== false" />
-    <router-view />
+    <Nav />
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Header from './components/layout/Header'
+import Nav from "./components/Nav.vue"
+
 
 export default {
-  components: {
-    'app-header': Header
-  }
-}
+  name: 'App',
+  components:{
+    Nav
+  },
+  data: () => ({
+    //
+  }),
+};
 </script>
-
-<style src="./assets/style/main.css"></style>
