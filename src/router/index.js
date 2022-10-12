@@ -3,7 +3,9 @@ import VueRouter from 'vue-router'
 import Home from '../components/main.vue'
 import Login from '../components/Login.vue'
 import Auth from '../components/Auth'
-import Post from '../components/PostDetail.vue'
+import Post from '../components/post/Post.vue'
+import AddPost from '../components/post/AddPost.vue'
+import Posts from '../components/post/Posts.vue'
 import store from "../store"
 
 
@@ -27,7 +29,9 @@ const router = new VueRouter({
         { path: '/', name:'Home' ,component: Home },
         { path: '/Login', name:'Login' ,component: Login},
         { path: '/Auth', name:'Auth' ,component: Auth},
-        { path: '/post', name:'Post', component: Post , requireAuth},
+        { path: '/posts', name:'posts', component: Posts},
+        { path: '/posts/:id', name:'Post', component: Post},
+        { path:'addpost',name:'AddPost', component: AddPost, requireAuth}
     ]
 })
 

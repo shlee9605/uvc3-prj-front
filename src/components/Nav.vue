@@ -5,45 +5,54 @@
                 <img src="../assets/logo.png" style="width:100px; height:36px;">
             </router-link>
         </div>
+        <div class="Nav-point">
+            <router-link to="/posts" v-if="$route.name === 'posts'">
+                <button class="Nav-point-btn" style="color:red;">
+                    피드
+                </button>
+            </router-link>
+            <router-link to="/posts" v-else>
+                <button class="Nav-point-btn">
+                    피드
+                </button>
+            </router-link>
+        </div>
         <v-spacer></v-spacer>
         
         <!-- 로그인, 회원가입 페이지에서는 나타나지 않음 -->
-        <div class="header-auth" v-if="!componentBlackList.includes($route.name)">
-            <div>
+        <div class="header-auth" v-if="!componentBlackList.includes($route.name)">    
+            <div v-if="isAuth">
                 <!-- 종버튼 -->
-                <a>
-                    <button
-                    icon x-large 
-                    class="Nav-bell-btn"
-                    type="submit">
-                        <v-avatar
-                        size="20"
-                        color="red white--text">
-                                <img src="../assets/bell.png">
-                        </v-avatar>
-                    </button>
-                </a>
-            </div>
-            <div>                
+                    <a>
+                        <button 
+                        icon x-large 
+                        class="Nav-bell-btn"
+                        type="submit">
+                            <v-avatar
+                            size="20"
+                            color="red white--text">
+                                    <img src="../assets/bell.png">
+                            </v-avatar>
+                        </button>
+                    </a>                
                 <!-- 프로필 -->
-                <a 
-                href="" 
-                v-if="!isAuth">
-                    <v-btn
-                    icon x-large 
-                    class="Nav-profile-btn"
-                    type="submit">
-                        <v-avatar
-                        
-                        color="red white--text">
-                                <img src="../assets/human.jpg">
-                        </v-avatar>
-                    </v-btn>
-                </a>
+                    <a href="" >
+                        <v-btn
+                        icon x-large 
+                        class="Nav-profile-btn"
+                        type="submit">
+                            <v-avatar
+                            
+                            color="red white--text">
+                                    <img src="../assets/human.jpg">
+                            </v-avatar>
+                        </v-btn>
+                    </a>
+            </div>
+            <div v-else>
                 <!-- 로그인 페이지 이동 -->
                 <a 
-                class="input-avatar"
-                v-else>
+                class="input-avatar">
                     <v-btn
                         class="Nav-btn" 
                         rounded
@@ -168,6 +177,25 @@ import { mapGetters } from 'vuex'
     height: 60px;
 }
 
+.Nav-point{
+    margin: 22px 0 0 20px;
+}
+
+.Nav-point-btn {
+    font-size: 14px;
+    color: rgb(84, 82, 82);
+    font-weight: 700;
+    font-style: initial;
+}
+/* 
+.Nav-point-btn:active {
+    
+} */
+
+.Nav-point-btn:hover {
+    text-decoration:underline;
+}
+
 .header-auth {
     display: flex;
 }
@@ -190,13 +218,13 @@ import { mapGetters } from 'vuex'
     border-radius: 20%;
     cursor: pointer;
 }
-.Nav-bell-btn:active{
+/* .Nav-bell-btn:active{
     background-color: #606060;
     border-radius: 50%;
-}
+} */
 
 .Nav-profile-btn {
-    margin: 8px 30px 0 0;
+    margin: 0 30px 0 0;
 }
 
 .header-logo {

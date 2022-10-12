@@ -2,7 +2,8 @@
         <section>
             <v-carousel 
                 hide-delimiters
-                height="100vh"
+                height="92.5vh"
+                show-arrows =true
                 :cycle="true"
                 :interval="4000">
                 <v-carousel-item
@@ -34,11 +35,11 @@ body {
     
 }
 
-section {
-    height: 100vh;
-    bottom: 0;
+/* section {
+    height: 80vh;
+    bottom: 0; */
     /* background: url(); */
-}
+/* } */
 
 section:before{
     content: '';
@@ -48,13 +49,11 @@ section:before{
 }
 
 .v-window__next {
-    /* display:none; */
     background:rgba(241, 239, 239, 0.15);
     top:calc(50% - 33px);
     margin-left:96%;
     }
 .v-window__prev {
-    /* display:none; */
     background:rgba(242, 240, 240, 0.15);
     top:calc(50% - 33px);
     /* margin-left:13%; */
@@ -62,10 +61,13 @@ section:before{
 }
 
 
+
+
+/* 
 .v-window__prev:hover {
     display:block;
 }
-/* .v-window__next:hover {
+.v-window__next:hover {
     display:block;
 } */
 
