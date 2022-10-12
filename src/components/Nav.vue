@@ -9,32 +9,67 @@
         
         <!-- 로그인, 회원가입 페이지에서는 나타나지 않음 -->
         <div class="header-auth" v-if="!componentBlackList.includes($route.name)">
-            <v-btn
-                class="Nav-btn" 
-                rounded
-                to="/Login"
-                v-if="!GET_LOGIN_STATUS"
-            >시작하기</v-btn>
-        
-        
-            <v-menu offset-y v-else>
-            <template v-slot:activator="{ on }">
-            <v-btn
-                depressed
-                fab
-                small
+            <div>
+                <!-- 종버튼 -->
+                <a>
+                    <button
+                    icon x-large 
+                    class="Nav-bell-btn"
+                    type="submit">
+                        <v-avatar
+                        size="20"
+                        color="red white--text">
+                                <img src="../assets/bell.png">
+                        </v-avatar>
+                    </button>
+                </a>
+            </div>
+            <div>                
+                <!-- 프로필 -->
+                <a 
+                href="" 
+                v-if="!isAuth">
+                    <v-btn
+                    icon x-large 
+                    class="Nav-profile-btn"
+                    type="submit">
+                        <v-avatar
+                        
+                        color="red white--text">
+                                <img src="../assets/human.jpg">
+                        </v-avatar>
+                    </v-btn>
+                </a>
+                <!-- 로그인 페이지 이동 -->
+                <a 
+                class="input-avatar"
+                v-else>
+                    <v-btn
+                        class="Nav-btn" 
+                        rounded
+                        to="/Login"
+                        v-if="!GET_LOGIN_STATUS"
+                    >시작하기</v-btn>
+                </a>
+            </div>
+        <!-- <v-menu offset-y v-else> -->
+            <!-- <a class="input-avatar">
+              <button type="submit">
+                <v-avatar 
                 color="red white--text"
-                class="font-weight-bold"
-                v-on="on">
-                <v-avatar v-if="GE_USER_DATA.photoUrl !== 'no-photo.jpg'">
-                <img
-                    :src="`${GE_URL}/uploads/avatar/${GE_USER_DATA.photoUrl}`"
-                    :alt="GE_USER_DATA.channelName" />>
-                </v-avatar>
-
-                <span v-else>{{ channelAvatar }}</span>
-            </v-btn>
-            </template>
+                v-if="GE_USER_DATA.photoUrl !== 'no-photo.jpg'">
+                    <img
+                      :src="`${GE_URL}/uploads/avatar/${GE_USER_DATA.photoUrl}`"
+                      :alt="GE_USER_DATA.channelName" />
+                  </v-avatar>
+                  <span v-else>
+                    <v-avatar
+                      color="red white--text">
+                      {{ channelAvatar }}
+                    </v-avatar>
+                  </span>
+                </button>
+            </a>
 
             <v-card>
             <v-list>
@@ -63,10 +98,7 @@
 
                 <v-divider class="mt-3"></v-divider>
 
-                <v-list-item @click="openVideoModal">
-                <v-list-item-icon>
-                    <v-icon>mdi-video-plus</v-icon>
-                </v-list-item-icon>
+                <v-list-item>
                 <v-list-item-title>프로필</v-list-item-title>
                 </v-list-item>
 
@@ -80,23 +112,49 @@
                 </v-list-item>
             </v-list>
             </v-card>
-        </v-menu>
+        </v-menu> -->
         </div>
     </nav>
 </template>
 
 <script>
+// import store from '../store'
+import { mapGetters } from 'vuex'
     export default {
         data(){
             return {
+            // isAuth: false,
             GET_LOGIN_STATUS: localStorage.getItem('token') ? true : false,
-            
+            GET_USER_DATA: JSON.parse(localStorage.getItem('user')) || null,
             componentBlackList: [
                 'Login',
                 'Auth'
             ]
             }
-        }
+        },
+        watch: {
+            GE_USER_DATA() {
+                const data = JSON.parse(localStorage.getItem('user')) || null;
+                this.GE_USER_DATA = data;
+            },
+        },
+        computed: {
+            channelAvatar() {
+                const setChannelAvatar = this.GE_USER_DATA.channelName
+                    .split('')[0]
+                    .toUpperCase();
+                console.log('setChannelAvatar : ', setChannelAvatar);
+                return setChannelAvatar;
+            },
+            ...mapGetters([
+                'isAuth'
+            ])
+        },
+        // created: {
+        //     isAuthMethod() {
+        //          this.isAuth = store.getters.isAuth
+        //     }
+        // }
         
     }
 </script>
@@ -108,6 +166,10 @@
 .header{
     display: flex;
     height: 60px;
+}
+
+.header-auth {
+    display: flex;
 }
 
 
@@ -123,9 +185,23 @@
     text-decoration: none;
 }
 
+.Nav-bell-btn {
+    margin-top: 20px;
+    border-radius: 20%;
+    cursor: pointer;
+}
+.Nav-bell-btn:active{
+    background-color: #606060;
+    border-radius: 50%;
+}
+
+.Nav-profile-btn {
+    margin: 8px 30px 0 0;
+}
 
 .header-logo {
     margin: 15px 0 0 40px;
+    color: red;
 }
 
 

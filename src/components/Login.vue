@@ -6,9 +6,9 @@
       </div>
       <div class="input-table">
         <div>
-          <label for="email">Email:</label>
-          <input class="form-control" type="text" name="email"
-          v-model="email" placeholder="123@xxx.com">
+          <label for="userId">Id:</label>
+          <input class="form-control" type="text" name="userId"
+          v-model="userId" placeholder="123@xxx.com">
         </div>
         <div>
           <label for="password">Password:</label>
@@ -51,44 +51,51 @@
               </v-btn>
             </a>
           </div>
-        <!-- </v-row>  -->
       </div>
-    </form>
+      </form>
   </div>
 </template>
 
 <script>
-// import {auth, setAuthInHeader} from '../api'
 import { mapActions } from 'vuex'
-    export default {
-        data() {
-          return {
-            email: '',
-            password:'',
-            error:'',
-            rPath: '/',
-          }
-        },
-        methods: {
+export default {
+  data() {
+    return {
+      userId: '',
+      password:'',
+      error:'',
+      rPath: '/Post',
+    }
+  },
+  computed: {
+    invalidForm() {
+      return !this.userId || !this.password 
+    }
+  },
+  created() {
+    this.rPath = this.$route.query.rPath || '/'
+  },
+        
+  methods: {
           ...mapActions([
             'LOGIN'
           ]),
           onSubmit() {
-            console.log(this.email,this.password)
-            this.LOGIN({email:this.email, password: this.password})
-            // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
+            console.log(this.userId,this.password)
+            this.LOGIN({userId: this.userId, password: this.password})
+              // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
             // auth.login(this.email,this.password)
-            .then(
-              // localStorage.setItem('token',)
-              this.$router.push(this.rPath)
-              
-              // console.log(data)image.png
-            )
-            .catch(err => {
-              this.error = err.data.error
-            })
-          }
+          .then(
+            // console.log('여기는 찍히나?')
+            this.$router.push(this.rPath)
+            // console.log("성공?")
+            // console.log(data)image.png
+          )
+          .catch(err => {
+            console.log(err);
+          })
         }
+      }
     }
 </script>
 
