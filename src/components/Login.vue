@@ -20,7 +20,7 @@
         </div>
         <div>
           <a class="auth-font" href="/Auth">회원가입</a>
-        </div>
+        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
       </div>
       <div class="another-log">
           <div class="another-log-icon">
