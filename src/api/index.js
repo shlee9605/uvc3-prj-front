@@ -18,14 +18,14 @@ const request = (method, url, data) => {
         method,
         url: DOMAIN + url,
         data
-    }).then(result => 
+    }).then(result =>
         // console.log(result.data)) //result.data => body Data
-        result.data)  
-    .catch(result => {
-        const {status} = result.response
-        if(status == UNAUTHORIZED) return onUnauthorized()
-        throw Error(result)
-    })
+        result.data)
+        .catch(result => {
+            const { status } = result.response
+            if (status == UNAUTHORIZED) return onUnauthorized()
+            throw Error(result)
+        })
 }
 
 
@@ -37,7 +37,13 @@ export const setAuthInHeader = token => {
 
 //로그인 api
 export const auth = {
-    login(userId,password){
-        return request('post', '/auth/signIn',{ userId, password })
+    login(userId, password) {
+        return request('post', '/auth/signIn', { userId, password })
     }
 }
+
+
+// 회원가입 api
+// export const signUp = {
+    
+// }
