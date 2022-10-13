@@ -6,7 +6,8 @@ import Auth from '../components/Auth'
 import Post from '../components/post/Post.vue'
 import AddPost from '../components/post/AddPost.vue'
 import Posts from '../components/post/Posts.vue'
-import store from "../store"
+import store from '../store'
+import myProfile from '../components/myProfile.vue'
 
 
 Vue.use(VueRouter)
@@ -31,7 +32,8 @@ const router = new VueRouter({
         { path: '/Auth', name:'Auth' ,component: Auth},
         { path: '/posts', name:'posts', component: Posts},
         { path: '/posts/:id', name:'Post', component: Post},
-        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth}
+        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
+        { path: '/myProfile', name:'myProfile', component: myProfile},
     ]
 })
 

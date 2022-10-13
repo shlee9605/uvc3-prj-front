@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import * as api from '../api'
+
 import {setAuthInHeader } from '../api'
 import { auth } from '../api/auth'
- 
+import { getMyProfile } from '../api/profile'
 
 
 Vue.use(Vuex)
@@ -11,7 +12,9 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     //상태
     state:{ 
-        token: null 
+        token: localStorage.getItem('token') || null,
+        headers:{},
+        // user: localStorage.getItem('user') || null ,
     },
     //인증정보 확인하기 위해 getters 사용 / state를 인자로 받음
     getters:{    
@@ -35,6 +38,10 @@ const store = new Vuex.Store({
             delete localStorage.token
             setAuthInHeader(null)
         },
+
+        MYPROFILE(state, response) {
+            state.headers = response
+        }
         
     },
     actions : {
@@ -44,6 +51,11 @@ const store = new Vuex.Store({
             //accessToken값을 LOGIN변이에 전달해줌  
             .then(({ token }) => commit('LOGIN', token))
         },
+
+        GET_PROFILE({commit}, token){
+            return getMyProfile.fetch(token)
+            .then((response)=>commit('MYPROFILE', response))
+        }
     }
 })
 

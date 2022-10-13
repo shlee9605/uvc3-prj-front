@@ -30,12 +30,20 @@ export const request = (method, url, data) => {
 
 
 export const setAuthInHeader = token => {
-    axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : null;
+    axios.defaults.headers.common["Authorization"] = token ? `${token}` : null;
     //token이 있다면 `Bearer ${token}` 없다면 null값으로 넣어줌
 }
 
 
 
+// 내 프로필 조회 api
+export const getMyProfile = {
+    fetch(token){
+        return request('post', '/profile/my', {token})
+    }
+}
+
+// 타인 프로필 조회 api
 
 
 
