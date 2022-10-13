@@ -3,7 +3,6 @@
             <v-carousel 
                 hide-delimiters
                 height="92.5vh"
-                show-arrows =true
                 :cycle="true"
                 :interval="4000">
                 <v-carousel-item

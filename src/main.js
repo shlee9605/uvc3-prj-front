@@ -8,6 +8,9 @@ import '@mdi/font/css/materialdesignicons.css'
 // style
 import './assets/commonStyle.css'
 
+import 'vue2-timepicker/dist/VueTimepicker.css'
+
+
 
 new Vue({
   el: '#app',

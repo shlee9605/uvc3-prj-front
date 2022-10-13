@@ -187,10 +187,6 @@ import { mapGetters } from 'vuex'
     font-weight: 700;
     font-style: initial;
 }
-/* 
-.Nav-point-btn:active {
-    
-} */
 
 .Nav-point-btn:hover {
     text-decoration:underline;
@@ -208,7 +204,7 @@ import { mapGetters } from 'vuex'
 }
 
 .Nav-btn:hover {
-    color: orange;
+    color: red;
     background-color: black;
     text-decoration: none;
 }
