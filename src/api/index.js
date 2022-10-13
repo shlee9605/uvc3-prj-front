@@ -13,7 +13,7 @@ const onUnauthorized = () => {
 
 
 //axios
-const request = (method, url, data) => {
+export const request = (method, url, data) => {
     return axios({
         method,
         url: DOMAIN + url,
@@ -35,12 +35,6 @@ export const setAuthInHeader = token => {
 }
 
 
-//로그인 api
-export const auth = {
-    login(userId, password) {
-        return request('post', '/auth/signIn', { userId, password })
-    }
-}
 
 // 내 프로필 조회 api
 export const getMyProfile = {
@@ -51,7 +45,5 @@ export const getMyProfile = {
 
 // 타인 프로필 조회 api
 
-// 회원가입 api
-// export const signUp = {
-    
-// }
+
+
