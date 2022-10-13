@@ -1,88 +1,137 @@
 <template>
-    <div>
-        <form class="SignUp-box" @submit.prevent="onSubmit">
-            <div>
-                <h2>Sign Up</h2>
-            </div>
-            <div class="input-table">
-                <div>
-                    <label for="name">Name:</label>
-                    <input class="form-control" type="text" name="name"
-                    v-model="name" placeholder="Your Name">
-                </div>
-                <div>
-                    <label for="email">Email:</label>
-                    <input class="form-control" type="text" name="email"
-                    v-model="email" placeholder="Your Email">
-                </div>
-                <div>
-                    <label for="userId">Id:</label>
-                    <input class="form-control" type="text" name="userId"
-                    v-model="userId" placeholder="Your Id">
-                </div>
-                <div>
-                    <label for="password">Password:</label>
-                    <input class="form-control" type="password"
-                    v-model="password" placeholder="Your password">
-                </div>
-                <div>
-                    <label for="age">Age:</label>
-                    <input class="form-control" type="text"
-                    v-model.number="age" placeholder="Your age">
-                </div>
-                <div>
-                    Gender:
-                    <input type="radio" id="male"
-                    v-model="gender" value="Male" />
-                    <label for="male">Male</label>
+<v-app>
+    <v-container fluid class="fill-height teal">
+        <v-row>
+            <v-col cols="12" xs="12" sm="8" md="8" lg="7" class="ma-auto">
+                <v-card outlined class="pa-10">
+                    <v-card-title class="justify-center" style="font-size: 2rem">회원가입</v-card-title>
+                    <v-spacer></v-spacer>
+                    <v-card-text>
+                        <form @submit.prevent="signUp">
+                            <v-text-field
+                                clearable
+                                dense
+                                outlined
+                                label="이름"
+                                v-model="name">                                
+                            </v-text-field>
+                            <v-text-field
+                                clearable
+                                dense
+                                outlined
+                                type="email"
+                                label="이메일"
+                                v-model="email">
+                            </v-text-field>
+                            <v-text-field
+                                clearable
+                                dense
+                                outlined
+                                label="아이디"
+                                v-model="userId">
+                            </v-text-field>
+                            <v-text-field
+                                clearable
+                                dense
+                                outlined
+                                label="비밀번호"
+                                type="password"
+                                v-model="password">
+                            </v-text-field>
+                            <v-text-field
+                                clearable
+                                dense
+                                outlined
+                                label="비밀번호 확인"
+                                type="password"
+                                v-model="passwordChk">
+                            </v-text-field>
 
-                    <input type="radio" id="female"
-                    v-model="gender" value="Female" />
-                    <label for="female">Female</label>
-                </div>
-                <div>
-                    <label for="photoUrl">Profile Photo:</label>
-                    <picture-input
-                        ref="pictureInput"
-                        width="150" height="150" margin="5" accept="image/*" size="10" button-class="btn"
-                        :custom-strings="{
-                            upload: '<h1>Upload Here!</h1>',
-                            drag: 'Drag your photo'
-                         }"
-                        @change="onChange">
-                    </picture-input>
-                </div>
-                <div>
-                    <label for="profileMessage">Profile Message:</label>
-                    <input class="form-control" type="text"
-                    v-model="profileMessage" placeholder="Write your bio">
-                </div>
-                <div>
-                    <v-btn class="SignUp-btn" type="submit">Sign Up</v-btn>
-                </div>
-                <div>
-                    <a class="auth-font" href="/Login">이미 유저입니다</a>
-                </div>
-            </div>
-        </form>
-    </div>
+                            <v-row align="center">
+                                <v-col class="d-flex" cols="12" sm="6">
+                                    <v-text-field
+                                        clearable
+                                        dense
+                                        outlined
+                                        label="나이"
+                                        type="number"
+                                        v-model.number="age">
+                                    </v-text-field>
+                                </v-col>
+                                <v-col class="d-flex" cols="12" sm="6">
+                                        <v-select
+                                            v-model="gender"
+                                            :items="genderSel"
+                                            dense
+                                            label="성별"
+                                            outlined>
+                                        </v-select>
+                                </v-col>
+                            </v-row>
+
+                            <v-divider class="pa-5"></v-divider>
+                            
+                            <v-row>
+                                <v-col class="d-flex" cols="2" sm="6">
+                                    <div>
+                                    <subheader>프로필 사진</subheader>
+                                        <picture-input
+                                            ref="pictureInput"
+                                            width="150" height="160" margin="5" accept="image/*" size="10" button-class="btn"
+                                            :custom-strings="{
+                                                upload: '<h1>Upload Here!</h1>',
+                                                drag: 'Upload your profile picture here'
+                                            }"
+                                            @change="onChange">
+                                        </picture-input>
+                                    </div>
+                                </v-col>
+                                <v-col class="d-flex" cols="12" sm="6">
+                                    <div>
+                                        <subheader>바이오</subheader>
+                                        <v-textarea filled background-color="#FAEBD7"
+                                        counter="150"
+                                            v-model="profileMessage"  placeholder="Write your profile message here">
+                                          </v-textarea>
+                                    </div>
+                                </v-col>
+                            </v-row>
+
+                            <v-divider class="ma-4"></v-divider>
+
+                            <div>
+                            <v-btn type="submit" :loading="loading"
+                            >회원가입</v-btn>
+                            <a class="auth-font" href="/Login">이미 유저입니다</a>
+                            </div>
+                       </form>
+                    </v-card-text>
+                </v-card>
+            </v-col>
+        </v-row>
+    </v-container>
+</v-app>
 </template>
 
 <script>
+import axios from 'axios';
 import PictureInput from 'vue-picture-input'
 import { mapActions } from 'vuex'
 
 export default {
-    data() {
+    data () {
         return {
             name: '',
             email: '',
             userId: '',
             password: '',
+            passwordChk: '',
             age: '',
             gender: '',
-            photoUrl: '',
+            photoUrl: 'no-img.jpg',
             profileMessage: '',
+            genderSel: ['여', '남'],
+            loading: false,
         }
     },
     computed: {
@@ -98,73 +147,37 @@ export default {
             console.log("new picture selected")
             if(image) {
                 console.log('picture loaded')
-                this.image = image
+                this.photoUrl = image
             } else {
                 console.log('FileReader API not supported.')
             }
         },
 
-        onSubmit() {
-            console.log(this.name);
-            console.log(this.email);
-            console.log(this.userId);
-            console.log(this.password);
-            console.log(this.age);
-            console.log(this.gender);
-            console.log(this.photoUrl);
-            console.log(this.profileMessage);
-        }
+        async signUp() {
+            if (this.loading) return;
+            this.loading = true;
+
+            const axiosBody = {
+                name: this.name,
+                email: this.email,
+                userId: this.userId,
+                password: this.password,
+                age: this.age,
+                gender: this.gender,
+                photoUrl: this.photoUrl,
+                profileMessage: this.profileMessage,
+            };
+            console.log('auth/signUp - axiosBody: ', axiosBody);
+        } 
     }
     }
 </script>
 
 <style>
-.SignUp-box {
-    margin-top: 50px;
-    width: 500px;
-    /* height: 500px; */
-    position: absolute;
-    padding: 30px 30px 30px 30px;
-    top: 10%;
-    left: 15%;
-    border: 2px solid hsl(210, 2%, 49%);
-    border-radius: 10%;
-}
-.input-table {
-    padding: 30px 0 0 20px;
-}
-
-.form-control {
-    width: 290px;
-    box-sizing: border-box;
-    background-color: #cdd2d4;
-    border: 1px solid #cdd2d4;
-    border-radius: 3px;
-    display: block;
-    margin-bottom: 12px;
-    padding: 6px 8px;
-    transition: background-color .3s;
-}
-
-.SignUp-btn {
-    float: right;
-    margin: 12px 26px 0 0;
-    width: 290px;   
-}
-
 .auth-font{
   font-size: 8px;
   float: right;
   margin: 10px 26px 0 0;
-}
-
-input[type=text].form-control,
-input[type=password].form-control,
-textarea.form-control {
-  font-size: 14px;
-}
-.form-control:focus {
-  background-color: #fff;
 }
 
 </style>

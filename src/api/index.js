@@ -44,6 +44,8 @@ export const auth = {
 
 
 // 회원가입 api
-// export const signUp = {
-    
-// }
+export const signUp = {
+    signUp(data) {
+        return request('post', '/auth/signUp', { data })
+    }
+}
