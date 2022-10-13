@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
 import PictureInput from 'vue-picture-input'
 // import { mapActions } from 'vuex'
 
