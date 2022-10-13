@@ -18,14 +18,14 @@ export const request = (method, url, data) => {
         method,
         url: DOMAIN + url,
         data
-    }).then(result => 
+    }).then(result =>
         // console.log(result.data)) //result.data => body Data
-        result.data)  
-    .catch(result => {
-        const {status} = result.response
-        if(status == UNAUTHORIZED) return onUnauthorized()
-        throw Error(result)
-    })
+        result.data)
+        .catch(result => {
+            const { status } = result.response
+            if (status == UNAUTHORIZED) return onUnauthorized()
+            throw Error(result)
+        })
 }
 
 
@@ -33,5 +33,9 @@ export const setAuthInHeader = token => {
     axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : null;
     //token이 있다면 `Bearer ${token}` 없다면 null값으로 넣어줌
 }
+
+
+
+
 
 
