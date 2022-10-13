@@ -5,6 +5,8 @@ import vuetify from './plugins/vuetify'
 import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
 
+// style
+import './assets/commonStyle.css'
 
 import 'vue2-timepicker/dist/VueTimepicker.css'
 
