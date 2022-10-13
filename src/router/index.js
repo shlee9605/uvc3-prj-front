@@ -31,7 +31,7 @@ const router = new VueRouter({
         { path: '/Auth', name:'Auth' ,component: Auth},
         { path: '/posts', name:'posts', component: Posts},
         { path: '/posts/:id', name:'Post', component: Post},
-        { path:'addpost',name:'AddPost', component: AddPost, requireAuth}
+        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth}
     ]
 })
 

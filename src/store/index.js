@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 // import * as api from '../api'
-import { auth,setAuthInHeader } from '../api'
-
+import {setAuthInHeader } from '../api'
+import { auth } from '../api/auth'
+ 
 
 
 Vue.use(Vuex)

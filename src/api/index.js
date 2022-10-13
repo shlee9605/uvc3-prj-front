@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '../router'
 
 
-const DOMAIN = 'http://192.168.0.69:8080'
+const DOMAIN = 'http://192.168.0.63:8080'
 const UNAUTHORIZED = 401
 
 
@@ -13,7 +13,7 @@ const onUnauthorized = () => {
 
 
 //axios
-const request = (method, url, data) => {
+export const request = (method, url, data) => {
     return axios({
         method,
         url: DOMAIN + url,
@@ -35,9 +35,3 @@ export const setAuthInHeader = token => {
 }
 
 
-//로그인 api
-export const auth = {
-    login(userId,password){
-        return request('post', '/auth/signIn',{ userId, password })
-    }
-}
