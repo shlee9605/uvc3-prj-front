@@ -126,9 +126,10 @@
 <script>
 import axios from 'axios';
 import PictureInput from 'vue-picture-input'
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
 
 export default {
+	name: 'signUp',
     data () {
         return {
             name: '',
@@ -159,10 +160,7 @@ export default {
         PictureInput,
     },
     methods: {
-		...mapActions([
-			'SIGNUP'
-		]),
-        signUp() {
+    async signUp() {
             if (this.loading) return;
             this.loading = true;
 
@@ -176,14 +174,23 @@ export default {
                 photoUrl: this.photoUrl,
                 profileMessage: this.profileMessage,
             };
-			console.log(axiosBody);
-				this.SIGNUP( axiosBody )
-			.then(
-				this.$router.push(this.rPath)
-			)
-			.catch(err=> {
-				console.log(err);
-			})
+			console.log('auth/signUp - axiosBody: ', axiosBody);
+
+			await axios
+				.post(process.env.VUE_APP_API + '/auth/signUp', axiosBody)
+					// console.log('this is postS');
+				.then(async (response) => {
+					console.log('auth/signUp - response: ', response);
+					// localStorage.setItem('t')
+					this.$router.push({ name: 'Login'});
+				})
+				.catch((error) => {
+					console.log('auth/singUp - error: ', error);
+				})
+				.finally(() => {
+					this.loading = false;
+					console.log('here?')
+				})
         },
 		onChange (image) {
             console.log("new picture selected")
