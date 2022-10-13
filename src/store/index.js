@@ -49,14 +49,13 @@ const store = new Vuex.Store({
         //변이(mutation)를 호출하고 변이가 state를 바꾸도록 함 (비동기)
         LOGIN({ commit }, { userId, password }) {
             return auth.login(userId, password)
-                //accessToken값을 LOGIN변이에 전달해줌  
+                //accessToken값을 LOGIN변이에 전달해줌 
                 .then(({ token }) => commit('LOGIN', token))
         },
 
-        SIGNUP({ commit }, { name, email, userId, password, birthdate, gender, photoUrl, profileMessage }) {
-            return auth.signUp(name, email, userId, password, birthdate, gender, photoUrl, profileMessage)
-                .then((response) => commit('SIGNUP', response))
-        },
+        // SIGNUP({ commit }, { name, email, userId, password, birthdate, gender, photoUrl, profileMessage }) {
+        //     return auth.signUp(name, email, userId, password, birthdate, gender, photoUrl, profileMessage)
+        // },
 
         GET_PROFILE({ commit }, token) {
             return getMyProfile.fetch(token)
