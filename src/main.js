@@ -6,6 +6,9 @@ import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
 
 
+import 'vue2-timepicker/dist/VueTimepicker.css'
+
+
 
 new Vue({
   el: '#app',
