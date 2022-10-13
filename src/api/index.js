@@ -2,7 +2,7 @@ import axios from 'axios'
 import router from '../router'
 
 
-const DOMAIN = 'http://192.168.0.69:8080'
+const DOMAIN = 'http://192.168.0.63:8080'
 const UNAUTHORIZED = 401
 
 
@@ -30,7 +30,7 @@ const request = (method, url, data) => {
 
 
 export const setAuthInHeader = token => {
-    axios.defaults.headers.common["Authorization"] = token ? `Bearer ${token}` : null;
+    axios.defaults.headers.common["Authorization"] = token ? `${token}` : null;
     //token이 있다면 `Bearer ${token}` 없다면 null값으로 넣어줌
 }
 
@@ -42,6 +42,14 @@ export const auth = {
     }
 }
 
+// 내 프로필 조회 api
+export const getMyProfile = {
+    fetch(token){
+        return request('post', '/profile/my', {token})
+    }
+}
+
+// 타인 프로필 조회 api
 
 // 회원가입 api
 // export const signUp = {

@@ -70,7 +70,7 @@
 
 <script>
 import PictureInput from 'vue-picture-input'
-import { mapActions } from 'vuex'
+// import { mapActions } from 'vuex'
 
 export default {
     data() {
