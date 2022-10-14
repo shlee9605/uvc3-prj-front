@@ -1,117 +1,197 @@
 <template>
-    <v-app inspire>
+    <v-app inspire style="height: 900px;">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
+		<div class="input-header">
+			
+			<div class="checkbox" style="margin-left: 30px;">
+				<v-container fluid>
+					<v-checkbox
+						v-model="checkbox1"
+						:label="`비공개: ${checkbox1.toString()}`"
+					></v-checkbox>
+				</v-container>
+			</div>
+			<v-spacer></v-spacer>
+			<div class="div-save-btn">
+
+				<v-btn 
+				color="primary"
+				rounded
+				@click="onSubmit">저장</v-btn>
+
+			</div>
+		</div>
+					
         <main class="input-main">
-            <div class="div-save-btn">
-                <a href="" style="color:black; float:right">
-                    <button>저장</button>
-                </a>
-            </div>
-            <div class="title">
-                <v-text-field
-                    label="제목"
-                    hide-details="auto"
-                ></v-text-field>
-            </div>
-            <form class="category-form">
-                <div class="category-form-div">
-                    <div class="category-region">
-                        <v-col 
-                            class="d-flex"
-                            cols="5"
-                            sm="10"
-                            >
-                            <v-select
-                                :items="items"
-                                label="지역 선택"
-                            ></v-select>
-                        </v-col>
-                    </div>
-                    <v-spacer></v-spacer>    
-                    
-                    <v-col class="category-select-date"
-                        cols="2"
-                        sm="2"
-                        md="2"
-                    >
-                        <v-menu
-                            ref="menu"
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            :return-value.sync="date"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                        >
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-text-field
-                                    full-width: true
-                                    v-model="date"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    style="font-size:0.8em;"
-                                    v-bind="attrs"
-                                    v-on="on"
-                                ></v-text-field>
-                            </template>
-                            <v-date-picker
-                                v-model="date"
-                                no-title
-                                scrollable
-                            >
-                                <v-spacer></v-spacer>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menu = false"
-                                >
-                                    Cancel
-                                </v-btn>
-                                <v-btn
-                                    text
-                                    color="primary"
-                                    @click="$refs.menu.save(date)"
-                                >
-                                    OK
-                                </v-btn>
-                            </v-date-picker>
-                        </v-menu>
-                    </v-col>
-                    <div class="category-time">
-                        <vue-timepicker
-                            v-model="TimeValue"
-                            :minute-interval="10"
-                            format="HH:mm"
-                            @change="changeHandler"
-                        ></vue-timepicker>
-                    </div>
-                </div>
-            </form>
-            <div class="region-detail">
-                <v-text-field
-                    label="상세주소"></v-text-field>
-            </div>
-            <!-- 내용  -->
-            <div class="description">
-                <div>
-                    <v-textarea
-                        color="black"
-                        label="설명"
-                    ></v-textarea>
-                    
-                
-                </div>
-            </div>
+			<form>
+				
+				<div class="title">
+					<v-text-field
+						label="제목"
+						hide-details="auto"
+						v-model="title"
+					></v-text-field>
+				</div>
+				<form class="category-form">
+					<div class="category-form-div">
+						<div class="category-list" style="width:400px">
+							<div class="category-time-list">
+								<v-col class="category-select-date"
+									cols="2"
+									sm="3"
+									md="3"
+									>
+									<v-menu
+										ref="menu"
+										v-model="menu"
+										:close-on-content-click="false"
+										:return-value.sync="date"
+										transition="scale-transition"
+										offset-y
+										min-width="auto"
+									>
+										<template v-slot:activator="{ on, attrs }">
+											<v-text-field
+												full-width: true
+												v-model="date"
+												prepend-icon="mdi-calendar"
+												readonly
+												style="font-size:0.7em;"
+												v-bind="attrs"
+												v-on="on"
+											></v-text-field>
+										</template>
+										<v-date-picker
+											v-model="date"
+											no-title
+											scrollable
+										>
+											<v-spacer></v-spacer>
+											<v-btn
+												text
+												color="primary"
+												@click="menu = false"
+											>
+												Cancel
+											</v-btn>
+											<v-btn
+												text
+												color="primary"
+												@click="$refs.menu.save(date)"
+											>
+												OK
+											</v-btn>
+										</v-date-picker>
+									</v-menu>
+								</v-col>
+								<div class="category-time">
+									<vue-timepicker
+										v-model="TimeValue"
+										:minute-interval="10"
+										format="HH:mm"
+										@change="changeHandler"
+									></vue-timepicker>
+								</div>
+							</div>
+							<div style="display: flex;">
+								<div class="category-region">
+									<v-col 
+										class="d-flex"
+										cols="5"
+										sm="5"
+										>
+										<v-select
+											v-model="region"
+											:items="items"
+											label="지역 선택"
+										></v-select>
+									</v-col>
+								</div>
+								<div class="category-region">
+									<v-col 
+										class="d-flex"
+										cols="10"
+										sm="10"
+										>
+										<v-select
+											v-model="categoryId"
+											:items="categoryList"
+											label="카테고리"
+										></v-select>
+									</v-col>
+								</div>
+							</div>
+						</div>
+						<div style="display: flex;">
+							<div class="div-capacipy">
+								<div>
+									<div style="display:flex;">
+										<v-icon style="margin-left:5px;">mdi-human-child</v-icon>
+										<h4>모집인원</h4>
+									</div>
+									<div class="wrapper" style="margin:5px 0 0 5px;">
+										<button class="btn btn--minus" @click="changeCounter('-1')" type="button" name="button">
+											-
+										</button>
+										<input class="quantity" type="text" name="name" :value="counter">
+										<button class="btn btn--plus" @click="changeCounter('1')" type="button" name="button">
+											+
+										</button>
+									</div>
+								</div>
+							</div>    
+						</div>
+					</div>
+				</form>
+				<div class="region-detail">
+					<v-text-field
+						label="상세주소"
+						v-model="address"
+						></v-text-field>
+				</div>
+				<!-- 내용  -->
+				<div class="description">
+					<div>
+						<v-textarea
+							color="black"
+							label="설명"
+							v-model="content"
+						></v-textarea>
+					</div>
+				</div>
+				<div class="form-fotter">
+					<v-spacer></v-spacer>
+					<div>
+						<v-container fluid>
+							<v-row>
+								<v-col cols="">
+								</v-col>
+								<v-col cols="10">
+								<v-text-field
+									label="회비"
+									value="0"
+									prefix="￦"
+									v-model.number="cost"
+								></v-text-field>
+								</v-col>
+							</v-row>
+						</v-container>
+					</div>
+				</div>
+			</form>
         </main>
     </v-app>
 </template>
 
 <script>
 import VueTimepicker from 'vue2-timepicker'
+import {mapActions} from 'vuex'
     export default {
         components: { VueTimepicker },
         data: () => ({
+			
+			checkbox1: true,
             //title
             title:'',
 
@@ -123,34 +203,100 @@ import VueTimepicker from 'vue2-timepicker'
             
             //region list
             items: ['강남', '홍대', '잠실'],
+			categoryList:['식사','운동','스터디','쇼핑','놀이'],
             
             //region 값
             region: '',
-            //region detail 값
-            regionDetail: '',
+
+			
+            //address 값
+            address: '',
+			
+			//비용
+			cost:'',
+			
+			// 정원
+			counter: 1,
+
+			//공개 비공개
+			visibility:'',
+
+			//카테고리
+			categoryId: '',
 
             //timevalue
             TimeValue: {
                 HH:'',
                 mm:'',
-                ss:'00'
+                ss:'"00"'
             },
             /*console.log(this.TimeValue)
             // outputs -> {HH: "14", mm: "30", ss: "15"} */
 
 
             //description
-            descripdion:''
+            content:''
 
 
         }),
+        watch:{
+			// count: function() {
+			// 	this.counter = this.capacity
+			// }
+        },
         methods:{
+			...mapActions([
+				'CREATE_POST'
+			]),
 
-            //time 수정
-            changeHandler (eventData) {
-                console.log(eventData)
-                // -> {data: {HH:..., mm:... }}
-            }
+			onSubmit() {
+				//공개 비공개 Y or N 
+				const visibility = this.checkbox1 ? 'Y': 'N'
+				//카테고리 Id 값으로 변환
+				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
+				
+				const time = `${this.TimeValue.HH}:${this.TimeValue.mm}:00`
+				
+				// const cost = parseInt(this.cost)
+				console.log(typeof this.cost);
+
+				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
+				console.log("전송")
+				
+				
+				//confirm이 취소일 경우 리턴, 확인일 경우 진행
+				if (!window.confirm('저장하시겠습니까?')) return
+				
+				this.CREATE_POST({
+					title:this.title,
+					content:this.content,
+					region:this.region,
+					address:this.address,
+					cost: this.cost,
+					capacity:this.counter,
+					date:this.date,
+					time,
+					visibility,
+					CategoryId
+				}).then(this.$router.push('/posts'))
+				.catch(err => {
+					console.log(err);
+				})
+			
+			},
+            //time
+            changeHandler ({data}) {
+                console.log("개발중..",data, this.date, this.address,this.region)
+                this.TimeValue.HH = data.HH
+                this.TimeValue.mm = data.mm
+                this.TimeValue.ss = data.ss
+            },
+			changeCounter: function(num){
+				this.counter += +num
+				console.log(this.counter)
+				!isNaN(this.counter) && this.counter > 0 ? this.counter : this.counter = 0;
+            
+			}
 
 
         }
@@ -158,16 +304,35 @@ import VueTimepicker from 'vue2-timepicker'
 </script>
 
 <style>
+
+.input-header{
+	margin: auto;
+	display: flex;
+	float: right;
+    /* margin-top: 50px; */
+    /* width: 500px; */
+	margin-top:40px;
+	margin-bottom: 0;
+    width: 700px;
+}
+
 .div-save-btn {
     float: right;
     color: black;
     /* margin-right: ; */
-    margin: 30px 0 0 0 ;
-    font-size: 13px;
+    /* margin: 30px 0 0 0 ; */
+    font-size: 20px;
+}
+
+.input-main {
+    margin: auto;
+    margin-top: 10px;
+    /* width: 500px; */
+    width: 600px;
 }
 
 .title{
-    margin-top: 70px;
+    /* margin-top: 70px; */
     margin-bottom: 30px;
 }
 
@@ -176,24 +341,34 @@ import VueTimepicker from 'vue2-timepicker'
 }
 
 .category-form-div{
-    display: flex;    
+    
+	display: flex;    
     margin: 0px 0 0 0;
 }
 
-.input-main {
-    margin: auto;
-    margin-top: 50px;
-    /* width: 500px; */
-    width: 600px;
+/* .category-list{
+	padding-right: 20px;
+} */
+
+.category-time-list{
+	display: flex;
 }
 
-category-region{
-    width: 30%px;
+
+.div-capacipy{
+	padding: 50px 0 0 0;
+	margin:  0 0 0 60px;
 }
+
+
+
+/* category-region{
+    width: ;
+} */
 
 .category-time {
     width: 40%;
-    margin: 15px 0 0 50px;
+    margin: 18px 0 0 50px;
 }
 
 .vue-timepicker{
@@ -203,12 +378,12 @@ category-region{
 
 .category-select-date {
     float: right;
-    margin: 0 10px 0 60px;
+    margin: 0 0px 0 0px;
 }
 
 
 .region-detail{
-    margin: 5% 0 0 0;
+    margin: 10% 0 0 0;
 }
 
 
@@ -219,8 +394,41 @@ category-region{
 
 .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
     padding: 0;
+	margin-right: 10px;
 }
 
 
+.form-fotter{
+	display: flex;
+}
+
+
+.wrapper {
+	height: 30px;
+	display: flex;
+}
+.quantity {
+  -webkit-appearance: none;
+  border: none;
+  text-align: center;
+    width: 30px;
+ 
+  font-size: 16px;
+  color: #43484D;
+  font-weight: 300;
+	border: 1px solid #E1E8EE;
+}
+
+.btn {
+	border: 1px solid #E1E8EE;
+  width: 30px;
+  background-color: #E1E8EE;
+/*   border-radius: 6px; */
+  cursor: pointer;
+}
+button:focus,
+input:focus {
+  outline:0;
+}
 
 </style>
