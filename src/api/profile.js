@@ -1,5 +1,5 @@
 
-import { request} from '../api'
+import { request } from '../api/index'
 
 
 // 내 프로필 조회 api

@@ -11,8 +11,8 @@
 								</div>
                 <div class="profileInfoDiv">
 									<div class="profileInfoDiv2">
-                    <input class="userIdForm" type="text" name="userId"
-                    v-model="userId" placeholder="Your Id">
+                    <input class="userIdForm" type="text" name="id"
+                    v-model="id" placeholder="Your Id">
 										<v-spacer></v-spacer>
 										<v-btn> 프로필 편집 </v-btn>
 									</div>
@@ -46,7 +46,7 @@
 									<div class="friendInfo">
 										<v-avatar size="70" style="margin-left:40px; margin-right:20px;">
 										<img style="margin-left" src="../assets/subakjjang.png">
-										</v-avatar> {{ item.userId }}
+										</v-avatar> {{ item.id }}
 										<v-btn style="margin-left:50px" @click="deleteFriend"> 친구 삭제 </v-btn>
 									</div>
 									<v-spacer></v-spacer>	
@@ -59,11 +59,11 @@
 <script>
 import axios from 'axios';
 // import axios from 'axios';
-import { mapActions, mapState} from 'vuex';
+import { mapActions, mapState, mapGetters} from 'vuex';
 export default {
     data() {
 			return{
-				userId:"",
+				id:"",
 				profileMessage: "",
 				gender:"",
 				age:"",
@@ -81,6 +81,9 @@ export default {
 			...mapState({
 				user: 'headers',
 				token: 'token'
+			}),
+			...mapGetters({
+				
 			})
 		},
 		methods:{
@@ -91,8 +94,8 @@ export default {
 				console.log("fetchMyProfile - this.token :", this.token)
 				this.GET_PROFILE(this.token)
 				.then(()=>{
-					console.log("fetchMyProfile - resposne :  success" , this.user.data);
-					this.userId = this.user.data.userId;
+					console.log("fetchMyProfile - response :  success" , this.user.data);
+					this.id = this.user.data.id;
 					this.profileMessage = this.user.data.profileMessage;
 					if(this.user.data.gender === "M"){
 						this.gender = "Male"
