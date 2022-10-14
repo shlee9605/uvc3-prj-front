@@ -178,7 +178,7 @@ import { mapGetters } from 'vuex'
 }
 
 .Nav-point{
-    margin: 22px 0 0 20px;
+    margin: 24px 0 0 20px;
 }
 
 .Nav-point-btn {
