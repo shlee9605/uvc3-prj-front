@@ -1,58 +1,58 @@
 <template>
     <div class="main">
         <div class="profileStatusOutline">
-            <div class="title">내 프로필</div>
+            <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
                 <div class="profileImgDiv">
-									<v-avatar size="200" class="profileImg">
-										<img src="../assets/subakjjang.png">
-									</v-avatar>
-									<v-btn style="margin-top:10px"> 프로필 사진 편집 </v-btn>
-								</div>
+					<v-avatar size="200" class="profileImg">
+					<img src="../assets/subakjjang.png">
+					</v-avatar>
+						<v-btn style="margin-top:10px"> 프로필 사진 편집 </v-btn>
+				</div>
                 <div class="profileInfoDiv">
-									<div class="profileInfoDiv2">
-                    <input class="userIdForm" type="text" name="userId"
-                    v-model="userId" placeholder="Your Id">
-										<v-spacer></v-spacer>
-										<v-btn> 프로필 편집 </v-btn>
-									</div>
-									<div class="profileInfoDiv3">
-										<input class="profileMessageForm" type="text" name="profileMessage"
-                    v-model="profileMessage" placeholder="Your Profile Message">
-									</div>
-									<div class="profileInfoDiv4">
-										<span style="font-size:20px; ">생년월일</span>
-										<input class="ageForm" type="text" name="Age"
-                    v-model="age" placeholder="Age">
-										<span style="font-size:20px;">성별</span>
-										<input class="genderForm" type="text" name="Gender"
-                    v-model="gender" placeholder="Gender">
-									</div>
-								</div>
+					<div class="profileInfoDiv2">
+						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id">
+							<v-spacer></v-spacer>
+						<v-btn> 프로필 편집 </v-btn>
+					</div>
+					<div class="profileInfoDiv3">
+						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" placeholder="Your Profile Message">
+					</div>
+					<div class="profileInfoDiv4">
+						<span style="font-size:20px; ">생년월일</span>
+							<input class="ageForm" type="text" name="Age" v-model="age" placeholder="Age">
+						<span style="font-size:20px;">성별</span>
+							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender">
+					</div>
+				</div>
             </div>
-						<hr style="margin-bottom:20px">
+				<hr style="margin-bottom:20px">
             <div class="menuList">
-							<div class="menuListDiv2">	 </div>
-							<div class="menuListDiv3">
-								<v-btn class="friendBtn" @click="loadFriendList">친구</v-btn>
-							</div>
-							<div class="menuListDiv4">
-								<v-btn class="postBtn">게시물</v-btn>
-							</div>
-						</div>
+				<div class="menuListDiv2">	 </div>
+				<div class="menuListDiv3">
+					<v-btn class="friendBtn" @click="loadFriendList">친구</v-btn>
+				</div>
+				<div class="menuListDiv4">
+					<v-btn class="postBtn">게시물</v-btn>
+				</div>
+			</div>
             <div v-if="showFriendListStatus === true" class="menuDetail">
-							<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
-								<div class="friendInfoMother">
-									<div class="friendInfo">
-										<v-avatar size="70" style="margin-left:40px; margin-right:20px;">
-										<img style="margin-left" src="../assets/subakjjang.png">
-										</v-avatar> {{ item.userId }}
-										<v-btn style="margin-left:50px" @click="deleteFriend"> 친구 삭제 </v-btn>
-									</div>
-									<v-spacer></v-spacer>	
-								</div>
-							</div>
+				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
+					<div class="friendInfoMother">
+						<div class="friendInfo">
+							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
+							<img
+							:src="require(item.photoUrl)"
+							:alt="item.userId">
+							</v-avatar>
+							<span v-else><v-icon>mdi-account-circle</v-icon></span>
+							<span> {{ item.userId }}</span>
+							<v-btn style="margin-left:50px" @click="deleteFriend(item.id)"> 친구 삭제 </v-btn>
 						</div>
+						<v-spacer></v-spacer>	
+					</div>
+				</div>
+			</div>
         </div>
     </div>
 </template>
@@ -68,6 +68,7 @@ export default {
 				gender:"",
 				age:"",
 				friendInfoList:[],
+				photoUrl: "",
 
 				showFriendListStatus: false,
 
@@ -81,7 +82,14 @@ export default {
 			...mapState({
 				user: 'headers',
 				token: 'token'
-			})
+			}),
+			// 여기 부터 
+			profileAvatar() {
+			const setprofileAvatar = "A"
+			console.log('setprofileAvatar : ', setprofileAvatar);
+			return setprofileAvatar;
+			},
+
 		},
 		methods:{
 			...mapActions([
@@ -133,10 +141,23 @@ export default {
 
 			},
 			
-			async deleteFriend(){
+			async deleteFriend(id){
 				await axios
-				.delete('http://localhost:8080/friend/')
+				.delete(`http://localhost:8080/friend/${id}`,{
+					headers:{
+						Authorization: `${localStorage.getItem('token')}`
+					}
+				})
+				.then((response)=>{
+					console.log("deleteFriend - response ", response)
+					this.loadFriendList()
+				})
+				.catch((error)=>{
+					console.log("deleteFriend - error ", error);
+				})
 			},
+
+			
 			// 뷰튜브식 내 프로필 데이터 불러오기
 			// async getMyProfile(){
 			// 	await axios
@@ -172,7 +193,7 @@ export default {
 </script>
 <style >
     .main {
-				border: 1px solid black;
+		/* border: 1px solid black; */
         align-items: center;
         display: flex;
         justify-content: center;
