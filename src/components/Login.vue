@@ -59,6 +59,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  name:'Login',
   data() {
     return {
       userId: '',
@@ -82,6 +83,7 @@ export default {
           ]),
           onSubmit() {
             console.log(this.userId,this.password)
+            
             this.LOGIN({userId: this.userId, password: this.password})
               // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
             // auth.login(this.email,this.password)

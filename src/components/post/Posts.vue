@@ -16,14 +16,6 @@
                 class="filter">
                     <button>날짜</button>
                 </a>
-                <v-chip-group
-                    mandatory
-                    active-class="primary--text"
-                >
-                    <v-chip>
-                        신청하기
-                    </v-chip>
-                </v-chip-group>
             </div>
             <v-spacer></v-spacer>
             <router-link to="/addpost" class="addpost-btn">
@@ -47,7 +39,7 @@
                                     <div>
                                         <td>{{item.title}}</td>
                                     </div>
-                                    <div class="post-user" 
+                                    <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
                                         <td>{{item.userId}}</td>
                                     </div>
@@ -165,6 +157,10 @@
     border-bottom: 1px #7b7b7b solid;
     text-decoration: none;
     
+}
+
+.postList-user {
+    margin:0;
 }
 
 /* 테이블 time */

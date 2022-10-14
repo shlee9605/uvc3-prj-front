@@ -37,14 +37,7 @@ export const setAuthInHeader = token => {
 
 
 
-// 내 프로필 조회 api
-export const getMyProfile = {
-    fetch(token) {
-        return request('post', '/profile/my', { token })
-    }
-}
 
-// 타인 프로필 조회 api
 
 
 
