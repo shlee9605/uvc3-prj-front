@@ -1,3 +1,4 @@
+
 import { request} from '../api'
 
 
@@ -6,6 +7,6 @@ export const getMyProfile = {
     fetch(token) {
         return request('post', '/profile/my', { token })
     }
+
 }
 
-// 타인 프로필 조회 api

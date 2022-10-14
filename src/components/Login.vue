@@ -59,6 +59,7 @@
 <script>
 import { mapActions } from 'vuex'
 export default {
+  name:'Login',
   data() {
     return {
       userId: '',

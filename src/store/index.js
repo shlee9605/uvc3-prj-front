@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
+
 // 전역의 store 객체 역할을 함
 Vue.use(Vuex)
 
@@ -14,7 +15,10 @@ import { Attend } from './Attend'
 
 
 
+
+
 const store = new Vuex.Store({
+
 
     modules: {
         Auth: Auth,
@@ -23,11 +27,13 @@ const store = new Vuex.Store({
         Comment: Comment,
         Attend: Attend
     },
+
+
 })
 
 // 브라우저 localstorage에 token 정보가 있는지 없는지 체크
-const { token } =localStorage
-store.commit('LOGIN',token)
+const { token } = localStorage
+store.commit('LOGIN', token)
 
 
 
