@@ -11,18 +11,21 @@
 				</div>
                 <div class="profileInfoDiv">
 					<div class="profileInfoDiv2">
-						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id">
+						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
 							<v-spacer></v-spacer>
-						<v-btn> 프로필 편집 </v-btn>
+						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
+						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
 					</div>
 					<div class="profileInfoDiv3">
-						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" placeholder="Your Profile Message">
+						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode">
+						<v-space></v-space>
+				
 					</div>
 					<div class="profileInfoDiv4">
 						<span style="font-size:20px; ">생년월일</span>
-							<input class="ageForm" type="text" name="Age" v-model="age" placeholder="Age">
+							<input class="ageForm" type="text" name="Age" v-model="birthdate" placeholder="Age" disabled>
 						<span style="font-size:20px;">성별</span>
-							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender">
+							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" disabled>
 					</div>
 				</div>
             </div>
@@ -66,11 +69,12 @@ export default {
 				userId:"",
 				profileMessage: "",
 				gender:"",
-				age:"",
+				birthdate:"",
 				friendInfoList:[],
 				photoUrl: "",
 
 				showFriendListStatus: false,
+				editMode : true,
 
 			}
 		},
@@ -109,7 +113,7 @@ export default {
 					}else{
 						this.gender = " 넌 성별이 뭐니?"
 					}
-					this.age = this.user.data.age;
+					this.birthdate = (this.user.data.birthdate).split('T')[0];
 				})
 				.catch((error)=>{
 					console.log("fetchMyProfile - error : ", error);
@@ -156,6 +160,19 @@ export default {
 					console.log("deleteFriend - error ", error);
 				})
 			},
+			
+			async editProfile(){
+
+				console.log(this.editMode);
+				this.editMode = false;
+				console.log(this.editMode);
+			},
+
+			async editProfileMessageComplete(){
+				this.editMode = true;
+			}
+
+
 
 			
 			// 뷰튜브식 내 프로필 데이터 불러오기
@@ -312,7 +329,8 @@ export default {
 			font-size: 40px;
 		}
 		.profileMessageForm{
-			padding-top: 30px;
+			margin-top: 30px;
+			width: 400px;
 			font-size: 20px;
 		}
 		.genderForm{
