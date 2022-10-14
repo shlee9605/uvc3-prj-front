@@ -8,11 +8,12 @@ import AddPost from '../components/post/AddPost.vue'
 import Posts from '../components/post/Posts.vue'
 import store from '../store'
 import myProfile from '../components/myProfile.vue'
+import NavBar from '../components/NavBar.vue'
 
 
 Vue.use(VueRouter)
 
-const requireAuth = (to,from, next) => {
+const requireAuth = (to, from, next) => {
     // const isAuth = localStorage.getItem('token')   //토큰정보 확인
     //store에서 인증정보 확인 가져옴
     const isAuth = store.getters.isAuth
@@ -27,13 +28,13 @@ const requireAuth = (to,from, next) => {
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', name:'Home' ,component: Home },
-        { path: '/Login', name:'Login' ,component: Login},
-        { path: '/Auth', name:'Auth' ,component: Auth},
-        { path: '/posts', name:'posts', component: Posts},
-        { path: '/posts/:id', name:'Post', component: Post},
-        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
-        { path: '/myProfile', name:'myProfile', component: myProfile},
+        { path: '/', name: 'Home', component: Home },
+        { path: '/Login', name: 'Login', component: Login },
+        { path: '/Auth', name: 'Auth', component: Auth },
+        { path: '/posts', name: 'posts', component: Posts },
+        { path: '/posts/:id', name: 'Post', component: Post },
+        { path: '/addpost', name: 'AddPost', component: AddPost, beforeEnter: requireAuth },
+        { path: '/myProfile', name: 'myProfile', component: myProfile },
     ]
 })
 
