@@ -38,7 +38,7 @@
                                 dense
                                 outlined
                                 label="아이디"
-                                v-model="userId">
+                                v-model="id">
                             </v-text-field>
                             <v-text-field
                                 clearable
@@ -134,7 +134,7 @@ export default {
         return {
             name: '',
             email: '',
-            userId: '',
+            id: '',
             password: '',
             passwordChk: '',
             birthdate: '',
@@ -167,7 +167,7 @@ export default {
             const axiosBody = {
                 name: this.name,
                 email: this.email,
-                userId: this.userId,
+                id: this.id,
                 password: this.password,
                 birthdate: this.birthdate,
                 gender: this.gender,

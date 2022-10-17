@@ -38,8 +38,8 @@ export const Auth = {
 
     actions: {
 
-        LOGIN({commit}, { userId, password }) {
-            return auth.login(userId, password)
+        LOGIN({commit}, { id, password }) {
+            return auth.login(id, password)
             //accessToken값을 LOGIN변이에 전달해줌  
             .then(({ token }) => commit('LOGIN', token))
         },

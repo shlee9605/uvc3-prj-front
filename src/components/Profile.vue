@@ -6,25 +6,27 @@
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<!-- <img :src="require(this.photoUrl)"> -->
 					</v-avatar>
-						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
-							프로필 사진 편집
-						</v-btn>	
 				</div>
+
+                <!-- Id -->
                 <div class="profileInfoDiv">
 					<div class="profileInfoDiv2">
 						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
+                        <v-btn v-if="this.relationship === '1'" @click="sendRequest" > 친구 요청 </v-btn>
+                        <div v-else-if="this.relationship === '2'" >
+                        <v-btn @click="acceptRequest"> 수락 </v-btn>
+                        <v-btn @click="rejectRequest"> 거절 </v-btn>
+                        </div>
+                        <v-btn v-else-if="this.relationship === '3'"> 요청 중 </v-btn>
+                        <v-btn v-else> 친구입니다 </v-btn>
 							<v-spacer></v-spacer>
-						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
-						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
-						<v-btn v-if="!this.editMode" @click="cancelEdit"> 취소 </v-btn>
-
 					</div>
+                    <!-- 상태 메세지 -->
 					<div class="profileInfoDiv3">
-						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode" :outline-style="this.outlineStyle">
+						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" disabled>
 						<v-spacer></v-spacer>
-				
+                    <!-- 생년월일 성별 -->
 					</div>
 					<div class="profileInfoDiv4">
 						<span style="font-size:20px; ">생년월일</span>
@@ -36,46 +38,20 @@
             </div>
 				<hr style="margin-bottom:20px">
             <div class="menuList">
-				<div class="menuListDiv2">	 </div>
+				<div class="menuListDiv2">
+                </div>
 				<div class="menuListDiv3">
-					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
 				</div>
 				<div class="menuListDiv4">
-					<v-btn class="postBtn">게시물</v-btn>
-				</div>
-			</div>
-            <div v-if="showFriendListStatus === true" class="menuDetail">
-				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
-					<div class="friendInfoMother">
-						<div class="friendInfo">	
-							<router-link :to="'profile/'+item.id">		
-							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
-							<img
-							:src="require(item.photoUrl)">
-							<!-- :alt="item.userId" -->
-							</v-avatar>
-							<span v-else>
-							<v-icon>mdi-account-circle</v-icon>
-							</span>
-							</router-link>
-							<span> {{ item.id }}</span>
-							<v-btn style="margin-left:50px" @click="deleteFriend(item.id)"> 친구 삭제 </v-btn>
-						</div>
-						<v-spacer></v-spacer>	
-					</div>
 				</div>
 			</div>
         </div>
-		<UploadPhotoModal :openDialog="photoEditModalStatus"
-		v-on:closeDialog="closeDialogEditPhoto">	
-		</UploadPhotoModal>
     </div>
 </v-app>	
 </template>
 <script>
 import axios from 'axios';
 import { mapActions, mapState} from 'vuex';
-import UploadPhotoModal from '@/components/Modal/UploadPhotoModal.vue'
 export default {
     data() {
 			return{
@@ -83,24 +59,14 @@ export default {
 				profileMessage: "",
 				gender:"",
 				birthdate:"",
-				friendInfoList:[],
-				photoUrl: "",
-				selectedPhotoUrl: "",
-				oldprofileMessage: "",
-				oldPhotoUrl: "",
 
-				showFriendListStatus: false,
-				editPhotoStatus: false,
-				photoEditModalStatus: false,
-				editMode: true,
-				outlineStyle: "none",
+				photoUrl: "",
+
+                relationship:"",
 
 			}
 		},
 
-		components:{
-			UploadPhotoModal,
-		},
 		
 		created() {
 			// this.fetchMyProfile()
@@ -123,103 +89,40 @@ export default {
 			...mapActions([
 				'GET_PROFILE'
 			]),
-			// fetchMyProfile(){
-			// 	console.log("fetchMyProfile - this.token :", localStorage.getItem('token'))
-			// 	this.GET_PROFILE(localStorage.getItem('token'))
-			// 	.then(()=>{
-			// 		console.log("fetchMyProfile - resposne :  success" , this.user);
-			// 		this.userId = this.user.data.userId;
-			// 		this.profileMessage = this.user.data.profileMessage;
-			// 		if(this.user.data.gender === "M"){
-			// 			this.gender = "Male"
-			// 		}else if(this.user.data.gender === "F"){
-			// 			this.gender = "Female"
-			// 		}else{
-			// 			this.gender = " 넌 성별이 뭐니?"
-			// 		}
-			// 		this.birthdate = (this.user.data.birthdate).split('T')[0];
-			// 	})
-			// 	.catch((error)=>{
-			// 		console.log("fetchMyProfile - error : ", error);
-			// 	})
-			// },
-
-			async loadFriendList(){
-				await axios
-				.get('http://localhost:8080/friend/list', {
-					headers: {
-						Authorization : `${localStorage.getItem('token')}`
-					}
-				})
-				.then((response)=>{
-					if(this.showFriendListStatus === true){
-						this.showFriendListStatus = false;
-						console.log(this.showFriendListStatus)
-					}else{
-					console.log(response);
-					this.friendInfoList = response.data.friendInfoList;
-					console.log("loadFriendList - response : " , this.friendInfoList)
-					this.showFriendListStatus = true;
-					console.log(this.showFriendListStatus)
-					}	
-				})
-				.catch((error)=>{
-					console.log("loadFriendList - error ", error);
-				})
-
-			},
 			
-			async deleteFriend(id){
-				await axios
-				.delete(`http://localhost:8080/friend/${id}`,{
-					headers:{
-						Authorization: `${localStorage.getItem('token')}`
-					}
-				})
-				.then((response)=>{
-					console.log("deleteFriend - response ", response)
-					this.loadFriendList()
-				})
-				.catch((error)=>{
-					console.log("deleteFriend - error ", error);
-				})
-			},
 			
-			async editProfile(){
-				console.log(this.editMode);
-				this.editMode = false;
-				console.log(this.editMode);
-			},
+	
+            async getRelationship(){
+                await axios
+                .get(`http://localhost:8080/friend/${this.$route.params.id}/pending`,{
+                    headers:{
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response)=>{
+                    console.log("getRelationship - response", response.data.message);
+                    if(response.data.message === "내가 요청 아직 상대방 수락x"){
+                        this.relationship = "3";
+                    }else if(response.data.message === "상대방 요청 내가 아직 수락x"){
+                        this.relationship = "2";
+                    }else if(response.data.message === "아무 관계 아님"){
+                        this.relationship = "1";
+                    }else{
+                        this.realtionship = "4";
+                    }
+                  
+                })
+                .catch((error)=>{
+                    console.log("getRelationship - error", error);
+                })
 
-			async editProfileMessageComplete(){
-				const axiosBody = {
-					profileMessage: this.profileMessage,
-				};
+            },
+		
+
+
+			async getProfile(){
 				await axios
-				.patch('http://localhost:8080/profile/my', axiosBody,{
-					headers:{
-						Authorization: `${localStorage.getItem('token')}`
-					}
-				})
-				.then((response)=>{
-					console.log(response);
-					this.editMode = true;
-					this.getMyProfile();
-				})
-				.catch((error)=>{
-					console.log(error);
-				})
-			},
-
-			async cancelEdit(){
-				this.editMode = true;
-				this.profileMessage = this.oldprofileMessage
-			},
-
-
-			async getMyProfile(){
-				await axios
-				.post('http://localhost:8080/profile/my',{
+				.get(`http://localhost:8080/profile/${this.$route.params.id}`,{
 						headers:{
 							Authorization: `${localStorage.getItem('token')}`,
 						},
@@ -250,25 +153,59 @@ export default {
 				})
 			},
 			
-			async openPhotoEditModal(){
-				this.photoEditModalStatus = true;
-				console.log(this.photoEditModalStatus);
-			},
-			
-			async closeDialogEditPhoto(){
-				this.photoEditModalStatus = false;
-				console.log(this.photoEditModalStatus);
-			}
-			
-			// 마운트 테스트
-			// async mountChk(){
-			// 	console.log("마운트!")
-			// },
+            async acceptRequest(){
+                await axios
+                .patch(`http://localhost:8080/friend/${this.$route.params.id}`,{
+                    headers:{
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response)=>{
+                    console.log("acceptRequest - response", response)
+                    this.getRelationship()
+                })
+                .catch((error)=>{
+                    console.log("acceptRequest - error", error);
+                })
+            },
+
+            async rejectRequest(){
+                await axios
+                .delete(`http://localhost:8080/friend/${this.$route.params.id}`,{
+                    headers:{
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response)=>{
+                    console.log("rejectRequest - response", response);
+                    this.getRelationship()
+                })
+                .catch((error)=>{
+                    console.log("rejecetRequest - error", error);
+                })
+            },
+
+            async sendRequest(){
+                await axios
+                .post(`http://localhost:8080/friend/${this.$route.params.id}`, {
+                    headers: {
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response)=>{
+                    console.log("sendRequest - response ", response);
+                    this.getRelationship()
+                })
+                .catch((error)=>{
+                    console.log("sendRequest - error ", error);
+                })
+            },
+
 
 		},
 		mounted(){
-			this.getMyProfile();
-			// this.mountChk();
+			this.getProfile();
+            this.getRelationship();
 		},
 
 }

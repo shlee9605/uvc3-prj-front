@@ -4,8 +4,8 @@ import { request } from '../api'
 
 export const auth = {
     //로그인 api
-    login(userId, password) {
-        return request('post', '/auth/signIn', { userId, password })
+    login(id, password) {
+        return request('post', '/auth/signIn', { id, password })
     },
     // //회원가입 api
     // signUp(name, email, userId, password, birthdate, gender, photoUrl, profileMessage) {
