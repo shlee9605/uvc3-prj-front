@@ -8,11 +8,17 @@ import AddPost from '../components/post/AddPost.vue'
 import Posts from '../components/post/Posts.vue'
 import store from '../store'
 import myProfile from '../components/myProfile.vue'
+
 import Comment from '../components/comment/comment.vue'
+
+import Profile from '../components/Profile.vue'
+
+
+
 
 Vue.use(VueRouter)
 
-const requireAuth = (to,from, next) => {
+const requireAuth = (to, from, next) => {
     // const isAuth = localStorage.getItem('token')   //토큰정보 확인
     //store에서 인증정보 확인 가져옴
     const isAuth = store.getters.isAuth
@@ -36,6 +42,7 @@ const router = new VueRouter({
         ]},
         { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
         { path: '/myProfile', name:'myProfile', component: myProfile},
+        { path: '/profile/:id', name:'Profile', component: Profile},
     ]
 })
 

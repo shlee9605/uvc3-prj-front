@@ -30,7 +30,11 @@
                                     </v-avatar>
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
+
                                     <button>{{post.id}}</button>
+
+                                    <button>{{postUser.id}}</button>
+
                                 </div>
                             </a>
                         </div>
@@ -126,15 +130,15 @@ import {mapState, mapActions} from 'vuex'
                 HH:'',
                 mm:'',
                 userlist:[
-                    {id:1,userId:'pororo1'},
-                    {id:2,userId:'pororo1'},
-                    {id:3,userId:'pororo1'},
-                    {id:4,userId:'pororo1'},
-                    {id:5,userId:'pororo1'},
+                    {id:1, id:'pororo1'},
+                    {id:2, id:'pororo1'},
+                    {id:3, id:'pororo1'},
+                    {id:4, id:'pororo1'},
+                    {id:5, id:'pororo1'},
                 ],
                 postUser:{
                     postId:1,
-                    userId:'crong1',
+                    id:'crong1',
                     content:
                     ' 함께 맥주 마실 인원모집합니다!',
                     region:'강남',
