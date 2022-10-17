@@ -134,7 +134,9 @@ import { mapGetters } from 'vuex'
 
                         this.GET_LOGIN_STATUS = false;
                         this.GET_USER_DATA = null;
-                        this.$router.go();
+                        // this.$router.go('/');
+                        this.$router.push({ name: "Home"})
+                        this.$router.go('/')
                     })
                     .catch((error) => {
                         console.log('logout - error: ', error);
