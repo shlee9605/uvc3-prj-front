@@ -1,39 +1,62 @@
 <template>
     <v-app>
-        <main>
+        <div class="header-size">
         <!-- 카테고리, filter list -->
-        <div class="contents-header-bar">
-            <div class="content-filter">
-                <a 
-                class="filter">
-                    <button>카테고리</button>
-                </a>
-                <a 
-                class="filter">
-                    <button>지역</button>
-                </a>
-                <a 
-                class="filter">
-                    <button>날짜</button>
-                </a>
+            <div class="contents-header-bar">
+                <div style="margin: 0 5%; padding:0 5% 0 10%">
+                    <v-col
+                    cols="12"
+                    sm="2"
+                    md="10"
+                    >
+                    <v-sheet
+                    class="py-4 px-1"
+                    >
+                        <v-chip-group
+                        mandatory
+                        active-class="primary--text"
+                        >
+                            <v-chip
+                            v-for="time in times"
+                            :key="time">
+                                {{ time.slice(8,10) }}일
+                            </v-chip>
+                        </v-chip-group>
+                    </v-sheet>
+                    </v-col>
+                </div>
+                <div class="content-filter">
+                    <a 
+                    class="filter">
+                        <button>카테고리</button>
+                    </a>
+                    <a 
+                    class="filter">
+                        <button>지역</button>
+                    </a>
+                    <a 
+                    class="filter">
+                        <button>날짜</button>
+                    </a>
+                </div>
+                <router-link to="/addpost" class="addpost-btn">
+                    <button style="float:right; margin-right:50px;">새모임</button>
+                </router-link>
             </div>
-            <v-spacer></v-spacer>
-            <router-link to="/addpost" class="addpost-btn">
-                <button>새모임</button>
-            </router-link>
-        </div>
 
             <!-- 게시글 리스트 -->
-            <div>
+            <div style="margin-top:50px;">
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
                             class="contents-table-a"
-                             v-for="item in contents"
-                             to="/posts"
+                            v-for="item in postlist"
+                            :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
-                                    <p>{{item.time}}</p>
+                                    <p style="margin-righ:20px;">
+                                        {{item.time.slice(0,5)}}
+                                    </p>
                                 </div>
                                 <div class="table-a-title">
                                     <div>
@@ -41,13 +64,13 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.userId}}</td>
+                                        <td>{{item.id}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
                                 <div class="content-detail">
                                     <td style="text-align: right;">{{item.region}}</td>
-                                    <td>{{item.price}}원</td>
+                                    <td>{{item.cost}}원</td>
                                 </div>
                                 <div class="table-a-btn">    
                                     <td class="apply-btn" if="">
@@ -64,56 +87,73 @@
                     </tbody>
                 </table>
             </div>
-        </main>
+        </div>
     </v-app>
 </template>
 
 <script>
-
+import {mapState,mapActions} from 'vuex'
     export default {
         data() {
             return {
-                changedColor: false,
-                chip3:true,
-                page: 1,
-                contents: [
-                    {userId:'pororo1',time:"08:00", title: "공놀이", price:'10,000',region:'강남'},
-                    {userId:'pororo1',time:"10:00",title:"점심식사 모임", price:'20,000',region:'강남'},
-                    {userId:'pororo1', time:'10:00',title:'독서 ',price:'5,000',region:'홍대'},
-                    {userId:'pororo1', time:'10:30',title:'풋살',price:'20,000',region:'잠실'},
-                    {userId:'pororo1', time:'11:00',title:'같이 점심 먹고 볼링쳐요!!',price:'50,000',region:'강남'},
-                    {userId:'pororo1', time:'15:00',title:'보드게임까페 조각',price:'15,000',region:'홍대'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'1,000,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000,000',region:'강남'},
-                ],
-                tags:[]
+                    times:[]
             }
         },
+        computed:{
+            ...mapState({
+                postlist:'postlist'
+            })
+        },
+        created(){
+            this.fetchPostlist(),
+            this.date()
+        },
         methods: {
-            changeColor(){
-                this.changedColor = true;
-                console.log(this.changedColor); 
+            ...mapActions([
+                "FETCH_POSTLIST"
+            ]),
+            
+            
+            fetchPostlist(){
+                this.FETCH_POSTLIST({cateName:'all'})
+                .then(console.log('postlist req 전송!'))
+            },
+            
+            //오늘부터 15일 후 까지 count
+            date(){
+                const time = []
+                const Dt = new Date()
+                for (let i = 1; i < 16; i++) {
+                    const today = (new Date(Date.parse(Dt) + i * 1000 * 60 * 60 * 24));
+                    const todayTime = today.toISOString().split("T")[0]
+                    // console.log(todayTime);
+                    time.push(todayTime)
+                }
+                console.log(time);
+                this.times = time
             }
         },
     }
 </script>
 
 <style>
+.header-size{
+    width:50%;
+    margin: 15px 25% 0 25%;
+}
+
+
 /* 카테고리 filter */
 .contents-header-bar {
-    display: flex;
-    width: 60%;
+    /* display: grid;  */
+    /* width: 300px; */
     margin: auto;
 }
 
 
 .content-filter{
-    /* margin: 50px 0 0 0; */
     display: flex;
-    padding: 50px 0 25px 0;
+    padding: 5px 0 25px 0;
 }
 
 .filter {
@@ -133,16 +173,15 @@
 } */
 
 .addpost-btn{
-    margin: 50px 0 0 0; 
+    margin: 15px 0 0 0; 
     color: black;
 }
 
 .contents-table {
     padding: 0 0 0 0;
-    /* margin: 0 30% 0 300px; */
     margin: auto;
-    width: 60%;
-    /* border: 1px #a39485 solid; */
+    width: 90%;
+
     font-size: .9em;
 }
 
@@ -165,7 +204,8 @@
 
 /* 테이블 time */
 .table-a-time {
-    margin: 28px 0 0 40px;
+    padding: 0 0 0 0;
+    margin: 22px 0 10px 45px;
     color: black;
 }
 /* 테이블 title */
@@ -173,6 +213,7 @@
     display: grid;
     color: black;
     margin: 20px 0 0 50px;
+    padding: auto;
 }
 
 .content-detail{
@@ -196,12 +237,6 @@
     height: 30px;
     width: 100px;
     border-radius: 15px;
-}
-
-/* 페이지 넘버 */
-.page-number{
-    width: 500px;
-    margin: 0 33% 0 33%
 }
 
 

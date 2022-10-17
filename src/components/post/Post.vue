@@ -7,20 +7,18 @@
     >
     <main class="post-main">
         <!-- ------------------------------------------------ -->
-
         <div class="post-header">
             
             <div class="header-desc">
                 <div class="post-title-area">
                     <div class="post-title">
-                        <h1>간단하게 맥주 한잔 하실 분</h1>
+                        <h1>{{post.title}}</h1>
                     </div>
                 </div>
                 <div class="post-user-area">
                     <div>
                         <div class="post-user">
                             <a 
-                            href=""
                             style="display:flex;">
                                 <v-row>
                                     <v-avatar
@@ -32,7 +30,7 @@
                                     </v-avatar>
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
-                                    <button>{{postUser.userId}}</button>
+                                    <button>{{post.id}}</button>
                                 </div>
                             </a>
                         </div>
@@ -46,6 +44,7 @@
                     <v-btn
                     rounded
                     color="primary"
+                    @click ="attendUser"
                     >신청하기</v-btn>
                 </div>
             </div>
@@ -58,7 +57,7 @@
 
             <div class="post-center">
                 <div class="post-desc">
-                    {{postUser.content}}
+                    {{post.content}}
                 </div>
                 
                 <Comment />
@@ -74,13 +73,13 @@
                         <v-card-text>
                             <div></div>
                             <p class="text-h7 text--primary">
-                            {{year}}년 {{month}}월 {{date}}일 {{hour}}:{{min}}
+                            {{post.date.slice(0,4)}}년 {{post.date.slice(5,7)}}월 {{post.date.slice(8,10)}}일 {{post.time.slice(0,2)}}시 {{post.time.slice(3,5)}}분
                             </p>
                             <div class="text--primary">
-                                장소: {{postUser.address}}
+                                장소: {{post.address}}
                             </div>
                             <br>
-                            <p>회비 : {{postUser.cost}}원</p>
+                            <p>회비 : {{post.cost}}원</p>
                             
                         </v-card-text>
                     </v-card>
@@ -114,7 +113,8 @@
 </template>
 
 <script>
-import Comment from '../comment.vue'
+import Comment from '../comment/comment.vue'
+import {mapState, mapActions} from 'vuex'
     export default {
         components:{Comment},
         data(){
@@ -123,8 +123,8 @@ import Comment from '../comment.vue'
                 year:'',
                 month:'',
                 date:'',
-                hour:'',
-                min:'',
+                HH:'',
+                mm:'',
                 userlist:[
                     {id:1,userId:'pororo1'},
                     {id:2,userId:'pororo1'},
@@ -147,24 +147,39 @@ import Comment from '../comment.vue'
 
             }
         },
+        computed:{
+            ...mapState({
+                post:'post'
+            })
+        },
         created() {
-            this.changeDate(),
-            this.changeTime()
+            this.fetchpost(),
+            this.dateNtime()
         },
         methods:{
-            changeDate(){
-                const DateArr = this.postUser.date.split('-')
-                console.log(DateArr);
-                this.year = DateArr[0]
-                this.month = DateArr[1]
-                this.date = DateArr[2]
+            ...mapActions([
+                "FETCH_POST",
+                "ATTEND_POST"
+            ]),
+            
+            fetchpost(){
+                this.FETCH_POST({id:this.$route.params.pid}).then( () => {
+                    console.log('포스트상세 req 전송');
+                })
             },
-            changeTime(){
-                const TimeArr = this.postUser.time.split(':')
-                console.log(TimeArr);
-                this.hour = TimeArr[0],
-                this.min = TimeArr[1]
+
+            dateNtime(){
+                console.log(this.post.time);
             },
+
+            attendUser(){
+                return this.ATTEND_POST({id:this.$route.params.pid}).then( () => {
+                    console.log('전송 성공!');
+                }).catch(err => {
+                    console.log('참가 실패',err);
+                })
+            },
+
         },
     }
 </script>
@@ -244,6 +259,7 @@ margin-top: 10px;
 }
 
 .post-desc{
+    margin-bottom: 50px;
     padding: 10%;
     font-size: 13px;
 }
