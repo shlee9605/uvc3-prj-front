@@ -11,9 +11,10 @@ import myProfile from '../components/myProfile.vue'
 import Profile from '../components/Profile.vue'
 
 
+
 Vue.use(VueRouter)
 
-const requireAuth = (to,from, next) => {
+const requireAuth = (to, from, next) => {
     // const isAuth = localStorage.getItem('token')   //토큰정보 확인
     //store에서 인증정보 확인 가져옴
     const isAuth = store.getters.isAuth

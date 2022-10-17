@@ -13,6 +13,7 @@
 						</v-btn>	
 				</div>
                 <div class="profileInfoDiv">
+
 					<div class="profileInfoDiv2">
 						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
 							<v-spacer></v-spacer>
@@ -79,7 +80,7 @@ import UploadPhotoModal from '@/components/Modal/UploadPhotoModal.vue'
 export default {
     data() {
 			return{
-				userId:"",
+				id:"",
 				profileMessage: "",
 				gender:"",
 				birthdate:"",
@@ -117,32 +118,11 @@ export default {
 			console.log('setprofileAvatar : ', setprofileAvatar);
 			return setprofileAvatar;
 			},
-
 		},
 		methods:{
 			...mapActions([
 				'GET_PROFILE'
 			]),
-			// fetchMyProfile(){
-			// 	console.log("fetchMyProfile - this.token :", localStorage.getItem('token'))
-			// 	this.GET_PROFILE(localStorage.getItem('token'))
-			// 	.then(()=>{
-			// 		console.log("fetchMyProfile - resposne :  success" , this.user);
-			// 		this.userId = this.user.data.userId;
-			// 		this.profileMessage = this.user.data.profileMessage;
-			// 		if(this.user.data.gender === "M"){
-			// 			this.gender = "Male"
-			// 		}else if(this.user.data.gender === "F"){
-			// 			this.gender = "Female"
-			// 		}else{
-			// 			this.gender = " 넌 성별이 뭐니?"
-			// 		}
-			// 		this.birthdate = (this.user.data.birthdate).split('T')[0];
-			// 	})
-			// 	.catch((error)=>{
-			// 		console.log("fetchMyProfile - error : ", error);
-			// 	})
-			// },
 
 			async loadFriendList(){
 				await axios

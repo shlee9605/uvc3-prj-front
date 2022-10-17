@@ -41,7 +41,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.userId}}</td>
+                                        <td>{{item.id}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
@@ -77,17 +77,17 @@
                 chip3:true,
                 page: 1,
                 contents: [
-                    {userId:'pororo1',time:"08:00", title: "공놀이", price:'10,000',region:'강남'},
-                    {userId:'pororo1',time:"10:00",title:"점심식사 모임", price:'20,000',region:'강남'},
-                    {userId:'pororo1', time:'10:00',title:'독서 ',price:'5,000',region:'홍대'},
-                    {userId:'pororo1', time:'10:30',title:'풋살',price:'20,000',region:'잠실'},
-                    {userId:'pororo1', time:'11:00',title:'같이 점심 먹고 볼링쳐요!!',price:'50,000',region:'강남'},
-                    {userId:'pororo1', time:'15:00',title:'보드게임까페 조각',price:'15,000',region:'홍대'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'1,000,000,000',region:'강남'},
-                    {userId:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000,000',region:'강남'},
+                    {id:'pororo1',time:"08:00", title: "공놀이", price:'10,000',region:'강남'},
+                    {id:'pororo1',time:"10:00",title:"점심식사 모임", price:'20,000',region:'강남'},
+                    {id:'pororo1', time:'10:00',title:'독서 ',price:'5,000',region:'홍대'},
+                    {id:'pororo1', time:'10:30',title:'풋살',price:'20,000',region:'잠실'},
+                    {id:'pororo1', time:'11:00',title:'같이 점심 먹고 볼링쳐요!!',price:'50,000',region:'강남'},
+                    {id:'pororo1', time:'15:00',title:'보드게임까페 조각',price:'15,000',region:'홍대'},
+                    {id:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000',region:'강남'},
+                    {id:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000',region:'강남'},
+                    {id:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'100,000,000',region:'강남'},
+                    {id:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'1,000,000,000',region:'강남'},
+                    {id:'pororo1', time:'18:00',title:'같이 술한잔 하실 분!',price:'10,000,000,000',region:'강남'},
                 ],
                 tags:[]
             }
