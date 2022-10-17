@@ -8,7 +8,8 @@ import AddPost from '../components/post/AddPost.vue'
 import Posts from '../components/post/Posts.vue'
 import store from '../store'
 import myProfile from '../components/myProfile.vue'
-import NavBar from '../components/NavBar.vue'
+import Profile from '../components/Profile.vue'
+
 
 
 Vue.use(VueRouter)
@@ -28,13 +29,14 @@ const requireAuth = (to, from, next) => {
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', name: 'Home', component: Home },
-        { path: '/Login', name: 'Login', component: Login },
-        { path: '/Auth', name: 'Auth', component: Auth },
-        { path: '/posts', name: 'posts', component: Posts },
-        { path: '/posts/:id', name: 'Post', component: Post },
-        { path: '/addpost', name: 'AddPost', component: AddPost, beforeEnter: requireAuth },
-        { path: '/myProfile', name: 'myProfile', component: myProfile },
+        { path: '/', name:'Home' ,component: Home },
+        { path: '/Login', name:'Login' ,component: Login},
+        { path: '/Auth', name:'Auth' ,component: Auth},
+        { path: '/posts', name:'posts', component: Posts},
+        { path: '/posts/:id', name:'Post', component: Post},
+        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
+        { path: '/myProfile', name:'myProfile', component: myProfile},
+        { path: '/profile/:id', name:'Profile', component: Profile},
     ]
 })
 
