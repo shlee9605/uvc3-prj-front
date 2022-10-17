@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <table>
-                    <tr >
+                    <tr>
                         <td 
                         class="content-item"
                         v-for=" (content,index) in contentlist" :key="index">
@@ -60,7 +60,7 @@ import {mapState,mapActions} from 'vuex'
             }
         },
         computed:{
-            ...mapState({
+            ...mapState('Comment',{
                 contentlist: 'contentlist'
             })
         },
@@ -69,7 +69,7 @@ import {mapState,mapActions} from 'vuex'
         },
 
         methods:{
-            ...mapActions([
+            ...mapActions('Comment',[
                 'CREATE_COMMENT',
                 'FETCH_COMMENT',
                 'UPDATE_COMMENT',
@@ -81,11 +81,13 @@ import {mapState,mapActions} from 'vuex'
             },
              //댓글 리스트 조회
             fetchCommentList(){
+                console.log(1)
                 this.FETCH_COMMENT({pid: this.$route.params.pid}).then(() => {
                     console.log('조회됨');
                 }).catch(err => {
                     console.log("댓글 조회x",err);
                 })
+                console.log(1)
             },
 
             // //댓글 수정

@@ -3,7 +3,7 @@ import {comment} from '../api/comment'
 
 
 export const Comment = {
-
+    namespaced: true,
     state: {
         contentlist:[],
         content:{}
@@ -20,17 +20,18 @@ export const Comment = {
 
     actions: {
         //댓글 작성
-        CREATE_COMMENT({commit,state},{content}){
-            return comment.create(content).then(() => {
-                commit('SET_COMMENT',{contentlist: state.contentlist})
+        CREATE_COMMENT(_,{pid,content}){
+            return comment.create(pid,content).then(() => {
+                console.log('작성완료')
             }).catch(err => {
                 console.log('댓글 작성 실패',err);
             })
         },
         //댓글 list
-        FETCH_COMMENT({commit},{id}){
-            return comment.fetch(id).then(data => {
-                commit('SET_COMMENT', data.data)
+        FETCH_COMMENT({commit},{pid}){
+            console.log('index.js')
+            return comment.fetch(pid).then(data => {
+                commit('SET_COMMENT', data.comments)
             }).catch(err => {
                 console.log('댓글 조회 실패',err);
             })
