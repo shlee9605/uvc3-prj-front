@@ -57,7 +57,7 @@
 							</v-avatar>
 							<span v-else>
 							<v-avatar>
-							<img src="../assets/human.png">
+							<img src="../assets/human.jpg">
 							</v-avatar>
 							</span>
 							</router-link>
