@@ -8,7 +8,11 @@ import AddPost from '../components/post/AddPost.vue'
 import Posts from '../components/post/Posts.vue'
 import store from '../store'
 import myProfile from '../components/myProfile.vue'
+
+import Comment from '../components/comment/comment.vue'
+
 import Profile from '../components/Profile.vue'
+
 
 
 
@@ -33,13 +37,14 @@ const router = new VueRouter({
         { path: '/Login', name:'Login' ,component: Login},
         { path: '/Auth', name:'Auth' ,component: Auth},
         { path: '/posts', name:'posts', component: Posts},
-        { path: '/posts/:id', name:'Post', component: Post},
+        { path: '/posts/:pid', name:'Post', component: Post, children:[
+            {path:'comment/:cid', component:Comment}
+        ]},
         { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
         { path: '/myProfile', name:'myProfile', component: myProfile},
         { path: '/profile/:id', name:'Profile', component: Profile},
     ]
 })
-
 
 
 

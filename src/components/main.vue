@@ -1,4 +1,5 @@
 <template>
+    <v-app>
         <section>
             <v-carousel 
                 hide-delimiters
@@ -12,6 +13,7 @@
                 ></v-carousel-item>
             </v-carousel>
         </section>
+    </v-app>
 </template>
 
 <script>
@@ -19,9 +21,10 @@
         data() {
             return {
                 items:[
-                    {src: 'https://media.fastcampus.co.kr/wp-content/uploads/2020/05/unnamed-1.png'},
-                    {src: 'https://mir-s3-cdn-cf.behance.net/project_modules/fs/928c0c31914107.566791aca4949.jpg'},
-                    {src: 'https://s3.ap-northeast-2.amazonaws.com/icunow.co.kr/2022/06/27160523/og-image.png'}
+                    {src: require("../assets/selfie.png")},
+                    {src: require("../assets/Personal_trainer.png")},
+                    {src: require("../assets/together.png")},
+                    {src: require("../assets/partying2.png")},
                 ]
             }
         }
@@ -59,6 +62,11 @@ section:before{
     float: right;
 }
 
+
+.v-window__prev .v-btn__content,
+.v-window__next .v-btn__content {
+  color: rgb(84, 82, 82);
+}
 
 
 

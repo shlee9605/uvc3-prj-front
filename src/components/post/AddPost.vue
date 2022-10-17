@@ -16,9 +16,10 @@
 			<div class="div-save-btn">
 
 				<v-btn 
-				color="primary"
-				rounded
-				@click="onSubmit">저장</v-btn>
+					color="primary"
+					rounded
+					@click="onSubmit">저장</v-btn>
+
 
 			</div>
 		</div>
@@ -239,14 +240,10 @@ import {mapActions} from 'vuex'
 
 
         }),
-        watch:{
-			// count: function() {
-			// 	this.counter = this.capacity
-			// }
-        },
         methods:{
 			...mapActions([
-				'CREATE_POST'
+				'CREATE_POST',
+				"FETCH_POSTLIST"
 			]),
 
 			onSubmit() {
@@ -262,6 +259,7 @@ import {mapActions} from 'vuex'
 
 				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
 				console.log("전송")
+				// this.fetchPostlist()
 				
 				
 				//confirm이 취소일 경우 리턴, 확인일 경우 진행
@@ -282,6 +280,9 @@ import {mapActions} from 'vuex'
 				.catch(err => {
 					console.log(err);
 				})
+				.finally(() => {
+					this.fetchPostlist()
+				})
 			
 			},
             //time
@@ -296,7 +297,11 @@ import {mapActions} from 'vuex'
 				console.log(this.counter)
 				!isNaN(this.counter) && this.counter > 0 ? this.counter : this.counter = 0;
             
-			}
+			},
+			fetchPostlist(){
+                this.FETCH_POSTLIST({cateName:'all'})
+                .then(data => console.log(data.data))
+            },
 
 
         }
