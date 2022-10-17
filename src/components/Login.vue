@@ -78,7 +78,7 @@ export default {
   },
         
   methods: {
-          ...mapActions([
+          ...mapActions('Auth',[
             'LOGIN'
           ]),
           onSubmit() {
