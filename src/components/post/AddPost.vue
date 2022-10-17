@@ -241,7 +241,7 @@ import {mapActions} from 'vuex'
 
         }),
         methods:{
-			...mapActions([
+			...mapActions('Post',[
 				'CREATE_POST',
 				"FETCH_POSTLIST"
 			]),

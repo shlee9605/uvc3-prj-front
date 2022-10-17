@@ -129,30 +129,14 @@ import {mapState, mapActions} from 'vuex'
                 date:'',
                 HH:'',
                 mm:'',
-                userlist:[
-                    {id:1, id:'pororo1'},
-                    {id:2, id:'pororo1'},
-                    {id:3, id:'pororo1'},
-                    {id:4, id:'pororo1'},
-                    {id:5, id:'pororo1'},
-                ],
                 postUser:{
-                    postId:1,
-                    id:'crong1',
-                    content:
-                    ' 함께 맥주 마실 인원모집합니다!',
-                    region:'강남',
-                    cost:'20000',
-                    address:'서울시 강남구 역삼동 826-39',
-                    time:'15:30:00',
-                    date:'2022-10-22',
                     counter:'6',
                     },
 
             }
         },
         computed:{
-            ...mapState({
+            ...mapState('Post',{
                 post:'post'
             })
         },
@@ -161,9 +145,11 @@ import {mapState, mapActions} from 'vuex'
             this.dateNtime()
         },
         methods:{
-            ...mapActions([
+            ...mapActions('Post',[
                 "FETCH_POST",
-                "ATTEND_POST"
+            ]),
+            ...mapActions('Attend',[
+                "ATTEND_POST",
             ]),
             
             fetchpost(){

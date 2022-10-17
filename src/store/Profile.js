@@ -3,7 +3,7 @@ import { getMyProfile } from '../api/profile'
 
 export const Profile = {
 
-
+    namespaced: true,
     state: {
         //user정보 저장
         headers:{},

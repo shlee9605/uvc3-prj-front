@@ -98,13 +98,12 @@ import {mapState,mapActions} from 'vuex'
             return {
 
                 times:[],
-
                 chip3:true,
 
             }
         },
         computed:{
-            ...mapState({
+            ...mapState('Post',{
                 postlist:'postlist'
             })
         },
@@ -113,7 +112,7 @@ import {mapState,mapActions} from 'vuex'
             this.date()
         },
         methods: {
-            ...mapActions([
+            ...mapActions('Post',[
                 "FETCH_POSTLIST"
             ]),
             
@@ -152,6 +151,7 @@ import {mapState,mapActions} from 'vuex'
     /* display: grid;  */
     /* width: 300px; */
     margin: auto;
+    margin-top:50px;
 }
 
 
