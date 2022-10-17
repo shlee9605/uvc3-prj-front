@@ -6,9 +6,9 @@
       </div>
       <div class="input-table">
         <div>
-          <label for="userId">Id:</label>
-          <input class="form-control" type="text" name="userId"
-          v-model="userId" placeholder="123@xxx.com">
+          <label for="id">Id:</label>
+          <input class="form-control" type="text" name="id"
+          v-model="id" placeholder="123@xxx.com">
         </div>
         <div>
           <label for="password">Password:</label>
@@ -62,7 +62,7 @@ export default {
   name:'Login',
   data() {
     return {
-      userId: '',
+      id: '',
       password:'',
       error:'',
       rPath: '/Post',
@@ -70,7 +70,7 @@ export default {
   },
   computed: {
     invalidForm() {
-      return !this.userId || !this.password 
+      return !this.id || !this.password 
     }
   },
   created() {
@@ -82,9 +82,9 @@ export default {
             'LOGIN'
           ]),
           onSubmit() {
-            console.log(this.userId,this.password)
+            console.log(this.id,this.password)
             
-            this.LOGIN({userId: this.userId, password: this.password})
+            this.LOGIN({id: this.id, password: this.password})
               // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
             // auth.login(this.email,this.password)
           .then(
