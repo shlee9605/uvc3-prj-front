@@ -1,5 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {setAuthInHeader } from '../api'
+
+
 
 
 // 전역의 store 객체 역할을 함
@@ -23,11 +26,23 @@ const store = new Vuex.Store({
     modules: {
         Auth: Auth,
         Profile: Profile,
-        Post : Post,
         Comment: Comment,
-        Attend: Attend
+        Attend: Attend,
+        Post: Post,
     },
 
+    state: {
+        token: localStorage.getItem('token') || null,
+    },
+
+    mutations:{
+        LOGIN(state,token) {
+            if(!token) return
+            state.token = token //token 갱신
+            localStorage.setItem('token', token) //localstorage에 token 저장
+            setAuthInHeader(token) //header에 token 세팅
+        },
+    }
 
 })
 
