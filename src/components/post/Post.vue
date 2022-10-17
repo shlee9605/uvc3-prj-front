@@ -126,11 +126,11 @@ import Comment from '../comment.vue'
                 hour:'',
                 min:'',
                 userlist:[
-                    {id:1, id:'pororo1'},
-                    {id:2, id:'pororo1'},
-                    {id:3, id:'pororo1'},
-                    {id:4, id:'pororo1'},
-                    {id:5, id:'pororo1'},
+                    {id:1, userid:'pororo1'},
+                    {id:2, userid:'pororo1'},
+                    {id:3, userid:'pororo1'},
+                    {id:4, userid:'pororo1'},
+                    {id:5, userid:'pororo1'},
                 ],
                 postUser:{
                     postId:1,
