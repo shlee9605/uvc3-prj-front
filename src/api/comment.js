@@ -21,7 +21,6 @@ export const comment = {
     
     //댓글 리스트 불러오기
     fetch(pid) {
-        console.log('commonent fetch')
         return request('get',`/comment/${pid}`)
     },
 }
