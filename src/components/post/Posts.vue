@@ -97,9 +97,8 @@ import {mapState,mapActions} from 'vuex'
         data() {
             return {
 
-                    times:[]
+                times:[],
 
-                changedColor: false,
                 chip3:true,
 
             }
