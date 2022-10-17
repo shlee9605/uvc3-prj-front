@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import {setAuthInHeader } from '../api'
 
 
 
@@ -44,7 +44,6 @@ const store = new Vuex.Store({
             setAuthInHeader(token) //header에 token 세팅
         },
     }
-
 
 })
 

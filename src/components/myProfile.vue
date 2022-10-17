@@ -6,7 +6,7 @@
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<img v-if="this.photoUrl !== 'no-image'" :src="`http://localhost:8080/uploads${this.photoUrl}`"/>	
+						<img v-if="this.photoUrl !== 'no-image'" :src="`${url}/uploads${this.photoUrl}`"/>	
 						<p v-else>x</p>
 					</v-avatar>
 						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
@@ -16,7 +16,7 @@
                 <div class="profileInfoDiv">
 
 					<div class="profileInfoDiv2">
-						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
+						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" disabled>
 							<v-spacer></v-spacer>
 						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
 						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
@@ -50,10 +50,10 @@
 				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
 					<div class="friendInfoMother">
 						<div class="friendInfo">	
-							<router-link :to="'profile/'+item.id">		
+							<router-link :to="'profile/'+ item.id">		
 							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
 							<img
-							:src="`http://localhost:8080/uploads${item.photoUrl}`">
+							:src="`${url}/uploads${item.photoUrl}`">
 							</v-avatar>
 							<span v-else>
 							<v-avatar>
@@ -115,6 +115,11 @@ export default {
 				token: 'token'
 			}),
 
+			url (){
+				return process.env.VUE_APP_API;
+			}
+
+
 		},
 		methods:{
 			...mapActions([
@@ -123,7 +128,7 @@ export default {
 
 			async loadFriendList(){
 				await axios
-				.get('http://localhost:8080/friend/list', {
+				.get(process.env.VUE_APP_API + '/friend/list', {
 					headers: {
 						Authorization : `${localStorage.getItem('token')}`
 					}
@@ -148,7 +153,7 @@ export default {
 			
 			async deleteFriend(id){
 				await axios
-				.delete(`http://localhost:8080/friend/${id}`,{
+				.delete(process.env.VUE_APP_API + `/${id}`,{
 					headers:{
 						Authorization: `${localStorage.getItem('token')}`
 					}
@@ -173,7 +178,7 @@ export default {
 					profileMessage: this.profileMessage,
 				};
 				await axios
-				.patch('http://localhost:8080/profile/my', axiosBody,{
+				.patch(process.env.VUE_APP_API + '/profile/my', axiosBody,{
 					headers:{
 						Authorization: `${localStorage.getItem('token')}`
 					}
@@ -196,7 +201,7 @@ export default {
 
 			async getMyProfile(){
 				await axios
-				.post('http://localhost:8080/profile/my',{
+				.post(process.env.VUE_APP_API + '/profile/my',{
 						headers:{
 							Authorization: `${localStorage.getItem('token')}`,
 						},
@@ -205,14 +210,14 @@ export default {
 				.then((response)=>{
 					console.log(response.data.data);
 					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
-						this.photoUrl = "../assets/human.png";
+						this.photoUrl = "../assets/human.jpg";
 					}else{
 						this.photoUrl = response.data.data.photoUrl
 					}
-					this.userId = response.data.data.id;
+					this.id = response.data.data.id;
 					this.profileMessage = response.data.data.profileMessage;
 					this.oldprofileMessage = response.data.data.profileMessage;
-					console.log(this.userId, this.profileMessage)
+					console.log(this.id, this.profileMessage)
 					if(response.data.data.gender === "M"){
 						this.gender = "Male"
 					}else if(response.data.data.gender === "F"){

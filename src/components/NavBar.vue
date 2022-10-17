@@ -76,7 +76,7 @@
                             </v-list-item-content>
                         </v-list-item>
 
-                        <v-list-item>
+                        <v-list-item @click="signOut">
                             <v-list-item-content>
                                 <v-list-item-title>
                                     <v-icon left>mdi-login-variant</v-icon>
@@ -93,6 +93,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import { mapGetters } from 'vuex'
 
     export default {
@@ -113,9 +114,36 @@ import { mapGetters } from 'vuex'
             ...mapGetters('Auth',[
                 'isAuth'
             ])
-        }
-        
-    }
+        },
+        methods: {
+            async signOut() {
+                await axios
+                    .get(
+                        process.env.VUE_APP_API + '/auth/signOut',
+                        {},
+                        {
+                            headers: {
+                                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                            },
+                        }
+                    )
+                    .then((response) => {
+                        console.log('logout - response:', response);
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+
+                        this.GET_LOGIN_STATUS = false;
+                        this.GET_USER_DATA = null;
+                        // this.$router.go('/');
+                        this.$router.push({ name: "Home"})
+                        this.$router.go('/')
+                    })
+                    .catch((error) => {
+                        console.log('logout - error: ', error);
+                    });
+            },
+        },
+    };
 </script>
 
 <style>
