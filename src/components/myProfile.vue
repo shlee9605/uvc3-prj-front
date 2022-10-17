@@ -57,7 +57,7 @@
 							</v-avatar>
 							<span v-else>
 							<v-avatar>
-							<img src="../assets/human.png">
+							<img src="../assets/human.jpg">
 							</v-avatar>
 							</span>
 							</router-link>
@@ -205,7 +205,7 @@ export default {
 				.then((response)=>{
 					console.log(response.data.data);
 					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
-						this.photoUrl = "../assets/human.png";
+						this.photoUrl = "../assets/human.jpg";
 					}else{
 						this.photoUrl = response.data.data.photoUrl
 					}
