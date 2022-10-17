@@ -6,7 +6,8 @@
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<!-- <img :src="require(this.photoUrl)"> -->
+						<img v-if="this.photoUrl !== 'no-image'" :src="`http://localhost:8080/uploads${this.photoUrl}`"/>	
+						<p v-else>x</p>
 					</v-avatar>
 						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
 							프로필 사진 편집
@@ -51,11 +52,12 @@
 							<router-link :to="'profile/'+item.id">		
 							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
 							<img
-							:src="require(item.photoUrl)">
-							<!-- :alt="item.userId" -->
+							:src="`http://localhost:8080/uploads${item.photoUrl}`">
 							</v-avatar>
 							<span v-else>
-							<v-icon>mdi-account-circle</v-icon>
+							<v-avatar>
+							<img src="../assets/human.png">
+							</v-avatar>
 							</span>
 							</router-link>
 							<span> {{ item.id }}</span>
@@ -111,12 +113,6 @@ export default {
 				user: 'headers',
 				token: 'token'
 			}),
-			// 여기 부터 
-			profileAvatar() {
-			const setprofileAvatar = "A"
-			console.log('setprofileAvatar : ', setprofileAvatar);
-			return setprofileAvatar;
-			},
 
 		},
 		methods:{
@@ -228,7 +224,7 @@ export default {
 				.then((response)=>{
 					console.log(response.data.data);
 					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
-						this.photoUrl = "../assets/human.jpg";
+						this.photoUrl = "../assets/human.png";
 					}else{
 						this.photoUrl = response.data.data.photoUrl
 					}
@@ -260,15 +256,16 @@ export default {
 				console.log(this.photoEditModalStatus);
 			}
 			
-			// 마운트 테스트
-			// async mountChk(){
-			// 	console.log("마운트!")
-			// },
 
 		},
+
+		beforeMount(){
+			this.getMyProfile();
+		},
+
+
 		mounted(){
 			this.getMyProfile();
-			// this.mountChk();
 		},
 
 }
