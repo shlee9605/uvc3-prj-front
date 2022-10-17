@@ -2,6 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 
+
+
+
 // 전역의 store 객체 역할을 함
 Vue.use(Vuex)
 
@@ -23,10 +26,11 @@ const store = new Vuex.Store({
     modules: {
         Auth: Auth,
         Profile: Profile,
-        Post : Post,
         Comment: Comment,
-        Attend: Attend
+        Attend: Attend,
+        Post: Post,
     },
+
 
 
 })

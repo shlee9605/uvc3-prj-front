@@ -111,7 +111,7 @@ import { mapGetters } from 'vuex'
             },
         },
         computed: {
-            ...mapGetters([
+            ...mapGetters('Auth',[
                 'isAuth'
             ])
         },
