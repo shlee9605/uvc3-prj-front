@@ -4,7 +4,10 @@ import { auth } from '../api/auth'
 
 
 
+
+
 export const Auth = {
+    namespaced: true,
 
     state: {
         token: localStorage.getItem('token') || null,
@@ -25,6 +28,7 @@ export const Auth = {
             setAuthInHeader(token) //header에 token 세팅
         },
 
+
         //로그아웃
         LOGOUT(state) {
             state.token = null
@@ -43,7 +47,6 @@ export const Auth = {
             //accessToken값을 LOGIN변이에 전달해줌  
             .then(({ token }) => commit('LOGIN', token))
         },
-
 
     },
 

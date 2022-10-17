@@ -111,7 +111,13 @@
                             <v-divider class="ma-4"></v-divider>
 
                             <div>
-                            <v-btn type="submit" :loading="loading"
+                            <v-checkbox
+                                v-model="agreebox"
+                                :rules="[v=> !!v || '']"
+                                label="서비스 이용 약관 및 개인정보 이용 및 수집 방침에 동의합니다."
+                                required>
+                            </v-checkbox>
+                            <v-btn :disabled="!valid" type="submit" :loading="loading"
                             >회원가입</v-btn>
                             <a class="auth-font" href="/Login">이미 유저입니다</a>
                             </div>
@@ -126,7 +132,6 @@
 <script>
 import axios from 'axios';
 import PictureInput from 'vue-picture-input'
-// import { mapActions } from 'vuex'
 
 export default {
 	name: 'signUp',
@@ -146,11 +151,13 @@ export default {
 			picker: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0,10),
 			menu: false,
 			rPath: '/Post',
+            valid: true,
+            agreebox: false,
         }
 	},
     computed: {
         invalidForm() {
-            return !this.userId || !this.password
+            return !this.id || !this.password
         }
     },
 	created() {
