@@ -7,7 +7,7 @@
                     <v-col
                     cols="12"
                     sm="2"
-                    md="10"
+                    md="12"
                     >
                     <v-sheet
                     class="py-4 px-1"
@@ -73,7 +73,7 @@
                                     <td>{{item.cost}}원</td>
                                 </div>
                                 <div class="table-a-btn">    
-                                    <td class="apply-btn" if="">
+                                    <td class="apply-btn">
                                         신청하기
                                     </td>
                                     <!-- <td class="apply-btn" v-else-if="">
@@ -142,7 +142,7 @@ import {mapState,mapActions} from 'vuex'
 <style>
 .header-size{
     width:50%;
-    margin: 15px 25% 0 25%;
+    margin: 80px 25% 0 25%;
 }
 
 

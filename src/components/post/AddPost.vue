@@ -118,6 +118,7 @@
 										<v-select
 											v-model="categoryId"
 											:items="categoryList"
+											prefix="운동"
 											label="카테고리"
 										></v-select>
 									</v-col>
@@ -289,7 +290,6 @@ import {mapActions} from 'vuex'
 			},
 			fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
-                .then(data => console.log(data.data))
             },
         }
     }

@@ -3,7 +3,7 @@
     <v-card
     class="mx-auto"
     max-width="900"
-    style="border-radius: 24px; margin-top:30px;"
+    style="border-radius: 24px; margin-top:80px;"
     >
     <main class="post-main">
         <!-- ------------------------------------------------ -->
@@ -32,6 +32,11 @@
                                 <div style="margin:5px 0 0 25px; color:black;">
 
                                     <button>{{post.UserId}}</button>
+
+
+           
+
+
 
                                 </div>
                             </a>
@@ -120,9 +125,6 @@
                         </div>
                     </v-card>
                 </div>    
-                <div class="applicant">
-                    <h2>신청자(x명) or ?</h2>
-                </div>
                 <v-spacer></v-spacer>    
             </div>  
 
@@ -175,8 +177,9 @@ import {mapState, mapActions} from 'vuex'
                 })
             },
 
-            dateNtime(){    //
-                console.log(this.post.time);
+
+            dateNtime(){
+                console.log('dateNtime',this.post.time);
             },
 
             attendUser(){

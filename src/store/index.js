@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import {setAuthInHeader } from '../api'
 
 
 
@@ -34,6 +34,15 @@ const store = new Vuex.Store({
         token: localStorage.getItem('token') || null,
     },
 
+    getters:{
+        isAuth (state) {
+            return !!state.token //boolean 값으로 반환
+        }
+    },
+
+    state: {
+        token: localStorage.getItem('token') || null,
+    },
 
     mutations:{
         LOGIN(state,token) {
