@@ -25,7 +25,7 @@
       <div class="another-log">
           <div class="another-log-icon">
             <a href="">
-              <v-btn icon x-large>
+              <v-btn @click="GoogleSignIn" icon x-large>
                 <v-avatar 
                   color="primary">
                   <img src="../assets/Google.png" alt="">
@@ -57,6 +57,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapActions } from 'vuex'
 export default {
   name:'Login',
@@ -96,7 +97,19 @@ export default {
           .catch(err => {
             console.log(err);
           })
+        },
+
+        async GoogleSignIn(){
+          await axios
+          .get(process.env.VUE_APP_API + `/auth/google`)
+          .then((response)=>{
+            console.log("GoogleSignIn - response", response);
+          })
+          .catch((error)=>{
+            console.log("GoogleSignIn - error", error);
+          })
         }
+
       }
     }
 </script>
