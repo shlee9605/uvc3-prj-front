@@ -48,6 +48,11 @@ export const Post = {
             .then(()=>console.log('수정 성공'))
         },        
 
+        DELETE_POST(_,{id}){
+            return post.delete(id)
+            .then(()=>console.log('삭제 성공'))
+        }
+
     },
 
 }

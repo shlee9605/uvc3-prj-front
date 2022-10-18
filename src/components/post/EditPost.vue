@@ -271,6 +271,7 @@ import {mapState, mapActions} from 'vuex'
 				"FETCH_POSTLIST",
 				"FETCH_POST"
 			]),
+
 			...mapActions('Attend',[
                 "ATTEND_POST",
             ]),
