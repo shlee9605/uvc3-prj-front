@@ -18,26 +18,38 @@
                         >
                             <v-chip
                             v-for="time in times"
-                            :key="time">
-                                {{ time.slice(8,10) }}일
+                            :key="time"
+                            @click="sortdate">
+                                {{ time.slice(8,10) }}일   
                             </v-chip>
                         </v-chip-group>
                     </v-sheet>
                     </v-col>
                 </div>
                 <div class="content-filter">
-                    <a 
-                    class="filter">
-                        <button>카테고리</button>
-                    </a>
-                    <a 
-                    class="filter">
-                        <button>지역</button>
-                    </a>
-                    <a 
-                    class="filter">
-                        <button>날짜</button>
-                    </a>
+                    <v-col 
+							class="d-flex"
+							cols="2"
+							sm="2"
+						><v-select
+							v-model="categoryId"
+							:items="categoryList"
+							label="카테고리"
+                            @input="sortcat"
+						></v-select>
+					</v-col>
+                    <v-col 
+							class="d-flex"
+							cols="2"
+							sm="2"
+						><v-select
+                            style="margin-left:50px;"
+							v-model="regionId"
+							:items="regionList"
+							label="지역"
+                            @input="sortcat"
+						></v-select>
+					</v-col>
                 </div>
                 <router-link to="/addpost" class="addpost-btn">
                     <button style="float:right; margin-right:50px;">새모임</button>
@@ -50,7 +62,7 @@
                     <tbody class="contents-table-tbody">
                             <router-link 
                             class="contents-table-a"
-                            v-for="item in postlist"
+                            v-for="item in sortedpost"
                             :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
@@ -95,11 +107,20 @@
 import {mapState,mapActions} from 'vuex'
     export default {
         data() {
-            return {
+            return {    
+                
+                categoryList: ['전체', '식사','운동','스터디','쇼핑','놀이'],
+                //카테고리
+                categoryId: '',
+
+                regionList: ['전체', '강남','홍대','잠실'],
+                //지역
+                regionId: '',
+
+                sortedpost:[],
 
                 times:[],
                 chip3:true,
-
             }
         },
         computed:{
@@ -107,8 +128,9 @@ import {mapState,mapActions} from 'vuex'
                 postlist:'postlist'
             })
         },
-        created(){
-            this.fetchPostlist(),
+        async created(){
+            await this.fetchPostlist(),
+            this.sortingpostlist(),
             this.date()
         },
         methods: {
@@ -116,12 +138,30 @@ import {mapState,mapActions} from 'vuex'
                 "FETCH_POSTLIST"
             ]),
             
-            
-            fetchPostlist(){
-                this.FETCH_POSTLIST({cateName:'all'})
+            sortingpostlist(){
+                this.sortedpost=this.postlist
+            },
+            async fetchPostlist(){
+                await this.FETCH_POSTLIST({cateName:'all'})
                 .then(console.log('postlist req 전송!'))
             },
             
+            sortcat(){
+                this.sortedpost=[];
+                let num=0;
+                for(let i =0; this.postlist[i]!=null; i++){
+                    //this.postlist[i].region=this.regionId
+                    if((this.categoryList[this.postlist[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.postlist[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
+                        this.sortedpost[num]=this.postlist[i];
+                        num++;
+                    }
+                }
+            },
+
+            sortdate(){
+                console.log(this.event);
+            },
+
             //오늘부터 15일 후 까지 count
             date(){
                 const time = []

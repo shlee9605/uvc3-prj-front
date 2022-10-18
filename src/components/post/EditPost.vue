@@ -351,7 +351,6 @@ import {mapState, mapActions} from 'vuex'
 			},
 			fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
-                .then(data => console.log(data.data))
             },
 
 
