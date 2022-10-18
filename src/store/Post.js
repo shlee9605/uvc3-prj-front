@@ -43,6 +43,10 @@ export const Post = {
             })
         },
         
+        REVICE_POST(_,{id, title, content, region, address, cost, capacity, date, time, visibility}){
+            return post.revice(id, title, content, region, address, cost, capacity, date, time, visibility)
+            .then(()=>console.log('수정 성공'))
+        },        
 
     },
 
