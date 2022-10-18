@@ -11,6 +11,7 @@ export const Auth = {
 
     state: {
         token: localStorage.getItem('token') || null,
+        UserId: localStorage.getItem('UserId') || null
     },
     getters:{
         isAuth (state) {
@@ -21,12 +22,17 @@ export const Auth = {
 
         //로그인
         //변이 (동기)
-        LOGIN(state,token) {
-            if(!token) return
-            state.token = token //token 갱신
-            localStorage.setItem('token', token) //localstorage에 token 저장
-            setAuthInHeader(token) //header에 token 세팅
+        LOGIN(state,data) {
+            if(!data.token) return
+            state.token = data.token //token 갱신
+            localStorage.setItem('token', data.token) //localstorage에 token 저장
+            localStorage.setItem('UserId', data.id)
+            setAuthInHeader(data.token) //header에 token 세팅
         },
+
+        // SET_USERID(state,UserId){
+        //     if
+        // },
 
 
         //로그아웃
@@ -44,8 +50,9 @@ export const Auth = {
 
         LOGIN({commit}, { id, password }) {
             return auth.login(id, password)
-            //accessToken값을 LOGIN변이에 전달해줌  
-            .then(({ token }) => commit('LOGIN', token))
+            //accessToken값을 LOGIN변이에 전달해줌 
+            .then(data => commit('LOGIN', data))
+            // .finally(({ id }) => commit('SET_USERID', id))
         },
 
     },

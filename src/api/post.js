@@ -13,7 +13,6 @@ export const post =  {
     },
     
     //---------------------------------------------------
-
     //게시글 수정
     revice(id,title, content, region, address, cost, capacity, date, time, visibility, CategoryId) {
         return request('patch',`/post/all/${id}`,{title, content, region, address, cost, capacity, date, time, visibility, CategoryId})
@@ -27,7 +26,7 @@ export const post =  {
 
     //참가신청
     attend(id){
-        return request('post',`/attend/${id}/waitlist`)
+        return request('post',`/attend/${id}/acceptlist`)
     }
 }
 
