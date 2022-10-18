@@ -15,6 +15,7 @@ import { Auth } from './Auth'
 import { Post } from './Post' 
 import { Comment } from './Comment'
 import { Attend } from './Attend'
+import {setAuthInHeader } from '../api'
 
 
 
@@ -30,10 +31,10 @@ const store = new Vuex.Store({
         Attend: Attend,
         Post: Post,
     },
-
     state: {
         token: localStorage.getItem('token') || null,
     },
+
 
     mutations:{
         LOGIN(state,token) {

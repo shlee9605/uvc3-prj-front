@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.id}}</td>
+                                        <td>{{item.UserId}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 

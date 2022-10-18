@@ -31,7 +31,7 @@
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
 
-                                    <button>{{post.id}}</button>
+                                    <button>{{post.UserId}}</button>
 
                                     <button>{{postUser.id}}</button>
 
@@ -42,7 +42,18 @@
                     <v-spacer></v-spacer>
                 </div>
             </div>
-
+            <router-link
+            :to="`/editpost/${post.id}`">
+                <div class="header-btn-area">
+                    <div class="header-btn">
+                        <v-btn
+                        rounded
+                        color="primary"
+                        @click ="attendUser"
+                        >수정</v-btn>
+                    </div>
+                </div>
+            </router-link>
             <div class="header-btn-area">
                 <div class="header-btn">
                     <v-btn
@@ -158,7 +169,7 @@ import {mapState, mapActions} from 'vuex'
                 })
             },
 
-            dateNtime(){
+            dateNtime(){    //
                 console.log(this.post.time);
             },
 
