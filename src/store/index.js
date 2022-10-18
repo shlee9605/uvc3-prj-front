@@ -4,7 +4,6 @@ import Vuex from 'vuex'
 
 
 
-
 // 전역의 store 객체 역할을 함
 Vue.use(Vuex)
 
@@ -15,7 +14,7 @@ import { Auth } from './Auth'
 import { Post } from './Post' 
 import { Comment } from './Comment'
 import { Attend } from './Attend'
-import {setAuthInHeader } from '../api'
+import { setAuthInHeader } from '../api'
 
 
 
@@ -44,7 +43,6 @@ const store = new Vuex.Store({
             setAuthInHeader(token) //header에 token 세팅
         },
     }
-
 
 })
 

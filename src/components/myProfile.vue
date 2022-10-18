@@ -6,7 +6,7 @@
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<img v-if="this.photoUrl !== 'no-image'" :src="`http://localhost:8080/uploads${this.photoUrl}`"/>	
+						<img v-if="this.photoUrl !== 'no-image'" :src="`${url}/uploads${this.photoUrl}`"/>	
 						<p v-else>x</p>
 					</v-avatar>
 						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
@@ -16,7 +16,7 @@
                 <div class="profileInfoDiv">
 
 					<div class="profileInfoDiv2">
-						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
+						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" disabled>
 							<v-spacer></v-spacer>
 						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
 						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
@@ -43,17 +43,17 @@
 					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
 				</div>
 				<div class="menuListDiv4">
-					<v-btn class="postBtn">게시물</v-btn>
+					<v-btn class="postBtn" @click="loadMyPostList">게시물({{this.myPostList.length}})</v-btn>
 				</div>
 			</div>
             <div v-if="showFriendListStatus === true" class="menuDetail">
 				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
 					<div class="friendInfoMother">
 						<div class="friendInfo">	
-							<router-link :to="'profile/'+item.id">		
+							<router-link :to="'profile/'+ item.id">		
 							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
 							<img
-							:src="`http://localhost:8080/uploads${item.photoUrl}`">
+							:src="`${url}/uploads${item.photoUrl}`">
 							</v-avatar>
 							<span v-else>
 							<v-avatar>
@@ -67,6 +67,39 @@
 						<v-spacer></v-spacer>	
 					</div>
 				</div>
+			</div>
+            <div v-if="showMyPostListStatus === true" class="menuDetail2">
+				<div style="margin-top:50px;">
+                <table class="contents-table">
+                    <tbody class="contents-table-tbody">
+                            <router-link 
+                            class="contents-table-a"
+                            v-for="item in myPostList"
+                            :to="`/posts/${item.id}`"
+                            :key="item.Id">
+                                <div class="table-a-time">
+                                    <p style="margin-righ:20px;">
+                                        {{item.time.slice(0,5)}}
+                                    </p>
+                                </div>
+                                <div class="table-a-title">
+                                    <div>
+                                        <td>{{item.title}}</td>
+                                    </div>
+                                    <div class="postList-user" 
+                                        style="font-size: 5px; color: #7b7b7b;">
+                                        <td>{{item.id}}</td>
+                                    </div>
+                                </div>
+                                <v-spacer></v-spacer> 
+                                <div class="content-detail">
+                                    <td style="text-align: right;">{{item.region}}</td>
+                                    <td>{{item.cost}}원</td>
+                                </div>
+                            </router-link>
+                    </tbody>
+                </table>
+            </div>
 			</div>
         </div>
 		<UploadPhotoModal :openDialog="photoEditModalStatus"
@@ -87,12 +120,14 @@ export default {
 				gender:"",
 				birthdate:"",
 				friendInfoList:[],
+				myPostList:[],
 				photoUrl: "",
 				selectedPhotoUrl: "",
 				oldprofileMessage: "",
 				oldPhotoUrl: "",
 
 				showFriendListStatus: false,
+				showMyPostListStatus: false,
 				editPhotoStatus: false,
 				photoEditModalStatus: false,
 				editMode: true,
@@ -115,6 +150,11 @@ export default {
 				token: 'token'
 			}),
 
+			url (){
+				return process.env.VUE_APP_API;
+			}
+
+
 		},
 		methods:{
 			...mapActions([
@@ -123,12 +163,15 @@ export default {
 
 			async loadFriendList(){
 				await axios
-				.get('http://localhost:8080/friend/list', {
+				.get(process.env.VUE_APP_API + '/friend/list', {
 					headers: {
 						Authorization : `${localStorage.getItem('token')}`
 					}
 				})
 				.then((response)=>{
+					if(this.showMyPostListStatus){
+						this.showMyPostListStatus = false;
+					}
 					if(this.showFriendListStatus === true){
 						this.showFriendListStatus = false;
 						console.log(this.showFriendListStatus)
@@ -148,7 +191,7 @@ export default {
 			
 			async deleteFriend(id){
 				await axios
-				.delete(`http://localhost:8080/friend/${id}`,{
+				.delete(process.env.VUE_APP_API + `/${id}`,{
 					headers:{
 						Authorization: `${localStorage.getItem('token')}`
 					}
@@ -173,7 +216,7 @@ export default {
 					profileMessage: this.profileMessage,
 				};
 				await axios
-				.patch('http://localhost:8080/profile/my', axiosBody,{
+				.patch(process.env.VUE_APP_API + '/profile/my', axiosBody,{
 					headers:{
 						Authorization: `${localStorage.getItem('token')}`
 					}
@@ -196,7 +239,7 @@ export default {
 
 			async getMyProfile(){
 				await axios
-				.post('http://localhost:8080/profile/my',{
+				.post(process.env.VUE_APP_API + '/profile/my',{
 						headers:{
 							Authorization: `${localStorage.getItem('token')}`,
 						},
@@ -205,14 +248,14 @@ export default {
 				.then((response)=>{
 					console.log(response.data.data);
 					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
-						this.photoUrl = "../assets/human.png";
+						this.photoUrl = "../assets/human.jpg";
 					}else{
 						this.photoUrl = response.data.data.photoUrl
 					}
-					this.userId = response.data.data.id;
+					this.id = response.data.data.id;
 					this.profileMessage = response.data.data.profileMessage;
 					this.oldprofileMessage = response.data.data.profileMessage;
-					console.log(this.userId, this.profileMessage)
+					console.log(this.id, this.profileMessage)
 					if(response.data.data.gender === "M"){
 						this.gender = "Male"
 					}else if(response.data.data.gender === "F"){
@@ -235,8 +278,33 @@ export default {
 			async closeDialogEditPhoto(){
 				this.photoEditModalStatus = false;
 				console.log(this.photoEditModalStatus);
-			}
+			},
 			
+			async loadMyPostList(){
+				await axios
+				.get(process.env.VUE_APP_API + '/post/my',{
+					headers:{
+						Authorization: `${localStorage.getItem('token')}`
+					}
+				})
+				.then((response)=>{
+					if(this.showFriendListStatus){
+						this.showFriendListStatus = false;
+					}
+					if(this.showMyPostListStatus){
+						this.showMyPostListStatus = false;
+					}else{
+						console.log("loadMyPostList - response ", response.data.myPostList);
+						this.myPostList = response.data.myPostList
+						this.showMyPostListStatus = true;
+					}
+
+				})
+				.catch((error)=>{
+					console.log("loadMyPostList - error", error);
+				})
+
+			}
 
 		},
 
@@ -257,6 +325,7 @@ export default {
         align-items: center;
         display: flex;
         justify-content: center;
+		padding-top: 80px;
     }
 
 
@@ -365,11 +434,11 @@ export default {
       /* background-color: aqua; */
 		}
 		.friendBtn{
-			height: 140px;
+			height: 110px !important;
 			width: 360px;
 		}
 		.postBtn{
-			height: 140px;
+			height: 110px !important;
 			width: 360px;
 		}
 		.userIdForm{

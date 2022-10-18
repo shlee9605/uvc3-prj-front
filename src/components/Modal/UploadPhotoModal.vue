@@ -88,7 +88,7 @@ export default {
             console.log("onFileChange - return ", this.selectedFile)
             imageDataForm.append('img',this.selectedFile);
             await axios
-            .patch('http://localhost:8080/profile/my', imageDataForm,{
+            .patch(process.env.VUE_APP_API + '/profile/my', imageDataForm,{
                 headers: {
                     Authorization: `${localStorage.getItem('token')}`
                 }
