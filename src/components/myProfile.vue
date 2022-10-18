@@ -43,7 +43,7 @@
 					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
 				</div>
 				<div class="menuListDiv4">
-					<v-btn class="postBtn">게시물</v-btn>
+					<v-btn class="postBtn" @click="loadMyPostList">게시물({{this.myPostList.length}})</v-btn>
 				</div>
 			</div>
             <div v-if="showFriendListStatus === true" class="menuDetail">
@@ -68,6 +68,39 @@
 					</div>
 				</div>
 			</div>
+            <div v-if="showMyPostListStatus === true" class="menuDetail2">
+				<div style="margin-top:50px;">
+                <table class="contents-table">
+                    <tbody class="contents-table-tbody">
+                            <router-link 
+                            class="contents-table-a"
+                            v-for="item in myPostList"
+                            :to="`/posts/${item.id}`"
+                            :key="item.Id">
+                                <div class="table-a-time">
+                                    <p style="margin-righ:20px;">
+                                        {{item.time.slice(0,5)}}
+                                    </p>
+                                </div>
+                                <div class="table-a-title">
+                                    <div>
+                                        <td>{{item.title}}</td>
+                                    </div>
+                                    <div class="postList-user" 
+                                        style="font-size: 5px; color: #7b7b7b;">
+                                        <td>{{item.id}}</td>
+                                    </div>
+                                </div>
+                                <v-spacer></v-spacer> 
+                                <div class="content-detail">
+                                    <td style="text-align: right;">{{item.region}}</td>
+                                    <td>{{item.cost}}원</td>
+                                </div>
+                            </router-link>
+                    </tbody>
+                </table>
+            </div>
+			</div>
         </div>
 		<UploadPhotoModal :openDialog="photoEditModalStatus"
 		v-on:closeDialog="closeDialogEditPhoto">	
@@ -87,12 +120,14 @@ export default {
 				gender:"",
 				birthdate:"",
 				friendInfoList:[],
+				myPostList:[],
 				photoUrl: "",
 				selectedPhotoUrl: "",
 				oldprofileMessage: "",
 				oldPhotoUrl: "",
 
 				showFriendListStatus: false,
+				showMyPostListStatus: false,
 				editPhotoStatus: false,
 				photoEditModalStatus: false,
 				editMode: true,
@@ -134,6 +169,9 @@ export default {
 					}
 				})
 				.then((response)=>{
+					if(this.showMyPostListStatus){
+						this.showMyPostListStatus = false;
+					}
 					if(this.showFriendListStatus === true){
 						this.showFriendListStatus = false;
 						console.log(this.showFriendListStatus)
@@ -240,8 +278,33 @@ export default {
 			async closeDialogEditPhoto(){
 				this.photoEditModalStatus = false;
 				console.log(this.photoEditModalStatus);
-			}
+			},
 			
+			async loadMyPostList(){
+				await axios
+				.get(process.env.VUE_APP_API + '/post/my',{
+					headers:{
+						Authorization: `${localStorage.getItem('token')}`
+					}
+				})
+				.then((response)=>{
+					if(this.showFriendListStatus){
+						this.showFriendListStatus = false;
+					}
+					if(this.showMyPostListStatus){
+						this.showMyPostListStatus = false;
+					}else{
+						console.log("loadMyPostList - response ", response.data.myPostList);
+						this.myPostList = response.data.myPostList
+						this.showMyPostListStatus = true;
+					}
+
+				})
+				.catch((error)=>{
+					console.log("loadMyPostList - error", error);
+				})
+
+			}
 
 		},
 
@@ -262,6 +325,7 @@ export default {
         align-items: center;
         display: flex;
         justify-content: center;
+		padding-top: 80px;
     }
 
 
@@ -370,11 +434,11 @@ export default {
       /* background-color: aqua; */
 		}
 		.friendBtn{
-			height: 140px;
+			height: 110px !important;
 			width: 360px;
 		}
 		.postBtn{
-			height: 140px;
+			height: 110px !important;
 			width: 360px;
 		}
 		.userIdForm{
