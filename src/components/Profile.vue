@@ -94,7 +94,7 @@ export default {
 	
             async getRelationship(){
                 await axios
-                .get(`http://localhost:8080/friend/${this.$route.params.id}/pending`,{
+                .get(process.env.VUE_APP_API + `/friend/${this.$route.params.id}/pending`,{
                     headers:{
                         Authorization: `${localStorage.getItem('token')}`
                     }
@@ -122,7 +122,7 @@ export default {
 
 			async getProfile(){
 				await axios
-				.get(`http://localhost:8080/profile/${this.$route.params.id}`,{
+				.get(process.env.VUE_APP_API + `/profile/${this.$route.params.id}`,{
 						headers:{
 							Authorization: `${localStorage.getItem('token')}`,
 						},
@@ -155,7 +155,7 @@ export default {
 			
             async acceptRequest(){
                 await axios
-                .patch(`http://localhost:8080/friend/${this.$route.params.id}`,{
+                .patch(process.env.VUE_APP_API + `/friend/${this.$route.params.id}`,{
                     headers:{
                         Authorization: `${localStorage.getItem('token')}`
                     }
@@ -171,7 +171,7 @@ export default {
 
             async rejectRequest(){
                 await axios
-                .delete(`http://localhost:8080/friend/${this.$route.params.id}`,{
+                .delete(process.env.VUE_APP_API + `/friend/${this.$route.params.id}`,{
                     headers:{
                         Authorization: `${localStorage.getItem('token')}`
                     }
@@ -187,7 +187,7 @@ export default {
 
             async sendRequest(){
                 await axios
-                .post(`http://localhost:8080/friend/${this.$route.params.id}`, {
+                .post(process.env.VUE_APP_API + `/friend/${this.$route.params.id}`, {
                     headers: {
                         Authorization: `${localStorage.getItem('token')}`
                     }

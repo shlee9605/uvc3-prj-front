@@ -80,34 +80,15 @@ export default {
             this.$refs.uploader.click();
         },
 
-        async imgToBase64(file){
-            const actImgToBase64 = () => {
-                return new Promise((resolve, reject) => {
-                    let reader = new FileReader();
-                    reader.onload = function () {
-                    resolve(reader.result);
-                    reader.onerror = reject;
-                    };
-                    if (file) {
-                        reader.readAsDataURL(file); //base64 데이터로 변환
-                    }
-                });
-            };	
-            const thisBase64 = await actImgToBase64(this.selectedImgFile);
-            console.log('thisBase64 : ', thisBase64);
-            this.imgDataUrl = thisBase64;
-        },
         
 
         async onFileChanged(e) {
+            const imageDataForm = new FormData();
             this.selectedFile = e.target.files[0];
-            this.imgToBase64(this.selectedFile)
-            console.log("onFileChange - return ", this.imgDataUrl)
-            const axiosBody = {
-                photoUrl: this.imgDataUrl,
-            };
+            console.log("onFileChange - return ", this.selectedFile)
+            imageDataForm.append('img',this.selectedFile);
             await axios
-            .patch('http://localhost:8080/profile/my', axiosBody,{
+            .patch(process.env.VUE_APP_API + '/profile/my', imageDataForm,{
                 headers: {
                     Authorization: `${localStorage.getItem('token')}`
                 }

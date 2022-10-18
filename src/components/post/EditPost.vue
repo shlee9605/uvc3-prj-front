@@ -14,13 +14,10 @@
 			</div>
 			<v-spacer></v-spacer>
 			<div class="div-save-btn">
-
 				<v-btn 
 					color="primary"
 					rounded
 					@click="onSubmit">저장</v-btn>
-
-
 			</div>
 		</div>
 					
@@ -118,7 +115,6 @@
 										<v-select
 											v-model="categoryId"
 											:items="categoryList"
-											prefix="운동"
 											label="카테고리"
 										></v-select>
 									</v-col>
@@ -188,7 +184,7 @@
 
 <script>
 import VueTimepicker from 'vue2-timepicker'
-import {mapActions} from 'vuex'
+import {mapState, mapActions} from 'vuex'
     export default {
         components: { VueTimepicker },
         data: () => ({
@@ -196,6 +192,7 @@ import {mapActions} from 'vuex'
 			checkbox1: false,
             //title
             title:'',
+
             //date값
             date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
             
@@ -208,6 +205,7 @@ import {mapActions} from 'vuex'
             
             //region 값
             region: '',
+
 			
             //address 값
             address: '',
@@ -217,10 +215,13 @@ import {mapActions} from 'vuex'
 			
 			// 정원
 			counter: 1,
+
 			//공개 비공개
 			visibility:'',
+
 			//카테고리
 			categoryId: '',
+
             //timevalue
             TimeValue: {
                 HH:'',
@@ -229,24 +230,84 @@ import {mapActions} from 'vuex'
             },
             /*console.log(this.TimeValue)
             // outputs -> {HH: "14", mm: "30", ss: "15"} */
+
+
             //description
             content:''
+
+
         }),
+		
+		computed:{
+            ...mapState('Post',{
+                post:'post'
+            })
+        },
+
+		created() {
+            this.fetchpost(),
+            this.dateNtime(),
+			this.title=this.post.title
+			if(this.post.visibility=='Y'){
+				this.checkbox1=true
+			}
+			else{
+				this.checkbox1=false
+			}
+			this.cost=this.post.cost
+			this.date=this.post.date
+			this.categoryId=this.categoryList[this.post.CategoryId-1]
+			this.counter=this.post.capacity
+			this.content=this.post.content
+			this.address=this.post.address
+			this.TimeValue=this.post.time
+			this.region=this.post.region
+        },
+
         methods:{
 			...mapActions('Post',[
 				'CREATE_POST',
-				"FETCH_POSTLIST"
+				'REVICE_POST',
+				"FETCH_POSTLIST",
+				"FETCH_POST"
 			]),
+
+			...mapActions('Attend',[
+                "ATTEND_POST",
+            ]),
+			fetchpost(){
+                this.FETCH_POST({id:this.$route.params.pid}).then( () => {
+                    console.log('포스트상세 req 전송');
+                })
+            },
+
+			dateNtime(){    //
+                console.log(this.post.time);
+            },
+			
+			attendUser(){
+                return this.ATTEND_POST({id:this.$route.params.pid}).then( () => {
+                    console.log('전송 성공!');
+                }).catch(err => {
+                    console.log('참가 실패',err);
+                })
+            },
+
 			onSubmit() {
 				//공개 비공개 Y or N 
 				const visibility = this.checkbox1 ? 'Y': 'N'
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
 				
+				//this.categoryList.indexOf(this.categoryId) + 1
+				
 				const time = `${this.TimeValue.HH}:${this.TimeValue.mm}:00`
 				
+				console.log(this.TimeValue, this.date)
+
 				// const cost = parseInt(this.cost)
 				console.log(typeof this.cost);
+
 				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
 				console.log("전송")
 				// this.fetchPostlist()
@@ -255,7 +316,8 @@ import {mapActions} from 'vuex'
 				//confirm이 취소일 경우 리턴, 확인일 경우 진행
 				if (!window.confirm('저장하시겠습니까?')) return
 				
-				this.CREATE_POST({
+				this.REVICE_POST({
+					id:this.$route.params.pid,
 					title:this.title,
 					content:this.content,
 					region:this.region,
@@ -265,7 +327,6 @@ import {mapActions} from 'vuex'
 					date:this.date,
 					time,
 					visibility,
-					CategoryId
 				}).then(this.$router.push('/posts'))
 				.catch(err => {
 					console.log(err);
@@ -278,9 +339,9 @@ import {mapActions} from 'vuex'
             //time
             changeHandler ({data}) {
                 console.log("개발중..",data, this.date, this.address,this.region)
-                this.TimeValue.HH = data.HH
-                this.TimeValue.mm = data.mm
-                this.TimeValue.ss = data.ss
+				console.log(data.HH)
+				console.log(this.TimeValue)
+				this.TimeValue=data
             },
 			changeCounter: function(num){
 				this.counter += +num
@@ -290,12 +351,19 @@ import {mapActions} from 'vuex'
 			},
 			fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
+                .then(data => console.log(data.data))
             },
+
+
         }
+
+
+
     }
 </script>
 
 <style>
+
 .input-header{
 	margin: auto;
 	display: flex;
@@ -306,6 +374,7 @@ import {mapActions} from 'vuex'
 	margin-bottom: 0;
     width: 700px;
 }
+
 .div-save-btn {
     float: right;
     color: black;
@@ -313,62 +382,86 @@ import {mapActions} from 'vuex'
     /* margin: 30px 0 0 0 ; */
     font-size: 20px;
 }
+
 .input-main {
     margin: auto;
     margin-top: 10px;
     /* width: 500px; */
     width: 600px;
 }
+
 .title{
     /* margin-top: 70px; */
     margin-bottom: 30px;
 }
+
 .category-form{
     height: 5em;
 }
+
 .category-form-div{
     
 	display: flex;    
     margin: 0px 0 0 0;
 }
+
 /* .category-list{
 	padding-right: 20px;
 } */
+
 .category-time-list{
 	display: flex;
 }
+
+
 .div-capacipy{
 	padding: 50px 0 0 0;
 	margin:  0 0 0 60px;
 }
+
+
+
 /* category-region{
     width: ;
 } */
+
 .category-time {
     width: 40%;
     margin: 18px 0 0 50px;
 }
+
 .vue-timepicker{
     border: 0px;
     color: blue;
 }
+
 .category-select-date {
     float: right;
     margin: 0 0px 0 0px;
 }
+
+
 .region-detail{
     margin: 10% 0 0 0;
 }
+
+
+
 .description {
     margin-top: 5%;
 }
+
 .col-xl, .col-xl-auto, .col-xl-12, .col-xl-11, .col-xl-10, .col-xl-9, .col-xl-8, .col-xl-7, .col-xl-6, .col-xl-5, .col-xl-4, .col-xl-3, .col-xl-2, .col-xl-1, .col-lg, .col-lg-auto, .col-lg-12, .col-lg-11, .col-lg-10, .col-lg-9, .col-lg-8, .col-lg-7, .col-lg-6, .col-lg-5, .col-lg-4, .col-lg-3, .col-lg-2, .col-lg-1, .col-md, .col-md-auto, .col-md-12, .col-md-11, .col-md-10, .col-md-9, .col-md-8, .col-md-7, .col-md-6, .col-md-5, .col-md-4, .col-md-3, .col-md-2, .col-md-1, .col-sm, .col-sm-auto, .col-sm-12, .col-sm-11, .col-sm-10, .col-sm-9, .col-sm-8, .col-sm-7, .col-sm-6, .col-sm-5, .col-sm-4, .col-sm-3, .col-sm-2, .col-sm-1, .col, .col-auto, .col-12, .col-11, .col-10, .col-9, .col-8, .col-7, .col-6, .col-5, .col-4, .col-3, .col-2, .col-1 {
     padding: 0;
 	margin-right: 10px;
 }
+
+
 .form-fotter{
 	display: flex;
 }
+
+
 .wrapper {
 	height: 30px;
 	display: flex;
@@ -384,6 +477,7 @@ import {mapActions} from 'vuex'
   font-weight: 300;
 	border: 1px solid #E1E8EE;
 }
+
 .btn {
 	border: 1px solid #E1E8EE;
   width: 30px;
@@ -395,4 +489,5 @@ button:focus,
 input:focus {
   outline:0;
 }
+
 </style>

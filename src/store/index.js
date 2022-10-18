@@ -4,7 +4,6 @@ import {setAuthInHeader } from '../api'
 
 
 
-
 // 전역의 store 객체 역할을 함
 Vue.use(Vuex)
 
@@ -15,6 +14,7 @@ import { Auth } from './Auth'
 import { Post } from './Post' 
 import { Comment } from './Comment'
 import { Attend } from './Attend'
+import { setAuthInHeader } from '../api'
 
 
 
@@ -29,6 +29,9 @@ const store = new Vuex.Store({
         Comment: Comment,
         Attend: Attend,
         Post: Post,
+    },
+    state: {
+        token: localStorage.getItem('token') || null,
     },
 
     getters:{
