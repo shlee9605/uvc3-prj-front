@@ -33,14 +33,15 @@
               </v-btn>
             </a>
           </div>
-          <div class="another-log-icon">
-            <a href="">
+          
+          <div @click="naverCallback" class="another-log-icon">
+            <!-- <a href=""> -->
               <v-btn icon x-large>
                 <v-avatar color="red white--text" >
                   <img src="../assets/Naver.png" alt="">
                 </v-avatar>
               </v-btn>
-            </a>
+            <!-- </a> -->
           </div>
           <div class="another-log-icon">
             <a href="">
@@ -108,10 +109,44 @@ export default {
           .catch((error)=>{
             console.log("GoogleSignIn - error", error);
           })
-        }
+        },
 
-      }
-    }
+        async naverCallback() {
+          await axios
+            .get(process.env.VUE_APP_API + '/auth/callback')
+            .then((response) => {
+              console.log('naver call  back?', response);
+            })
+            .catch((error) => {
+              console.log('error', error);
+            })
+        },
+
+        async naverSignIn(){
+          await axios
+            .get(process.env.VUE_APP_API + '/auth/naverlogin')
+            .then((response) => {
+              console.log('NaverSignIn response:', response);
+              // this.naverCallback();
+            })
+            .catch((error) => {
+              console.log('NaverSingIn error', error);
+            })
+        },
+
+
+        // async NaverSignIn(){
+        //   await axios
+        //   .get(process.env.VUE_APP_API + '/auth/naver')
+        //   .then((response) => {
+        //     console.log ('NaverSignIn - response', response);
+        //   })
+        //   .catch((error) => {
+        //     console.log("NaverSignIn - error", error);
+        //   })
+        // },
+    },
+} 
 </script>
 
 <style>

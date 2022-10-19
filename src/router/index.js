@@ -46,10 +46,10 @@ const router = new VueRouter({
         },
         // { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
 
-        { path:'/addpost',name:'AddPost', component: AddPost},
-        { path:'/editpost/:pid',name:'EditPost', component: EditPost},
-        { path: '/myProfile', name:'myProfile', component: myProfile},
-        { path: '/profile/:id', name:'Profile', component: Profile},
+        { path: '/addpost', name: 'AddPost', component: AddPost },
+        { path: '/editpost/:pid', name: 'EditPost', component: EditPost },
+        { path: '/myProfile', name: 'myProfile', component: myProfile },
+        { path: '/profile/:id', name: 'Profile', component: Profile },
     ]
 })
 
