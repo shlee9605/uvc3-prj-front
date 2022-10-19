@@ -8,7 +8,9 @@ export const Attend = {
     
     state: {
         attendList:[],
-        attendUser:{}
+        attendUser:{},
+
+        
     },
 
     mutations: {
