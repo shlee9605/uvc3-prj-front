@@ -1,5 +1,5 @@
 <template>
-    <v-app inspire style="height: 900px;">
+    <v-app inspire style="height: 900px; margin-top:80px;">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
 		<div class="input-header">
@@ -118,7 +118,6 @@
 										<v-select
 											v-model="categoryId"
 											:items="categoryList"
-											prefix="운동"
 											label="카테고리"
 										></v-select>
 									</v-col>
@@ -310,7 +309,8 @@ import {mapActions} from 'vuex'
     float: right;
     color: black;
     /* margin-right: ; */
-    /* margin: 30px 0 0 0 ; */
+    margin-right: 50px;
+	padding-top: 20px;
     font-size: 20px;
 }
 .input-main {

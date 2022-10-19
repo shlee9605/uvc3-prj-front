@@ -30,7 +30,6 @@ export const Comment = {
         },
         //댓글 list
         FETCH_COMMENT({commit},{pid}){
-            console.log('index.js')
             return comment.fetch(pid).then(data => {
                 commit('SET_COMMENT', data.comments.reverse())
             }).catch(err => {

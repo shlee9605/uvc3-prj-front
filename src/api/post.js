@@ -24,10 +24,7 @@ export const post =  {
     },
     //---------------------------------------------------
 
-    //참가신청
-    attend(id){
-        return request('post',`/attend/${id}/acceptlist`)
-    }
+
 }
 
 
