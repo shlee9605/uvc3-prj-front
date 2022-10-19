@@ -257,9 +257,9 @@ export default {
 					this.profileMessage = response.data.data.profileMessage;
 					this.oldprofileMessage = response.data.data.profileMessage;
 					console.log(this.id, this.profileMessage)
-					if(response.data.data.gender === "M"){
+					if(response.data.data.gender === "남"){
 						this.gender = "Male"
-					}else if(response.data.data.gender === "F"){
+					}else if(response.data.data.gender === "여"){
 						this.gender = "Female"
 					}else{
 						this.gender = " 넌 성별이 뭐니?"
