@@ -14,6 +14,7 @@ import { Auth } from './Auth'
 import { Post } from './Post' 
 import { Comment } from './Comment'
 import { Attend } from './Attend'
+import { Relationship } from './Relationship'
 
 
 
@@ -26,6 +27,7 @@ const store = new Vuex.Store({
         Comment: Comment,
         Attend: Attend,
         Post: Post,
+        Relationship: Relationship,
     },
     state: {
         token: localStorage.getItem('token') || null,
