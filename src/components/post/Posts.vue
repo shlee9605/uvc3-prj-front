@@ -99,7 +99,7 @@ import {mapState,mapActions} from 'vuex'
 
                 times:[],
                 chip3:true,
-
+                
             }
         },
         computed:{
@@ -237,7 +237,7 @@ import {mapState,mapActions} from 'vuex'
     text-align: center;
     padding-top: .4em;
     color: white;
-    background-color: rgb(52, 52, 234);
+    background-color: rgb(67, 91, 211);
     height: 30px;
     width: 100px;
     border-radius: 15px;

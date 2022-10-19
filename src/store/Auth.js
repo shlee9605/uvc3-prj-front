@@ -26,6 +26,7 @@ export const Auth = {
             if(!data.token) return
             state.token = data.token //token 갱신
             localStorage.setItem('token', data.token) //localstorage에 token 저장
+            state.UserId = data.id
             localStorage.setItem('UserId', data.id)
             setAuthInHeader(data.token) //header에 token 세팅
         },

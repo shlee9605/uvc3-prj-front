@@ -3,7 +3,7 @@
     <v-card
     class="mx-auto"
     max-width="900"
-    style="border-radius: 24px; margin-top:80px;"
+    style="border-radius: 24px; margin-top:130px;"
     >
     <main class="post-main">
         <!-- ------------------------------------------------ -->
@@ -16,64 +16,65 @@
                     </div>
                 </div>
                 <div class="post-user-area">
-                    <div>
-                        <div class="post-user">
-                            <a 
-                            style="display:flex;">
+                    <div class="post-user">
+                        <router-link
+                        :to="`/profile/${post.UserId}`">
+                            <div style="display:flex;">
                                 <v-row>
                                     <v-avatar
                                         class="userIcon"
                                         color="red"
                                         size="36"
-                                    >
+                                        >
                                         <span class="white--text text-h5">C</span>
                                     </v-avatar>
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
-
                                     <button>{{post.UserId}}</button>
-
-
-           
-
-
-
                                 </div>
-                            </a>
-                        </div>
+                            </div>
+                        </router-link>
                     </div>
                     <v-spacer></v-spacer>
                 </div>
             </div>
-            
-            <div class="header-btn-area">
-                <div class="header-btn">
-                    <v-btn
-                    rounded
-                    color="primary"
-                    @click ="deletePost"
-                    >삭제</v-btn>
-                </div>
-            </div>
-
-            <router-link
-            :to="`/editpost/${post.id}`">
-                <div class="header-btn-area">
-                    <div class="header-btn">
+            <div style="display:flex;" v-if="post.UserId === UserId" >
+                <router-link
+                class="header-btn-area"
+                :to="`/editpost/${post.id}`">
+                    <div 
+                    class="header-btn"
+                    style="margin:40px 15px 0 0;">
                         <v-btn
                         rounded
                         color="primary"
                         >수정</v-btn>
                     </div>
+                </router-link>
+                <div class="header-btn-area">
+                    <div class="header-btn">
+                        <v-btn
+                        rounded
+                        color="error"
+                        @click ="deletePost"
+                        >삭제</v-btn>
+                    </div>
                 </div>
-            </router-link>
-            <div class="header-btn-area">
-                <div class="header-btn">
+            </div>
+            <div class="header-aply-btn" v-else>
+                <div class="header-btn" v-if="!attendUser.success">
                     <v-btn
                     rounded
                     color="primary"
-                    @click ="attendUser"
+                    @click ="attend"
                     >신청하기</v-btn>
+                </div>
+                <div class="header-btn" v-else>
+                    <v-btn
+                    rounded
+                    color="gray"
+                    disabled
+                    >신청 완료</v-btn>
                 </div>
             </div>
 
@@ -121,7 +122,7 @@
                             <h2>참가자</h2>
                         </div>
                         <div style="font-size: 80px;">
-                            1/{{post.capacity}}
+                            {{attendList.acceptlist.length}}/{{post.capacity}}
                         </div>
                     </v-card>
                 </div>    
@@ -150,17 +151,27 @@ import {mapState, mapActions} from 'vuex'
                 date:'',
                 HH:'',
                 mm:'',
+                UserId: localStorage.getItem('UserId'),
+
             }
         },
         computed:{
             ...mapState('Post',{
                 post:'post'
+            }),
+            ...mapState('Attend',{
+                attendList: 'attendList',
+                attendUser:'attendUser'
             })
         },
+        
         created() {
             this.fetchpost(),
-            this.dateNtime()
+            this.fetchAttendList(),
+            this.attendUserInfo(),
+            console.log(this.attendUser)
         },
+
         methods:{
             ...mapActions('Post',[
                 "FETCH_POST",
@@ -169,26 +180,18 @@ import {mapState, mapActions} from 'vuex'
             ]),
             ...mapActions('Attend',[
                 "ATTEND_POST",
+                'FETCH_ATTENDLIST',
+                'FETCH_AUSER',
             ]),
-            
+
+            //게시글 상세 get
             fetchpost(){
                 this.FETCH_POST({id:this.$route.params.pid}).then( () => {
                     console.log('포스트상세 req 전송');
                 })
             },
 
-
-            dateNtime(){
-                console.log('dateNtime',this.post.time);
-            },
-
-            attendUser(){
-                return this.ATTEND_POST({id:this.$route.params.pid}).then( () => {
-                    console.log('전송 성공!');
-                }).catch(err => {
-                    console.log('참가 실패',err);
-                })
-            },
+            //게시글 삭제
             deletePost(){
                 //이상한 변수 잔뜩쓰고요
                 if (!window.confirm('삭제하시겠습니까?')) return
@@ -204,10 +207,36 @@ import {mapState, mapActions} from 'vuex'
 				})
             },
 
+            //게시글 리스트 get
             fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
                 .then(data => console.log(data.data))
             },
+
+            //참가 신청 post 
+            attend(){
+                return this.ATTEND_POST({pid: this.$route.params.pid}).then( () => {
+                    console.log('전송 성공!');
+                }).catch(err => {
+                    console.log('참가 실패',err);
+                })
+            },
+
+            /* *페이지 접속자 참가 유무 확인 */
+            attendUserInfo(){
+                return this.FETCH_AUSER({pid: this.$route.params.pid, UserId: localStorage.getItem('UserId')})
+                    .then(() => console.log('유저 참가 정보 조회'))
+
+            },
+
+            //참가자 리스트 조회
+            fetchAttendList(){
+                return this.FETCH_ATTENDLIST({id: this.$route.params.pid}).then(() => {
+                    console.log('참가자 리스트 req');
+                }).catch(err => {
+                    console.log('참가자 리스트 조회 req 실패',err);
+                })
+            }
         },
     }
 </script>
@@ -232,7 +261,7 @@ import {mapState, mapActions} from 'vuex'
 }
 /* 버튼 영역 */
 /* .header-btn-area{
-    background-color: bisque;
+    margin:10px
 } */
 
 .header-btn{
