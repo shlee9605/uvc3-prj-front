@@ -1,5 +1,5 @@
 //참석 신청
-import { post } from '../api/post'
+import { attend } from '../api/attend'
 
 
 
@@ -7,20 +7,44 @@ export const Attend = {
     namespaced: true,
     
     state: {
-
+        attendList:[],
+        attendUser:{}
     },
 
     mutations: {
 
+        SET_LIST(state,attendList){
+            state.attendList = attendList
+        },
+
+        SET_AUSER(state,attendUser){
+            state.attendUser = attendUser
+        }
     },
 
     actions: {
-                //post 참가신청
-                ATTEND_POST(_,{id}){
-                    return post.attend(id).then(data => {
-                        console.log('',data)
-                    })
-                    .catch(err => {console.log(err)})
-                },
+    //post 참가신청
+    ATTEND_POST(_,{pid}){
+        return attend.participate(pid).then(data => {
+            console.log('',data)
+        })
+        .catch(err => {console.log(err)})
+        .finally(() => location.reload())
+    },
+    //참가 신청 유저 확인
+    FETCH_AUSER({commit},{pid,UserId}){
+        return attend.attendUser(pid,UserId).then(data => {
+            console.log(data)
+            commit('SET_AUSER', data)
+        })
+    },
+
+    //참가자 리스트
+    FETCH_ATTENDLIST({commit},{id}){ 
+        return attend.fetchList(id).then( data => {
+            console.log(id);
+            commit('SET_LIST',data)
+        })
+    }
     },
 }

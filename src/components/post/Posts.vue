@@ -19,7 +19,7 @@
                             <v-chip
                             v-for="time in times"
                             :key="time"
-                            @click="sortdate">
+                            @click="sortdate(time.slice(8,10))">
                                 {{ time.slice(8,10) }}일   
                             </v-chip>
                         </v-chip-group>
@@ -118,6 +118,7 @@ import {mapState,mapActions} from 'vuex'
                 regionId: '',
 
                 sortedpost:[],
+                sortedbydate:[],
 
                 times:[],
                 chip3:true,
@@ -130,7 +131,8 @@ import {mapState,mapActions} from 'vuex'
         },
         async created(){
             await this.fetchPostlist(),
-            this.sortingpostlist(),
+            this.sortingorigin(),       //날짜별 정렬
+            // this.sortingpostlist(),     //카테고리/지역별 정렬
             this.date()
         },
         methods: {
@@ -138,38 +140,75 @@ import {mapState,mapActions} from 'vuex'
                 "FETCH_POSTLIST"
             ]),
             
-            sortingpostlist(){
-                this.sortedpost=this.postlist
-            },
             async fetchPostlist(){
                 await this.FETCH_POSTLIST({cateName:'all'})
                 .then(console.log('postlist req 전송!'))
             },
             
+            //카테고리/지역 정렬
+            // sortingpostlist(){
+            //     this.sortedpost=this.sortedbydate
+            // },
             sortcat(){
                 this.sortedpost=[];
                 let num=0;
-                for(let i =0; this.postlist[i]!=null; i++){
+                for(let i =0; this.sortedbydate[i]!=null; i++){
                     //this.postlist[i].region=this.regionId
-                    if((this.categoryList[this.postlist[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.postlist[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
-                        this.sortedpost[num]=this.postlist[i];
+                    if((this.categoryList[this.sortedbydate[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.sortedbydate[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
+                        this.sortedpost[num]=this.sortedbydate[i];
                         num++;
                     }
                 }
             },
 
-            sortdate(){
-                console.log(this.event);
+            //날짜별 정렬
+            sortdate(event){
+                this.sortedbydate=[];
+                this.sortedpost=[];
+                let num=0;
+                for(let i =0; this.postlist[i]!=null; i++){
+                    if(this.postlist[i].date.substr(8,2)==event){
+                        this.sortedbydate[num]=this.postlist[i];
+                        num++;
+                    }
+                }
+
+                num=0;
+                for(let i =0; this.sortedbydate[i]!=null; i++){
+                    //this.postlist[i].region=this.regionId
+                    if((this.categoryList[this.sortedbydate[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.sortedbydate[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
+                        this.sortedpost[num]=this.sortedbydate[i];
+                        num++;
+                    }
+                }
+            },
+
+            //날짜 default
+            sortingorigin(){
+                //오늘 날짜
+                const Dt = new Date()
+                const today = (new Date(Date.parse(Dt)));
+                const todayTime = today.toISOString().split("T")[0]
+                
+                this.sortedbydate=[];
+                let num=0;
+                for(let i =0; this.postlist[i]!=null; i++){
+                    if(this.postlist[i].date.substr(8,2)==todayTime.substr(8,2)){
+                        this.sortedbydate[num]=this.postlist[i];
+                        num++;
+                    }
+                }
+                
+                this.sortedpost=this.sortedbydate
             },
 
             //오늘부터 15일 후 까지 count
             date(){
                 const time = []
                 const Dt = new Date()
-                for (let i = 1; i < 16; i++) {
+                for (let i = 0; i < 15; i++) {
                     const today = (new Date(Date.parse(Dt) + i * 1000 * 60 * 60 * 24));
                     const todayTime = today.toISOString().split("T")[0]
-                    // console.log(todayTime);
                     time.push(todayTime)
                 }
                 console.log(time);
@@ -277,7 +316,7 @@ import {mapState,mapActions} from 'vuex'
     text-align: center;
     padding-top: .4em;
     color: white;
-    background-color: rgb(52, 52, 234);
+    background-color: rgb(67, 91, 211);
     height: 30px;
     width: 100px;
     border-radius: 15px;

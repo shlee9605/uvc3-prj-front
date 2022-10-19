@@ -16,6 +16,7 @@ import { Comment } from './Comment'
 import { Attend } from './Attend'
 
 
+
 const store = new Vuex.Store({
 
 
@@ -31,13 +32,13 @@ const store = new Vuex.Store({
     },
 
     getters:{
-        isAuth (state) {
+        isAuthed (state) {
             return !!state.token //boolean 값으로 반환
         }
     },
 
     mutations:{
-        LOGIN(state,token) {
+        LOGINED(state,token) {
             if(!token) return
             state.token = token //token 갱신
             localStorage.setItem('token', token) //localstorage에 token 저장
@@ -49,7 +50,7 @@ const store = new Vuex.Store({
 
 // 브라우저 localstorage에 token 정보가 있는지 없는지 체크
 const { token } = localStorage
-store.commit('LOGIN', token)
+store.commit('LOGINED', token)
 
 
 

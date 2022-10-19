@@ -48,7 +48,7 @@
                     <v-list>
                         <v-list-item>
                             <v-list-item-content>
-                                <v-list-item-title>알림이 왓습니다</v-list-item-title>
+                                <v-list-item-title>받은 알림이 없습니다.</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
                     </v-list>
@@ -130,10 +130,13 @@ import { mapGetters } from 'vuex'
                     .then((response) => {
                         console.log('logout - response:', response);
                         localStorage.removeItem('token');
-                        localStorage.removeItem('user');
+                        
+                        localStorage.removeItem('UserId');
 
-                        this.GET_LOGIN_STATUS = false;
+                        this.GET_LOGIN_STATUS = false
+                        // console.log(this.GET_LOGIN_STATUS);
                         this.GET_USER_DATA = null;
+                        // console.log(this.GET_USER_DATA = null);
                         // this.$router.go('/');
                         this.$router.push({ name: "Home"})
                         this.$router.go('/')

@@ -19,7 +19,6 @@
                         <v-btn
                         type="submit"
                         >작성</v-btn>
-                        <!-- @click="method" -->
                     </div>
                 </div>
                 <table>
@@ -57,13 +56,16 @@
                                         type="text"
                                         height=5
                                         clearable
+                                        autofocus
                                         style="width:400px;height:50px;font-size:15px;"
                                         >
                                     </v-col>
                                     <v-spacer></v-spacer>
                                     <div class="icon-box">
                                         <a class="icon-tag">
-                                            <button onclick="inputnewCon=false" type="submit" style="display:flex;">
+                                            <button 
+                                            :disabled="newContent.length < 1"
+                                            onclick="inputnewCon=false" type="submit" style="display:flex;">
                                                 <v-icon 
                                                 style="padding-top:2px;"
                                                 size="20px"
