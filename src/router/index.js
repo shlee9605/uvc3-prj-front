@@ -10,9 +10,7 @@ import EditPost from '../components/post/EditPost.vue'
 import Posts from '../components/post/Posts.vue'
 import store from '../store'
 import myProfile from '../components/myProfile.vue'
-
 import Comment from '../components/comment/comment.vue'
-
 import Profile from '../components/Profile.vue'
 
 

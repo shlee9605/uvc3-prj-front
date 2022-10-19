@@ -1,7 +1,7 @@
 import { request} from '../api'
 
 
-
+//참가 신청
 export const attend = {
     fetchList(pid) {
         return request('get',`/attend/${pid}/acceptlist`)
