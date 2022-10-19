@@ -3,7 +3,7 @@
     <v-card
     class="mx-auto"
     max-width="900"
-    style="border-radius: 24px; margin-top:30px;"
+    style="border-radius: 24px; margin-top:80px;"
     >
     <main class="post-main">
         <!-- ------------------------------------------------ -->
@@ -33,7 +33,10 @@
 
                                     <button>{{post.UserId}}</button>
 
-                                    <button>{{postUser.id}}</button>
+
+           
+
+
 
                                 </div>
                             </a>
@@ -42,6 +45,17 @@
                     <v-spacer></v-spacer>
                 </div>
             </div>
+            
+            <div class="header-btn-area">
+                <div class="header-btn">
+                    <v-btn
+                    rounded
+                    color="primary"
+                    @click ="deletePost"
+                    >삭제</v-btn>
+                </div>
+            </div>
+
             <router-link
             :to="`/editpost/${post.id}`">
                 <div class="header-btn-area">
@@ -49,7 +63,6 @@
                         <v-btn
                         rounded
                         color="primary"
-                        @click ="attendUser"
                         >수정</v-btn>
                     </div>
                 </div>
@@ -108,13 +121,10 @@
                             <h2>참가자</h2>
                         </div>
                         <div style="font-size: 80px;">
-                            1/{{postUser.counter}}
+                            1/{{post.capacity}}
                         </div>
                     </v-card>
                 </div>    
-                <div class="applicant">
-                    <h2>신청자(x명) or ?</h2>
-                </div>
                 <v-spacer></v-spacer>    
             </div>  
 
@@ -140,10 +150,6 @@ import {mapState, mapActions} from 'vuex'
                 date:'',
                 HH:'',
                 mm:'',
-                postUser:{
-                    counter:'6',
-                    },
-
             }
         },
         computed:{
@@ -158,6 +164,8 @@ import {mapState, mapActions} from 'vuex'
         methods:{
             ...mapActions('Post',[
                 "FETCH_POST",
+                "FETCH_POSTLIST",
+                "DELETE_POST",
             ]),
             ...mapActions('Attend',[
                 "ATTEND_POST",
@@ -169,8 +177,9 @@ import {mapState, mapActions} from 'vuex'
                 })
             },
 
-            dateNtime(){    //
-                console.log(this.post.time);
+
+            dateNtime(){
+                console.log('dateNtime',this.post.time);
             },
 
             attendUser(){
@@ -180,7 +189,25 @@ import {mapState, mapActions} from 'vuex'
                     console.log('참가 실패',err);
                 })
             },
+            deletePost(){
+                //이상한 변수 잔뜩쓰고요
+                if (!window.confirm('삭제하시겠습니까?')) return
 
+                this.DELETE_POST({
+					id:this.$route.params.pid,
+				}).then(this.$router.push('/posts'))
+				.catch(err => {
+					console.log(err);
+				})
+				.finally(() => {
+					this.fetchPostlist()
+				})
+            },
+
+            fetchPostlist(){
+                this.FETCH_POSTLIST({cateName:'all'})
+                .then(data => console.log(data.data))
+            },
         },
     }
 </script>

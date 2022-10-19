@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import {setAuthInHeader } from '../api'
 
 
 
@@ -14,10 +14,6 @@ import { Auth } from './Auth'
 import { Post } from './Post' 
 import { Comment } from './Comment'
 import { Attend } from './Attend'
-import { setAuthInHeader } from '../api'
-
-
-
 
 
 const store = new Vuex.Store({
@@ -34,6 +30,11 @@ const store = new Vuex.Store({
         token: localStorage.getItem('token') || null,
     },
 
+    getters:{
+        isAuth (state) {
+            return !!state.token //boolean 값으로 반환
+        }
+    },
 
     mutations:{
         LOGIN(state,token) {
