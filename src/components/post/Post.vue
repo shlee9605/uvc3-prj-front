@@ -165,8 +165,8 @@ import {mapState, mapActions} from 'vuex'
             })
         },
         
-        created() {
-            this.fetchpost(),
+        async created() {
+            await this.fetchpost(),
             this.fetchAttendList(),
             this.attendUserInfo(),
             console.log(this.attendUser)
@@ -185,7 +185,7 @@ import {mapState, mapActions} from 'vuex'
             ]),
 
             //게시글 상세 get
-            fetchpost(){
+            async fetchpost(){
                 this.FETCH_POST({id:this.$route.params.pid}).then( () => {
                     console.log('포스트상세 req 전송');
                 })
