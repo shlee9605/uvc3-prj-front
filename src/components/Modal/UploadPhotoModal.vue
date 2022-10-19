@@ -17,7 +17,7 @@
             <v-divider></v-divider>
             <v-card-text>
                 <div style="margin-top:25px">
-                    <button> 기본 프로필로 변경 </button>
+                    <button @click="changeDefaultPhotoUrl"> 기본 프로필로 변경 </button>
                 </div>
             </v-card-text>
             <v-divider></v-divider>
@@ -95,6 +95,8 @@ export default {
             })
             .then((response)=>{ 
                 console.log("onFileChange - response", response)
+                this.closeModal();
+
             })
             .catch((error)=>{
                 console.log("onFileChange - error", error)
@@ -103,7 +105,24 @@ export default {
             // Do whatever you need with the file, liek reading it with FileReader
         },
 
-
+        async changeDefaultPhotoUrl(){
+            const axiosBody = {
+                photoUrl: "no-photo.jpg"
+            } 
+            await axios
+            .patch(process.env.VUE_APP_API + '/profile/my', axiosBody, {
+                headers: {
+                    Authorization: `${localStorage.getItem('token')}`
+                }
+            })
+            .then((response)=>{
+                console.log("changeDefaultPhotoUrl - response", response)
+                this.closeModal();
+            })
+            .catch((error)=>{
+                console.log("changeDefaultPhotoUrl - error", error)
+            })
+        },
 
     }
 }
