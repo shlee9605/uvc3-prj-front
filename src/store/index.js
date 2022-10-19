@@ -17,8 +17,6 @@ import { Attend } from './Attend'
 
 
 
-
-
 const store = new Vuex.Store({
 
 
@@ -38,6 +36,7 @@ const store = new Vuex.Store({
             return !!state.token //boolean 값으로 반환
         }
     },
+
     mutations:{
         LOGINED(state,token) {
             if(!token) return
