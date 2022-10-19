@@ -53,7 +53,7 @@
 							<router-link :to="'profile/'+ item.id">		
 							<v-avatar v-if="item.photoUrl !== 'no-image'" size="70" style="margin-left:40px; margin-right:20px;">
 							<img
-							:src="`${url}/uploads${item.photoUrl}`">
+							:src="`${url}/uploads/${item.photoUrl}`">
 							</v-avatar>
 							<span v-else>
 							<v-avatar>
