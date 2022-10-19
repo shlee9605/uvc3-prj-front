@@ -4,6 +4,7 @@ import router from '../router'
 
 
 
+// const DOMAIN = 'http://localhost:8080'
 const DOMAIN = 'http://192.168.0.69:8080'
 // const DOMAIN = 'http://192.168.0.63:8080'
 
