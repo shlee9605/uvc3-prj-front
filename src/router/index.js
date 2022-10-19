@@ -36,17 +36,19 @@ const requireAuth = (to, from, next) => {
 const router = new VueRouter({
     mode: 'history',
     routes: [
-        { path: '/', name:'Home' ,component: Home },
-        { path: '/Login', name:'Login' ,component: Login},
-        { path: '/Auth', name:'Auth' ,component: Auth},
-        { path: '/posts', name:'posts', component: Posts},
-        { path: '/posts/:pid', name:'Post', component: Post, children:[
-            {path:'/comment/:cid', component:Comment}
-        ]},
-        { path:'/addpost',name:'AddPost', component: AddPost, beforeEnter: requireAuth},
-        { path:'/editpost/:pid',name:'EditPost', component: EditPost},
-        { path: '/myProfile', name:'myProfile', component: myProfile},
-        { path: '/profile/:id', name:'Profile', component: Profile},
+        { path: '/', name: 'Home', component: Home },
+        { path: '/Login', name: 'Login', component: Login },
+        { path: '/Auth', name: 'Auth', component: Auth },
+        { path: '/posts', name: 'posts', component: Posts },
+        {
+            path: '/posts/:pid', name: 'Post', component: Post, children: [
+                { path: '/comment/:cid', component: Comment }
+            ]
+        },
+        { path: '/addpost', name: 'AddPost', component: AddPost, beforeEnter: requireAuth },
+        { path: '/editpost/:pid', name: 'EditPost', component: EditPost },
+        { path: '/myProfile', name: 'myProfile', component: myProfile },
+        { path: '/profile/:id', name: 'Profile', component: Profile },
     ]
 })
 

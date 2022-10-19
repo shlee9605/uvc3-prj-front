@@ -7,8 +7,16 @@
                     <v-spacer></v-spacer>
                     <v-card-text>
                         <form @submit.prevent="signUp">
-							<div class="mb-5">
-								<picture-input
+							<!-- <div class="profileImgDiv"> -->
+                                <!-- <v-avatar size="200">
+                                    <img :src="`/src/assets/human.jpg`" />	
+                                </v-avatar>
+                                <v-btn @click="handleFileImport" style="margin-top:20px;">
+                                프로필 사진 등록
+                                 </v-btn> -->
+                                 <!-- <input id="editPhoto" ref="uploader" class="d-none" type="file" accept=".png, .jpg, .jpeg" @change="onFileChanged"> -->
+                            <!-- <div>
+								<picture-input type="file"
 									ref="pictureInput"
 									width="150" height="160" margin="5" accept="image/*" size="10" button-class="btn"
 									:custom-strings="{
@@ -17,7 +25,12 @@
 									}"
 									@change="onChange">
 								</picture-input>
-							</div>
+							</div> -->
+                            <div class="dropbox">
+                                <input class="input-file" type="file" name="myfile" @change="upload($event.target.name, $event.target.files)"
+                                @drop="upload($event.target.name, $event.target.files)">
+                            </div>
+                            
                             <v-text-field
                                 clearable
                                 dense
@@ -131,7 +144,8 @@
 
 <script>
 import axios from 'axios';
-import PictureInput from 'vue-picture-input'
+// import UploadPhotoModal from '@/components/Modal/UploadPhotoModal.vue'
+// import PictureInput from 'vue-picture-input'
 
 export default {
 	name: 'signUp',
@@ -144,7 +158,7 @@ export default {
             passwordChk: '',
             birthdate: '',
             gender: '',
-            photoUrl: 'no-img.jpg',
+            photoUrl: 'no-photo',
             profileMessage: '',
             genderSel: ['여', '남'],
             loading: false,
@@ -153,6 +167,8 @@ export default {
 			rPath: '/Post',
             valid: true,
             agreebox: false,
+
+            selectedFile: null,
         }
 	},
     computed: {
@@ -164,7 +180,8 @@ export default {
     this.rPath = this.$route.query.rPath || '/'
   },
     components: {
-        PictureInput,
+        // UploadPhotoModal
+        // PictureInput,
     },
     methods: {
     async signUp() {
@@ -181,32 +198,77 @@ export default {
                 photoUrl: this.photoUrl,
                 profileMessage: this.profileMessage,
             };
-			console.log('auth/signUp - axiosBody: ', axiosBody);
+
+            const dataForm = new FormData();
+            dataForm.append('name', this.name);
+            dataForm.append('email', this.email);
+            dataForm.append('id', this.id);
+            dataForm.append('password', this.password);
+            dataForm.append('birthdate', this.birthdate);
+            dataForm.append('gender', this.gender);
+            dataForm.append('photoUrl', this.photoUrl);
+            dataForm.append('profileMessage', this.profileMessage);
+            
+
+			console.log('auth/signUp - dataForm: ', dataForm);
+            for(let item of dataForm.entries()) {
+                console.log(item);
+            }
 
 			await axios
-				.post(process.env.VUE_APP_API + '/auth/signUp', axiosBody)
+				.post(process.env.VUE_APP_API + '/auth/signUp', dataForm)
 					// console.log('this is postS');
 				.then(async (response) => {
 					console.log('auth/signUp - response: ', response);
-					// localStorage.setItem('t')
-					this.$router.push({ name: 'Login'});
+                    
+                    // 폼 데이터 설정
+                    this.dataForm.name = response.data.data.name;
+                    this.dataForm.email = response.data.data.email;
+                    this.dataForm.id = response.data.data.id;
+                    this.dataForm.password = response.data.data.password;
+                    this.dataForm.birthdate = response.data.data.birthdate;
+                    this.dataForm.gender = response.data.data.gender;
+                    this.dataForm.photoUrl = response.data.data.photoUrl;
+                    this.dataForm.profileMessage = response.data.data.profileMessage;
+
+                    // 로그인 페이지로 리라우팅
+					
 				})
 				.catch((error) => {
-					console.log('auth/singUp - error: ', error);
+					console.log('auth/signUp - error: ', error);
 				})
 				.finally(() => {
 					this.loading = false;
 					console.log('here?')
+                    this.$router.push({ name: 'Login'});
 				})
         },
-		onChange (image) {
-            console.log("new picture selected")
+        upload(name, files) {
+            const formData = new FormData();
+            formData.append(name, files[0], files[0].name);
+            const url = 'VUE_APP_API/upload/'
+        },
+
+		onChange (image) {        
             if(image) {
                 console.log('picture loaded')
                 this.photoUrl = image
             } else {
                 console.log('FileReader API not supported.')
             }
+        },
+
+
+        async handleFileImport() {
+            this.isSelecting = true;
+
+            // After obtaining the focus when closing the FilePicker, return the button state to normal
+            window.addEventListener('focus', () => {
+            this.isSelecting = false
+            }, { once: true });
+                
+            // Trigger click on the FileInput
+            this.$refs.uploader.click();
         },
     }
 }
@@ -222,4 +284,39 @@ export default {
 .row {
 	justify-content: space-evenly;
 }
+
+.profileImgDiv{
+				align-items: center;
+				box-sizing: border-box;
+        /* background-color: red; */
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+        padding: 60px 30px;
+        width: 360px;
+    }
+
+    .dropbox {
+    outline: 2px dashed #aaa;
+    background: #7fb4dd;
+    width: 300px;
+    height: 300px;
+    position: relative; 
+     margin: 0 auto;
+  } 
+  .dropbox > h2{
+    position: absolute;
+    top: 50px;
+    left: 0;
+    z-index: 2;
+  }
+  .input-file{
+    position: absolute;
+    opacity: 0;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+     z-index: 3;
+  }
 </style>
