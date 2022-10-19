@@ -99,54 +99,14 @@ export default {
             console.log(err);
           })
         },
+		
+        // 구글 로그인 이후 실행되는 함수
 
-        async GoogleSignIn(){
-          await axios
-          .get(process.env.VUE_APP_API + `/auth/google`)
-          .then((response)=>{
-            console.log("GoogleSignIn - response", response);
-          })
-          .catch((error)=>{
-            console.log("GoogleSignIn - error", error);
-          })
-        },
+  },
 
-        async naverCallback() {
-          await axios
-            .get(process.env.VUE_APP_API + '/auth/callback')
-            .then((response) => {
-              console.log('naver call  back?', response);
-            })
-            .catch((error) => {
-              console.log('error', error);
-            })
-        },
-
-        async naverSignIn(){
-          await axios
-            .get(process.env.VUE_APP_API + '/auth/naverlogin')
-            .then((response) => {
-              console.log('NaverSignIn response:', response);
-              // this.naverCallback();
-            })
-            .catch((error) => {
-              console.log('NaverSingIn error', error);
-            })
-        },
-
-
-        // async NaverSignIn(){
-        //   await axios
-        //   .get(process.env.VUE_APP_API + '/auth/naver')
-        //   .then((response) => {
-        //     console.log ('NaverSignIn - response', response);
-        //   })
-        //   .catch((error) => {
-        //     console.log("NaverSignIn - error", error);
-        //   })
-        // },
-    },
-} 
+  mounted() {
+  },
+    }
 </script>
 
 <style>

@@ -6,8 +6,8 @@
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<img v-if="this.photoUrl !== 'no-image'" :src="`${url}/uploads${this.photoUrl}`"/>	
-						<p v-else>x</p>
+						<img v-if="this.photoUrl !== 'no-photo.jpg'" :src="`${url}/uploads${this.photoUrl}`"/>	
+						<img v-else src="../assets/human.jpg"/>
 					</v-avatar>
 						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
 							프로필 사진 편집
@@ -113,6 +113,7 @@ import axios from 'axios';
 import { mapActions, mapState} from 'vuex';
 import UploadPhotoModal from '@/components/Modal/UploadPhotoModal.vue'
 export default {
+	name: 'myProfile',
     data() {
 			return{
 				id:"",
@@ -152,7 +153,7 @@ export default {
 
 			url (){
 				return process.env.VUE_APP_API;
-			}
+			},
 
 
 		},
@@ -256,9 +257,9 @@ export default {
 					this.profileMessage = response.data.data.profileMessage;
 					this.oldprofileMessage = response.data.data.profileMessage;
 					console.log(this.id, this.profileMessage)
-					if(response.data.data.gender === "M"){
+					if(response.data.data.gender === "남"){
 						this.gender = "Male"
-					}else if(response.data.data.gender === "F"){
+					}else if(response.data.data.gender === "여"){
 						this.gender = "Female"
 					}else{
 						this.gender = " 넌 성별이 뭐니?"
