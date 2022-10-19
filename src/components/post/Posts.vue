@@ -7,7 +7,7 @@
                     <v-col
                     cols="12"
                     sm="2"
-                    md="10"
+                    md="12"
                     >
                     <v-sheet
                     class="py-4 px-1"
@@ -18,26 +18,38 @@
                         >
                             <v-chip
                             v-for="time in times"
-                            :key="time">
-                                {{ time.slice(8,10) }}일
+                            :key="time"
+                            @click="sortdate(time.slice(8,10))">
+                                {{ time.slice(8,10) }}일   
                             </v-chip>
                         </v-chip-group>
                     </v-sheet>
                     </v-col>
                 </div>
                 <div class="content-filter">
-                    <a 
-                    class="filter">
-                        <button>카테고리</button>
-                    </a>
-                    <a 
-                    class="filter">
-                        <button>지역</button>
-                    </a>
-                    <a 
-                    class="filter">
-                        <button>날짜</button>
-                    </a>
+                    <v-col 
+							class="d-flex"
+							cols="2"
+							sm="2"
+						><v-select
+							v-model="categoryId"
+							:items="categoryList"
+							label="카테고리"
+                            @input="sortcat"
+						></v-select>
+					</v-col>
+                    <v-col 
+							class="d-flex"
+							cols="2"
+							sm="2"
+						><v-select
+                            style="margin-left:50px;"
+							v-model="regionId"
+							:items="regionList"
+							label="지역"
+                            @input="sortcat"
+						></v-select>
+					</v-col>
                 </div>
                 <router-link to="/addpost" class="addpost-btn">
                     <button style="float:right; margin-right:50px;">새모임</button>
@@ -50,7 +62,7 @@
                     <tbody class="contents-table-tbody">
                             <router-link 
                             class="contents-table-a"
-                            v-for="item in postlist"
+                            v-for="item in sortedpost"
                             :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
@@ -73,7 +85,7 @@
                                     <td>{{item.cost}}원</td>
                                 </div>
                                 <div class="table-a-btn">    
-                                    <td class="apply-btn" if="">
+                                    <td class="apply-btn">
                                         신청하기
                                     </td>
                                     <!-- <td class="apply-btn" v-else-if="">
@@ -95,11 +107,21 @@
 import {mapState,mapActions} from 'vuex'
     export default {
         data() {
-            return {
+            return {    
+                
+                categoryList: ['전체', '식사','운동','스터디','쇼핑','놀이'],
+                //카테고리
+                categoryId: '',
+
+                regionList: ['전체', '강남','홍대','잠실'],
+                //지역
+                regionId: '',
+
+                sortedpost:[],
+                sortedbydate:[],
 
                 times:[],
                 chip3:true,
-
             }
         },
         computed:{
@@ -107,8 +129,10 @@ import {mapState,mapActions} from 'vuex'
                 postlist:'postlist'
             })
         },
-        created(){
-            this.fetchPostlist(),
+        async created(){
+            await this.fetchPostlist(),
+            this.sortingorigin(),       //날짜별 정렬
+            // this.sortingpostlist(),     //카테고리/지역별 정렬
             this.date()
         },
         methods: {
@@ -116,20 +140,75 @@ import {mapState,mapActions} from 'vuex'
                 "FETCH_POSTLIST"
             ]),
             
-            
-            fetchPostlist(){
-                this.FETCH_POSTLIST({cateName:'all'})
+            async fetchPostlist(){
+                await this.FETCH_POSTLIST({cateName:'all'})
                 .then(console.log('postlist req 전송!'))
             },
             
+            //카테고리/지역 정렬
+            // sortingpostlist(){
+            //     this.sortedpost=this.sortedbydate
+            // },
+            sortcat(){
+                this.sortedpost=[];
+                let num=0;
+                for(let i =0; this.sortedbydate[i]!=null; i++){
+                    //this.postlist[i].region=this.regionId
+                    if((this.categoryList[this.sortedbydate[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.sortedbydate[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
+                        this.sortedpost[num]=this.sortedbydate[i];
+                        num++;
+                    }
+                }
+            },
+
+            //날짜별 정렬
+            sortdate(event){
+                this.sortedbydate=[];
+                this.sortedpost=[];
+                let num=0;
+                for(let i =0; this.postlist[i]!=null; i++){
+                    if(this.postlist[i].date.substr(8,2)==event){
+                        this.sortedbydate[num]=this.postlist[i];
+                        num++;
+                    }
+                }
+
+                num=0;
+                for(let i =0; this.sortedbydate[i]!=null; i++){
+                    //this.postlist[i].region=this.regionId
+                    if((this.categoryList[this.sortedbydate[i].CategoryId]==this.categoryId||this.categoryId=='전체'||this.categoryId=='')&&(this.sortedbydate[i].region==this.regionId||this.regionId=='전체'||this.regionId=='')){
+                        this.sortedpost[num]=this.sortedbydate[i];
+                        num++;
+                    }
+                }
+            },
+
+            //날짜 default
+            sortingorigin(){
+                //오늘 날짜
+                const Dt = new Date()
+                const today = (new Date(Date.parse(Dt)));
+                const todayTime = today.toISOString().split("T")[0]
+                
+                this.sortedbydate=[];
+                let num=0;
+                for(let i =0; this.postlist[i]!=null; i++){
+                    if(this.postlist[i].date.substr(8,2)==todayTime.substr(8,2)){
+                        this.sortedbydate[num]=this.postlist[i];
+                        num++;
+                    }
+                }
+                
+                this.sortedpost=this.sortedbydate
+            },
+
             //오늘부터 15일 후 까지 count
             date(){
                 const time = []
                 const Dt = new Date()
-                for (let i = 1; i < 16; i++) {
+                for (let i = 0; i < 15; i++) {
                     const today = (new Date(Date.parse(Dt) + i * 1000 * 60 * 60 * 24));
                     const todayTime = today.toISOString().split("T")[0]
-                    // console.log(todayTime);
                     time.push(todayTime)
                 }
                 console.log(time);
@@ -142,7 +221,7 @@ import {mapState,mapActions} from 'vuex'
 <style>
 .header-size{
     width:50%;
-    margin: 15px 25% 0 25%;
+    margin: 80px 25% 0 25%;
 }
 
 
@@ -237,7 +316,7 @@ import {mapState,mapActions} from 'vuex'
     text-align: center;
     padding-top: .4em;
     color: white;
-    background-color: rgb(52, 52, 234);
+    background-color: rgb(67, 91, 211);
     height: 30px;
     width: 100px;
     border-radius: 15px;

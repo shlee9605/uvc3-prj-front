@@ -14,13 +14,10 @@
 			</div>
 			<v-spacer></v-spacer>
 			<div class="div-save-btn">
-
 				<v-btn 
 					color="primary"
 					rounded
 					@click="onSubmit">저장</v-btn>
-
-
 			</div>
 		</div>
 					
@@ -31,7 +28,7 @@
 					<v-text-field
 						label="제목"
 						hide-details="auto"
-						v-model="post.title"
+						v-model="title"
 					></v-text-field>
 				</div>
 				<form class="category-form">
@@ -55,7 +52,7 @@
 										<template v-slot:activator="{ on, attrs }">
 											<v-text-field
 												full-width: true
-												v-model="post.date"
+												v-model="date"
 												prepend-icon="mdi-calendar"
 												readonly
 												style="font-size:0.7em;"
@@ -88,7 +85,7 @@
 								</v-col>
 								<div class="category-time">
 									<vue-timepicker
-										v-model="post.time"
+										v-model="TimeValue"
 										:minute-interval="10"
 										format="HH:mm"
 										@change="changeHandler"
@@ -103,7 +100,7 @@
 										sm="5"
 										>
 										<v-select
-											v-model="post.region"
+											v-model="region"
 											:items="items"
 											label="지역 선택"
 										></v-select>
@@ -115,7 +112,6 @@
 										cols="10"
 										sm="10"
 										>
-										
 										<v-select
 											v-model="categoryId"
 											:items="categoryList"
@@ -136,7 +132,7 @@
 										<button class="btn btn--minus" @click="changeCounter('-1')" type="button" name="button">
 											-
 										</button>
-										<input class="quantity" type="text" name="name" :value="post.capacity">
+										<input class="quantity" type="text" name="name" :value="counter">
 										<button class="btn btn--plus" @click="changeCounter('1')" type="button" name="button">
 											+
 										</button>
@@ -149,7 +145,7 @@
 				<div class="region-detail">
 					<v-text-field
 						label="상세주소"
-						v-model="post.address"
+						v-model="address"
 						></v-text-field>
 				</div>
 				<!-- 내용  -->
@@ -158,7 +154,7 @@
 						<v-textarea
 							color="black"
 							label="설명"
-							v-model="post.content"
+							v-model="content"
 						></v-textarea>
 					</div>
 				</div>
@@ -174,7 +170,7 @@
 									label="회비"
 									value="0"
 									prefix="￦"
-									v-model.number="post.cost"
+									v-model.number="cost"
 								></v-text-field>
 								</v-col>
 							</v-row>
@@ -193,7 +189,7 @@ import {mapState, mapActions} from 'vuex'
         components: { VueTimepicker },
         data: () => ({
 			
-			checkbox1: true,
+			checkbox1: false,
             //title
             title:'',
 
@@ -250,15 +246,32 @@ import {mapState, mapActions} from 'vuex'
 
 		created() {
             this.fetchpost(),
-            this.dateNtime()
+            this.dateNtime(),
+			this.title=this.post.title
+			if(this.post.visibility=='Y'){
+				this.checkbox1=true
+			}
+			else{
+				this.checkbox1=false
+			}
+			this.cost=this.post.cost
+			this.date=this.post.date
+			this.categoryId=this.categoryList[this.post.CategoryId-1]
+			this.counter=this.post.capacity
+			this.content=this.post.content
+			this.address=this.post.address
+			this.TimeValue=this.post.time
+			this.region=this.post.region
         },
 
         methods:{
 			...mapActions('Post',[
 				'CREATE_POST',
+				'REVICE_POST',
 				"FETCH_POSTLIST",
 				"FETCH_POST"
 			]),
+
 			...mapActions('Attend',[
                 "ATTEND_POST",
             ]),
@@ -267,9 +280,11 @@ import {mapState, mapActions} from 'vuex'
                     console.log('포스트상세 req 전송');
                 })
             },
+
 			dateNtime(){    //
                 console.log(this.post.time);
             },
+			
 			attendUser(){
                 return this.ATTEND_POST({id:this.$route.params.pid}).then( () => {
                     console.log('전송 성공!');
@@ -284,8 +299,12 @@ import {mapState, mapActions} from 'vuex'
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
 				
+				//this.categoryList.indexOf(this.categoryId) + 1
+				
 				const time = `${this.TimeValue.HH}:${this.TimeValue.mm}:00`
 				
+				console.log(this.TimeValue, this.date)
+
 				// const cost = parseInt(this.cost)
 				console.log(typeof this.cost);
 
@@ -297,7 +316,8 @@ import {mapState, mapActions} from 'vuex'
 				//confirm이 취소일 경우 리턴, 확인일 경우 진행
 				if (!window.confirm('저장하시겠습니까?')) return
 				
-				this.CREATE_POST({
+				this.REVICE_POST({
+					id:this.$route.params.pid,
 					title:this.title,
 					content:this.content,
 					region:this.region,
@@ -307,7 +327,6 @@ import {mapState, mapActions} from 'vuex'
 					date:this.date,
 					time,
 					visibility,
-					CategoryId
 				}).then(this.$router.push('/posts'))
 				.catch(err => {
 					console.log(err);
@@ -320,9 +339,9 @@ import {mapState, mapActions} from 'vuex'
             //time
             changeHandler ({data}) {
                 console.log("개발중..",data, this.date, this.address,this.region)
-                this.TimeValue.HH = data.HH
-                this.TimeValue.mm = data.mm
-                this.TimeValue.ss = data.ss
+				console.log(data.HH)
+				console.log(this.TimeValue)
+				this.TimeValue=data
             },
 			changeCounter: function(num){
 				this.counter += +num
@@ -332,7 +351,6 @@ import {mapState, mapActions} from 'vuex'
 			},
 			fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
-                .then(data => console.log(data.data))
             },
 
 

@@ -19,29 +19,70 @@
                         <v-btn
                         type="submit"
                         >작성</v-btn>
-                        <!-- @click="method" -->
                     </div>
                 </div>
                 <table>
-                    <tr>
-                        <td 
-                        class="content-item"
-                        v-for=" (content,index) in contentlist" :key="index">
-                            <h3>{{content.UserId}} : {{content.content}}</h3>
-                            <!-- <a>
-                                <button @click="inputnewCon=true">수정</button>
-                            </a>
-                            <a>
-                                <button @click="deleteComment">삭제</button>
-                            </a> -->
+                    <tr class="content-item"
+                        v-for=" (comment,index) in commentlist" :key="index">
+                        <td style="display:flex;">
+                            <div style="display:flex;">
+                                <h4>{{comment.UserId}} : {{comment.content}}</h4>
+                            </div>
+                            <v-spacer></v-spacer>
+                            <div class="UD-btn" v-if="comment.UserId === UserId && !inputnewCon">
+                                <!-- v-if="" -->
+                                    <a class="a-tag">
+                                        <button  @click.prevent="inputnewCon=true" style="display:flex;">수정</button>
+                                    </a>
+                                    
+                                    <a class="a-tag">
+                                        <button  @click.prevent="deleteComment(comment.id)">삭제</button>
+                                    </a>
+                            </div>
+                            <div v-else>
+                                <!-- <h5>{{comment.UserId}} === {{UserId}}</h5> -->
+                                <v-spacer></v-spacer>
+                            </div>
                         </td>
-                        <!-- <td v-if="inputnewCon">
-                            <form @submit.prevent="updateComment">
-                                <input type="text" v-model="newContent">
-                                <v-btn type="submit" @click="inputnewCon=false">수정완료</v-btn>
-                                <v-btn @click="inputnewCon=false">취소</v-btn>
-                            </form>
-                        </td> -->
+                        <td>
+                            <div v-if="inputnewCon">
+                                <form @submit.prevent="updateComment(comment.id)" style="display:flex;" v-if="comment.UserId === UserId">
+                                    <v-col
+                                    cols="20"
+                                    sm="9"
+                                    >
+                                        <input
+                                        v-model="newContent"
+                                        type="text"
+                                        height=5
+                                        clearable
+                                        autofocus
+                                        style="width:400px;height:50px;font-size:15px;"
+                                        >
+                                    </v-col>
+                                    <v-spacer></v-spacer>
+                                    <div class="icon-box">
+                                        <a class="icon-tag">
+                                            <button 
+                                            :disabled="newContent.length < 1"
+                                            onclick="inputnewCon=false" type="submit" style="display:flex;">
+                                                <v-icon 
+                                                style="padding-top:2px;"
+                                                size="20px"
+                                                >mdi-check</v-icon>
+                                            </button>
+                                        </a>
+                                        <a class="icon-tag">
+                                            <button  @click="inputnewCon=false">
+                                                <v-icon 
+                                                size="20px"
+                                                >mdi-close-box-outline</v-icon>
+                                            </button>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </td>
                     </tr>
                 </table>
             </div>
@@ -55,19 +96,21 @@ import {mapState,mapActions} from 'vuex'
         data() {
             return{
                 content:'',
-                 newContent:'',
+                newContent:'',
                 inputnewCon:false,
+                UserId: localStorage.getItem('UserId'),
+                
             }
         },
         computed:{
             ...mapState('Comment',{
-                contentlist: 'contentlist'
-            })
+                commentlist: 'commentlist'
+            }),
         },
         created(){
             this.fetchCommentList()
+            // this.getUserId()
         },
-
         methods:{
             ...mapActions('Comment',[
                 'CREATE_COMMENT',
@@ -81,30 +124,64 @@ import {mapState,mapActions} from 'vuex'
             },
              //댓글 리스트 조회
             fetchCommentList(){
-                console.log(1)
                 this.FETCH_COMMENT({pid: this.$route.params.pid}).then(() => {
                     console.log('조회됨');
                 }).catch(err => {
                     console.log("댓글 조회x",err);
                 })
-                console.log(1)
             },
 
-            // //댓글 수정
-            // updateComment(){
-            //     console.log('수정');
-            //     this.UPDATE_COMMENT({pid:this.$route.params.pid, cid:this.$route.params.cid , content:this.newContent})
-            // },
+            //댓글 수정
+            updateComment(cid){
+                console.log('수정값',this.newContent);
+                this.UPDATE_COMMENT({pid:this.$route.params.pid, cid , content:this.newContent})
+            },
 
-            // //댓글 삭제
-            // deleteComment(){
-            //     console.log("삭제");
-            //     this.DELETE_COMMENT({pid:this.$route.params.pid, cid:this.$route.params.cid})
-            // },
+            //댓글 삭제
+            deleteComment(cid){
+                console.log("삭제");
+                this.DELETE_COMMENT({pid:this.$route.params.pid, cid})
+            },
+
+            commentReverse(){
+                console.log( this.commentlist[0] )
+                console.log(this.commentlist.slice().reverse());
+                this.reverseComment = this.commentlist.slice().reverse()
+            },
+
+            getUserId() {
+                console.log('이건', localStorage.getItem('UserId') );
+            }
         }
     }
 </script>
 
 <style>
 
+.content-item{
+    display: grid;
+    width: 100%;
+}
+
+
+.UD-btn{
+    padding: 3px 5px 0 5px;
+    float: right;
+    font-size: 12px;
+    display: flex;
+}
+
+.a-tag{
+    padding: 3px 3px 3px 3px;
+}
+
+.icon-box{
+    display: flex;
+    margin-top:5px;
+
+}
+
+.icon-tag {
+    padding: 8px 3px 3px 3px;
+}
 </style>

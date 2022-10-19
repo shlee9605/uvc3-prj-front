@@ -1,6 +1,10 @@
 <template>
   <div>
-    <NavBar />
+    <div>
+      <NavBar />
+    </div>
+
+    <slot class="body" name="body"></slot>
     <router-view></router-view>
   </div>
 </template>
@@ -19,3 +23,8 @@ export default {
   }),
 };
 </script>
+<style>
+.body{
+  margin-top:80px;
+}
+</style>

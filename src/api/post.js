@@ -13,10 +13,9 @@ export const post =  {
     },
     
     //---------------------------------------------------
-
     //게시글 수정
-    revice(id,title, content, region, address, cost, capacity, date, time, visibility, CategoryId) {
-        return request('patch',`/post/all/${id}`,{title, content, region, address, cost, capacity, date, time, visibility, CategoryId})
+    revice(id,title, content, region, address, cost, capacity, date, time, visibility) {
+        return request('patch',`/post/all/${id}`,{title, content, region, address, cost, capacity, date, time, visibility})
     },
 
     // //게시글 삭제
@@ -25,10 +24,7 @@ export const post =  {
     },
     //---------------------------------------------------
 
-    //참가신청
-    attend(id){
-        return request('post',`/attend/${id}/waitlist`)
-    }
+
 }
 
 

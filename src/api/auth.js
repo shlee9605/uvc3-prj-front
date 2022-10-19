@@ -13,9 +13,9 @@ export const auth = {
     // }
 
     //로그아웃 api
-    logout(token) {
+    /*logout(token) {
         return request('get', '/auth/signOut', {})
-    }
+    }*/
 }
 
 //회원가입 api

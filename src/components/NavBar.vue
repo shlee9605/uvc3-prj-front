@@ -45,12 +45,35 @@
                 </template>
 
                 <v-card>
+                    <v-card-title>알림</v-card-title>
                     <v-list>
-                        <v-list-item>
-                            <v-list-item-content>
-                                <v-list-item-title>알림이 왓습니다</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
+                        <template v-if="relationship.length">
+                            <v-list-item v-for="(item,index) in relationship" :key="index">
+                                <v-list-item-avatar>
+                                    <v-img src="../assets/human.jpg"></v-img>
+                                </v-list-item-avatar>
+                                <v-list-item-content>
+                                    <div style="display:flex; margin-right: 15px;">
+                                    <v-list-item-title v-html="item.reqUserId"></v-list-item-title>
+                                        <div style="display:flex;">
+                                            <v-btn 
+                                            small
+                                            @click="acceptRequest"> 수락 </v-btn>
+                                            <v-btn 
+                                            small
+                                            @click="rejectRequest"> 거절 </v-btn>
+                                        </div>
+                                    </div>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
+                        <template v-else>
+                            <v-list-item>
+                                <v-list-item-content>
+                                    <v-list-item-title>받은 알림이 없습니다.</v-list-item-title>
+                                </v-list-item-content>
+                            </v-list-item>
+                        </template>
                     </v-list>
                 </v-card>
             </v-menu>
@@ -94,14 +117,14 @@
 
 <script>
 import axios from 'axios';
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState, mapActions } from 'vuex'
 
     export default {
         name: 'NavBar',
         data(){
             return {
                 GET_LOGIN_STATUS: localStorage.getItem('token') ? true : false,
-            items: ['내 프로필', '로그아웃']
+                items: ['내 프로필', '로그아웃']
             }
         },
         watch: {
@@ -109,11 +132,27 @@ import { mapGetters } from 'vuex'
                 const data = JSON.parse(localStorage.getItem('user')) || null;
                 this.GET_USER_DATA = data;
             },
+            
+            //test
+            // $route(to,from){
+            //     if(to.path !== from.path) {
+            //         return this.fetchRelationship() }
+            // }
         },
+        created(){
+            this.fetchRelationship()
+            
+            //test
+            // this.data(this.$route.params.index)
+        },
+
         computed: {
             ...mapGetters('Auth',[
                 'isAuth'
-            ])
+            ]),
+            ...mapState('Relationship',{
+                relationship:'relationship'
+            })
         },
         methods: {
             async signOut() {
@@ -130,10 +169,13 @@ import { mapGetters } from 'vuex'
                     .then((response) => {
                         console.log('logout - response:', response);
                         localStorage.removeItem('token');
-                        localStorage.removeItem('user');
+                        
+                        localStorage.removeItem('UserId');
 
-                        this.GET_LOGIN_STATUS = false;
+                        this.GET_LOGIN_STATUS = false
+                        // console.log(this.GET_LOGIN_STATUS);
                         this.GET_USER_DATA = null;
+                        // console.log(this.GET_USER_DATA = null);
                         // this.$router.go('/');
                         this.$router.push({ name: "Home"})
                         this.$router.go('/')
@@ -141,6 +183,29 @@ import { mapGetters } from 'vuex'
                     .catch((error) => {
                         console.log('logout - error: ', error);
                     });
+            },
+
+            ...mapActions('Relationship',[
+                'FETCH_STATUS',
+                'ACCEPT_REQ',
+                'REJECT_REQ',
+            ]),
+
+            fetchRelationship(){
+                return this.FETCH_STATUS(localStorage.getItem('UserId')).then(() => {
+                    console.log('req UserId : ',localStorage.getItem('UserId'));
+                })
+            },
+            //친구 요청 수락
+            acceptRequest(){
+                console.log('수락');
+                return this.ACCEPT_REQ(localStorage.getItem('UserId'))
+            },
+
+            //친구 요청 거절
+            rejectRequest(){
+                console.log('거절');
+                return this.REJECT_REQ(localStorage.getItem('UserId'))
             },
         },
     };
