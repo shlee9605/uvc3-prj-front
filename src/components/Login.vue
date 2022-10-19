@@ -98,19 +98,13 @@ export default {
             console.log(err);
           })
         },
+		
+        // 구글 로그인 이후 실행되는 함수
 
-        async GoogleSignIn(){
-          await axios
-          .get(process.env.VUE_APP_API + `/auth/google`)
-          .then((response)=>{
-            console.log("GoogleSignIn - response", response);
-          })
-          .catch((error)=>{
-            console.log("GoogleSignIn - error", error);
-          })
-        }
+  },
 
-      }
+  mounted() {
+  },
     }
 </script>
 
