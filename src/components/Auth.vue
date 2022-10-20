@@ -310,7 +310,7 @@ export default {
     height:100vh;
 }
 .theme--light.v-sheet {
-  background-color: white !important;
+  background-color: white;
 }
 .auth-box {
     display: flex;
