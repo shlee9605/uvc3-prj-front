@@ -1,6 +1,9 @@
 <template>
 <v-app>
-    <div class="main" >
+	<v-container fluid class="fill-height background container-profilebox">
+		<v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
+		<v-card-title style="font-size: 4rem"> 이게 나야!!</v-card-title>
+		<v-divider class="mt-4"></v-divider>
         <div class="profileStatusOutline">
             <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
@@ -52,7 +55,8 @@
 				</div>
 			</div>
 			<div v-if="showMyAttendListStatus === true" class="menuDetail3">
-				<div style="margin-top:50px;">
+				<!-- <div style="margin-top:50px;"> -->
+				<div>
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
@@ -61,7 +65,7 @@
                             :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
-                                    <p style="margin-righ:20px;">
+                                    <p style="margin-right:20px;">
                                         {{item.time.slice(0,5)}}
                                     </p>
                                 </div>
@@ -107,7 +111,8 @@
 				</div>
 			</div>
             <div v-if="showMyPostListStatus === true" class="menuDetail2">
-				<div style="margin-top:50px;">
+				<!-- <div style="margin-top:50px;"> -->
+				<div>
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
@@ -116,7 +121,7 @@
                             :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
-                                    <p style="margin-righ:20px;">
+                                    <p style="margin-right:20px;">
                                         {{item.time.slice(0,5)}}
                                     </p>
                                 </div>
@@ -140,10 +145,11 @@
             </div>
 			</div>
         </div>
-		<UploadPhotoModal :openDialog="photoEditModalStatus"
-		v-on:closeDialog="closeDialogEditPhoto">	
-		</UploadPhotoModal>
-    </div>
+			<UploadPhotoModal :openDialog="photoEditModalStatus"
+			v-on:closeDialog="closeDialogEditPhoto">	
+			</UploadPhotoModal>
+		</v-card>
+	</v-container>
 </v-app>	
 </template>
 <script>
@@ -371,7 +377,7 @@ export default {
 						this.showMyAttendListStatus = false;
 					}else{
 						console.log("loadMyAttendList - response ", response);
-						this.myHistoryList = response.data.myHistoryList;
+						this.myHistoryList = response.data.myHistoryList_2;
 						console.log(this.myHistoryList);
 						this.showMyAttendListStatus = true;
 					}
@@ -397,225 +403,353 @@ export default {
 
 }
 </script>
-<style scoped>
-    .main {
-		/* border: 1px solid black; */
-		height: auto;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-		padding-top: 80px;
-    }
+<style scoped >
+.main {
+/* border: 1px solid black; */
+height: auto;
+align-items: center;
+display: flex;
+justify-content: center;
+padding-top: 80px;
+}
 
 
-    .profileStatusOutline {
-        /* align-items: center; */
-        border: 1px black solid;
-		border-radius: 15px;
-		/* box-shadow: 1px 1px 1px 1px; */
-        height: auto;
-        margin-top: 40px;
-        /* justify-content: center; */
-        width: 1080px;
-		/* -webkit-box-shadow: 9px 10px 15px 6px #000000;  */
-		/* box-shadow: 9px 10px 15px 6px #000000; */
-    }
+.profileStatusOutline {
+/* align-items: center; */
+/* border: 1px solid black; */
+border-radius: 6px;
+/* box-shadow: 1px 1px 1px 1px; */
+height: auto;
+margin-top: 40px;
+/* outline-style: solid 1px; */
+/* justify-content: center; */
+width: 1080px;
+/* -webkit-box-shadow: 9px 10px 15px 6px #000000;  */
+/* box-shadow: 0px 1px 14px 0px rgba(0,0,0,0.12); */
+}
 
-    .title {
-        box-sizing: border-box;
-        /* background-color: yellow; */
-        height: 80px;
-        padding: 30px 0px;
-        text-align: center;
-        
-    }
-    .profileStatus {
-        display:flex;
-        box-sizing: border-box;
-        /* background-color: green; */
-        height: 420px;
-    }
+.title {
+box-sizing: border-box;
+/* background-color: yellow; */
+height: 80px;
+padding: 30px 0px;
+text-align: center;
 
-    .menuList {
-        box-sizing: border-box;
-        /* background-color: black; */
-				display:flex;	
-        height: 140px;
-    }
-    .menuDetail{
-        box-sizing: border-box;
-        /* background-color: red; */
-		display: flex;
-		flex-direction: row;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		width: 900px;
-        height: 300px;
-				/* padding: 0 0 0 90px; */
-    }
-    .profileImgDiv{
-				align-items: center;
-				box-sizing: border-box;
-        /* background-color: red; */
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-        padding: 60px 30px;
-        width: 360px;
-    }
-    .profileInfoDiv{
-        box-sizing: border-box;
-        /* background-color: blue; */
-        padding: 90px 30px 20px 30px;
-        width:720px;
-    }
+}
+.profileStatus {
+display:flex;
+box-sizing: border-box;
+/* background-color: green; */
+height: 360px;
+}
 
-		/* .profileImg{
-			size: 200;
-		} */
-
-		.profileInfoDiv2{
-			align-content: center;
-			box-sizing: border-box;
-      /* background-color: grey; */
-			display:flex;
-			height: 50px;
-		}
-
-		.profileInfoDiv3{
-			padding-top: 20px;
-			box-sizing: border-box;
-      /* background-color: purple; */
-			height: 150px;
-		}
-
-		.profileInfoDiv4{
-			box-sizing: border-box;
-      /* background-color: orange; */
-			display: flex;
-			height: 50px;
-		}
-
-		.menuListDiv2{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: brown; */
-		}
-
-		.menuListDiv3{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: ivory; */
-		}
-
-		.menuListDiv4{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: aqua; */
-		}
-		.friendBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.friendBtn2 {
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.postBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.postBtn2{
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.attendBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
-
-		.attendBtn2{
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
-
-		.userIdForm{
-			font-size: 40px;
-		}
-		.profileMessageForm{
-			font-size: 20px;
-			height: 120px;
-			width: 400px;
-		}
-
-		.profileTextArea{
-			font-size:16px;
-		}
-
-		.profileTextArea2{
-			font-size:16px;
-		}
-
-		.genderForm{
-			padding-left: 20px;
-			font-size: 20px;
-		}
-		.ageForm{
-			padding-left: 20px;
-			font-size: 20px;
-		}
-
-		.friendInfo{
-			align-items: center;
-			border: 1px solid black;
-			border-radius: 8px;
-			box-sizing: border-box;
-			display: flex;
-			font-size: 35px;
-			height: 120px;
-			/* justify-content: center; */
-			width: 440px;
-			margin-left: 45px;
+.menuList {
+box-sizing: border-box;
+/* background-color: black; */
+		display:flex;	
+height: 140px;
+}
+.menuDetail{
+box-sizing: border-box;
+/* background-color: red; */
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 900px;
+	height: auto;
+		/* padding: 0 0 0 90px; */
+}
+.menuDetail2{
+box-sizing: border-box;
+/* background-color: red; */
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 900px;
+	height: auto;
+		/* padding: 0 0 0 90px; */
+}
+.menuDetail3{
+box-sizing: border-box;
+/* background-color: red; */
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	width: 900px;
+	height: auto;
+		/* padding: 0 0 0 90px; */
+}
+.profileImgDiv{
+	align-items: center;
+	box-sizing: border-box;
+	/* background-color: red; */
+	display: flex;
+	flex-direction: column;
+	/* justify-content: center; */
+	padding: 40px 30px;
+	width: 360px;
+}
+.profileInfoDiv{
+	box-sizing: border-box;
+	/* background-color: blue; */
+	padding: 40px 30px 20px 30px;
+	width:720px;
+}
 
 
-		}
-		.friendInfoMother{
-			padding: left 90px;
-		}
+.profileInfoDiv2{
+	align-content: center;
+	box-sizing: border-box;
+/* background-color: grey; */
+	display:flex;
+	height: 50px;
+}
 
-		.friendInfoFor{
-			width: 350px;
-			height: 120px;
-		}
+.profileInfoDiv3{
+	padding-top: 20px;
+	box-sizing: border-box;
+/* background-color: purple; */
+	height: 150px;
+}
 
-		
-		span {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+.profileInfoDiv4{
+	box-sizing: border-box;
+/* background-color: orange; */
+	display: flex;
+	height: 50px;
+}
+
+.menuListDiv2{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: brown; */
+}
+
+.menuListDiv3{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: ivory; */
+}
+
+.menuListDiv4{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: aqua; */
+}
+.friendBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
+.friendBtn2 {
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
+.postBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
+.postBtn2{
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
+.attendBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
+
+.attendBtn2{
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
+
+.userIdForm{
+	font-size: 40px;
+}
+.profileMessageForm{
+	font-size: 20px;
+	height: 120px;
+	width: 400px;
+}
+
+.profileTextArea{
+	font-size:16px;
+}
+
+.profileTextArea2{
+	font-size:16px;
+}
+
+.genderForm{
+	padding-left: 20px;
+	font-size: 20px;
+}
+.ageForm{
+	padding-left: 20px;
+	font-size: 20px;
+}
+
+.friendInfo{
+	align-items: center;
+	border: 1px solid black;
+	border-radius: 8px;
+	box-sizing: border-box;
+	display: flex;
+	font-size: 35px;
+	height: 120px;
+	/* justify-content: center; */
+	width: 440px;
+	margin-left: 45px;
+
+
+}
+.friendInfoMother{
+	padding: left 90px;
+}
+
+.friendInfoFor{
+	width: 350px;
+	height: 120px;
+}
+
+
+span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.background {
+	height:100vh;
+}
+
+.container-profilebox {
+  display: flex;
+  justify-content: center;
+  background-color: #FFFFFF
+  /* background-color: #F7D2A7; */
+  /* background-color: #fafafa; */
+  /* background: url("~@/assets/tmbackground_light.png") fixed; */
+}
+.contents-table {
+    padding: 0 0 0 0;
+    margin: auto;
+    width: 90%;
+
+    font-size: .9em;
+}
+
+.contents-table-tbody {
+    display: grid;
+}
+
+
+.contents-table-a{
+    display: flex;
+    height: 65px;
+    border-bottom: 1px #7b7b7b solid;
+    text-decoration: none;
+    
+}
+.postList-user {
+    margin:0;
+}
+
+/* 테이블 time */
+.table-a-time {
+    padding: 0 0 0 0;
+    margin: 22px 0 10px 45px;
+    color: black;
+}
+/* 테이블 title */
+.table-a-title {
+    display: grid;
+    color: black;
+    margin: 20px 0 0 50px;
+    padding: auto;
+}
+
+.content-detail{
+    display: grid;
+    font-size: 5px;
+    color: #7b7b7b;
+    margin: 0 15px 0 0;
+    align-content: center;
+}
+
+/* 테이블 버튼 */
+.table-a-btn{
+    margin: 18px 0 0 0;
+}
+
+.apply-btn {
+    text-align: center;
+    padding-top: .4em;
+    color: white;
+    background-color: rgb(67, 91, 211);
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.apply-btn-before-end{
+    text-align: center;
+    padding-top: .4em;
+    color: white;
+    background-color: orangered;
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.apply-btn-end{
+    text-align: center;
+    padding-top: .4em;
+    color: rgb(39, 38, 38);
+    background-color: rgb(156, 155, 155);
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.background {
+    background-color: #FFF7EE;
+}
+.theme--light.v-sheet {
+    background-color: #FFF7EE;
+}
+.theme--light.v-sheet.v-slide-group.v-slide-item:hover {
+    color: rgba(229, 134, 26, 0.927);
+}
+.v-btn__content:hover {
+    color: rgba(229, 134, 26, 0.927);
+    text-decoration: none;
+}
+
 </style>
