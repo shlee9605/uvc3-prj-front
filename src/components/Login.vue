@@ -202,7 +202,7 @@ textarea.form-control {
   /* background-color: #FFFFFF; */
 }
 .theme--light.v-sheet {
-  background-color: white;
+  background-color: #FFF7EE;
 }
 .v-text-field{
   width: 200px;

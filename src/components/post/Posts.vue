@@ -406,11 +406,11 @@ import {mapState,mapActions} from 'vuex'
     border-radius: 15px;
 }
 
-.background {
-    background-color: #FFF7EE;
-}
+/* .background {
+    background-color: #FFF7EE !important;
+} */
 .theme--light.v-sheet {
-    background-color: #FFF7EE;
+    background-color: #FFF7EE !important;
 }
 .theme--light.v-sheet.v-slide-group.v-slide-item:hover {
     color: rgba(229, 134, 26, 0.927);
@@ -418,6 +418,10 @@ import {mapState,mapActions} from 'vuex'
 .v-btn__content:hover {
     color: rgba(229, 134, 26, 0.927);
     text-decoration: none;
+}
+
+.theme--light.v-btn--active:hover::before, .theme--light.v-btn--active::before {
+    opacity: 0;
 }
 
 /* .v-btn--rounded:hover{
