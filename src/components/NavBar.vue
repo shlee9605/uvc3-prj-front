@@ -56,7 +56,7 @@
                         <template v-if="relationship.length">
                             <v-list-item v-for="(item,index) in relationship" :key="index">
                                 <v-list-item-avatar>
-                                    <v-img src="../assets/human.jpg"></v-img>
+                                    <v-img src="../assets/tmlogo_sized.png"></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <div style="display:flex; margin-right: 15px;">
@@ -89,8 +89,12 @@
             <v-menu offset-y>
                 <template v-slot:activator="{ on }" >
                     <v-btn plain icon v-on="on">
-                        <v-avatar>
+                        <v-avatar v-if="`${UserPhotoUrl}` === 'no-photo.jpg'" size="32">
                             <img src="../assets/human.jpg">
+                        </v-avatar>
+                        <v-avatar v-else>
+                            <img
+							:src="`${url}/uploads${UserPhotoUrl}`">
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -130,7 +134,8 @@ import { mapGetters, mapState, mapActions } from 'vuex'
         data(){
             return {
                 GET_LOGIN_STATUS: localStorage.getItem('token') ? true : false,
-                items: ['내 프로필', '로그아웃']
+                items: ['내 프로필', '로그아웃'],
+                UserPhotoUrl: localStorage.getItem('UserPhotoUrl'),
             }
         },
         watch: {
@@ -158,7 +163,10 @@ import { mapGetters, mapState, mapActions } from 'vuex'
             ]),
             ...mapState('Relationship',{
                 relationship:'relationship'
-            })
+            }),
+            url (){
+				return process.env.VUE_APP_API;
+			},
         },
         methods: {
             async signOut() {

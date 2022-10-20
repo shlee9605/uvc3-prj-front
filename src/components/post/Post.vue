@@ -1,10 +1,11 @@
 <template>
 <v-app>
+    <v-container fluid class="background">
     <v-card
-    class="mx-auto"
-    max-width="900"
-    style="border-radius: 24px; margin-top:130px;"
-    >
+        elevation="4"
+        class="mx-auto"
+        max-width="900"
+        style="margin-top:130px;">
     <main class="post-main">
         <!-- ------------------------------------------------ -->
         <div class="post-header">
@@ -20,17 +21,14 @@
                         <router-link
                         :to="`/profile/${post.UserId}`">
                             <div style="display:flex;">
-                                <v-row>
-                                    <v-avatar
-                                        class="userIcon"
-                                        color="red"
-                                        size="36"
-                                        >
-                                    <img :src="`${url}/uploads${this.photoUrl}`"/>
+                                
+                                    <v-avatar>
+                                        <img v-if="this.photoUrl !== 'no-photo'" :src="`${url}/uploads${this.photoUrl}`"/>
+                                        <v-img v-else src="@/assets/human.jpg"></v-img>
                                     </v-avatar>
-                                </v-row>
-                                <div style="margin:5px 0 0 25px; color:black;">
-                                    <button>{{post.UserId}}</button>
+                                
+                                <div style="margin:0 0 0 25px; color:black;">
+                                    <h2>{{post.UserId}}</h2>
                                 </div>
                             </div>
                         </router-link>
@@ -45,7 +43,8 @@
                                         color="red"
                                         size="36"
                                         >
-                                    <img :src="`${url}/uploads${this.photoUrl}`"/>
+                                        <img v-if="this.photoUrl !== 'no-photo'" :src="`${url}/uploads${this.photoUrl}`"/>
+                                        <v-img v-else src="@/assets/human.jpg"></v-img>
                                     </v-avatar>
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
@@ -193,6 +192,7 @@
 
     </main>
     </v-card>
+    </v-container>
 </v-app>
 </template>
 
@@ -200,6 +200,8 @@
 import Comment from '../comment/comment.vue'
 import {mapState, mapActions} from 'vuex'
 import axios from 'axios'
+// import userphoto from '@/assets/human.jpg'
+
     export default {
         components:{Comment},
         data(){
@@ -212,6 +214,7 @@ import axios from 'axios'
                 mm:'',
                 UserId: localStorage.getItem('UserId'),
                 photoUrl: "",
+                noimg: require("@/assets/1.png")
 
             }
         },
@@ -265,7 +268,13 @@ import axios from 'axios'
                 })
                 .then((response)=>{
                     console.log("getWriterInfo - response", response.data);
-                    this.photoUrl = response.data.data.photoUrl
+                    if (response.data.data.photoUrl === 'no-photo') {
+                        this.photoUrl = "no-photo"
+                        console.log("IF - NO-PHOTO", this.photoUrl)
+                    } else {
+                        this.photoUrl = response.data.data.photoUrl;
+                        console.log("else", this.photoUrl)
+                    }
                 })
                 .catch((error)=>{
                     console.log('getWriterInfo - error', error);
@@ -452,6 +461,9 @@ position: absolute;
 width: 100%;
 }
 
+/* .background {
+    height:100vh;
+} */
 
 
 

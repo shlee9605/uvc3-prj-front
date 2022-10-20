@@ -1,8 +1,9 @@
 <template>
-    <v-app inspire style="height: 900px; margin-top:80px;">
+    <v-app inspire>
+		<v-container fluid class="background" style="height: 900px; margin-top:60px">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
-		
+		<v-app-bar-title class="text-center titlestyle">나의 메이트를 구해줘!</v-app-bar-title>
 		<ValidationObserver
                 ref="signUpForm"
                 v-slot="{ handleSubmit, invalid, validate }">
@@ -228,6 +229,7 @@
         </main>
 		</form>
 		</ValidationObserver>
+	</v-container>
     </v-app>
 </template>
 
@@ -334,8 +336,8 @@ import {mapActions} from 'vuex'
                 this.TimeValue.HH = data.HH
                 this.TimeValue.mm = data.mm
                 this.TimeValue.ss = data.ss
-				        this.timestatus=true;
-				        return 1;
+				this.timestatus=true;
+				return 1;
 
             },
             
@@ -362,7 +364,7 @@ import {mapActions} from 'vuex'
 	float: right;
     /* margin-top: 50px; */
     /* width: 500px; */
-	margin-top:40px;
+	margin-top:20px;
 	margin-bottom: 0;
     width: 700px;
 }
@@ -455,5 +457,15 @@ import {mapActions} from 'vuex'
 button:focus,
 input:focus {
   outline:0;
+}
+
+
+.titlestyle {
+	font-size: 38px;
+	margin-top: 20px;
+}
+
+.background {
+    background-color: #FFF7EE;
 }
 </style>

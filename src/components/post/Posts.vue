@@ -1,18 +1,42 @@
 <template>
     <v-app>
+        <v-container fluid class="background">
         <div class="header-size">
         <!-- 카테고리, filter list -->
             <div class="contents-header-bar">
-                <div style="margin: 0 5%; padding:0 5% 0 10%">
-                    <v-col
-                    cols="12"
-                    sm="2"
-                    md="12"
-                    >
+                
+
+                <!-- 카테고리 -->
+                <div class="content-filter">
+
+                    <div>
+                    <!-- style="margin: 0 0%; padding:0 0% 0 0" -->
                     <v-sheet
                     class="py-4 px-1"
+                    max-width="700"
                     >
-                        <v-chip-group
+
+                    <v-slide-group mandatory show-arrows>
+                        <v-slide-item
+                            v-for="time in times"
+                            :key="time"
+                            v-slot="{ active, toggle }">
+                        <v-btn
+                            :color="active ? '#FFE415' : 'orange'"    
+                            class="mx-2 black--text"
+                            :input-value="active"
+                            active-class="white black--text"
+                            depressed
+                            rounded
+                            @click="toggle(); sortdate(time.slice(8,10));"
+                            >
+                            {{ time.slice(8,10) }}일
+                        </v-btn>
+                        </v-slide-item>
+                    </v-slide-group>
+                    
+
+                        <!-- <v-chip-group
                         mandatory
                         active-class="primary--text"
                         >
@@ -22,11 +46,14 @@
                             @click="sortdate(time.slice(8,10))">
                                 {{ time.slice(8,10) }}일   
                             </v-chip>
-                        </v-chip-group>
+                        </v-chip-group> -->
                     </v-sheet>
-                    </v-col>
                 </div>
-                <div class="content-filter">
+
+
+
+
+                    <div style="display:flex; margin-left:21px">
                     <v-col 
 							class="d-flex"
 							cols="2"
@@ -50,14 +77,18 @@
                             @input="sortcat"
 						></v-select>
 					</v-col>
-                </div>
-                <router-link to="/addpost" class="addpost-btn">
-                    <button style="float:right; margin-right:50px;">새모임</button>
-                </router-link>
+
+                    <v-spacer></v-spacer>
+                    <router-link to="/addpost" class="addpost-btn">
+                        <button style="float:right; margin-right:50px;"><v-icon color="rgb(52, 52, 234)" class="mr-2 mb-1">mdi-account-multiple-plus</v-icon>메이트를 구해줘!</button>
+                    </router-link>
+
+                    </div>  
+                </div>     
             </div>
 
             <!-- 게시글 리스트 -->
-            <div style="margin-top:50px;">
+            <div>
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
@@ -66,7 +97,7 @@
                             :to="`/posts/${item.id}`"
                             :key="item.Id">
                                 <div class="table-a-time">
-                                    <p style="margin-righ:20px;">
+                                    <p style="margin-right:20px;">
                                         {{item.time.slice(0,5)}}
                                     </p>
                                 </div>
@@ -103,6 +134,7 @@
                 </table>
             </div>
         </div>
+    </v-container>
     </v-app>
 </template>
 
@@ -267,8 +299,8 @@ import {mapState,mapActions} from 'vuex'
 
 
 .content-filter{
-    display: flex;
-    padding: 5px 0 25px 0;
+    display: grid;
+    padding: 5px 0 25px 25px;
 }
 
 .filter {
@@ -281,14 +313,14 @@ import {mapState,mapActions} from 'vuex'
     border-radius: 15px;
 }
 
-/* .filter:active {
+.filter:active {
     background-color: rgb(52, 52, 234);
     color: white;
     border: 1px rgb(52, 52, 234) solid;
-} */
+}
 
 .addpost-btn{
-    margin: 15px 0 0 0; 
+    margin: 25px 0 0 0; 
     color: black;
 }
 
@@ -374,6 +406,27 @@ import {mapState,mapActions} from 'vuex'
     border-radius: 15px;
 }
 
+.background {
+    background-color: #FFF7EE;
+}
+.theme--light.v-sheet {
+    background-color: #FFF7EE;
+}
+.theme--light.v-sheet.v-slide-group.v-slide-item:hover {
+    color: rgba(229, 134, 26, 0.927);
+}
+.v-btn__content:hover {
+    color: rgba(229, 134, 26, 0.927);
+    text-decoration: none;
+}
 
-
+/* .v-btn--rounded:hover{
+    color: rgba(229, 134, 26, 0.927);
+}
+.theme--light.v-btn.v-btn--has-bg {
+    color: white !important;
+} */
+/* .v-btn__content {
+    color: black;
+} */
 </style>

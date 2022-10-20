@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container fluid class="fill-height background container-loginbox">
-        <v-card outlined class="pa-10 mt-10 justify-center card-bottom">
+        <v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
           <v-card-title class="justify-center" style="font-size: 2rem">로그인</v-card-title>
           <v-spacer></v-spacer>
           <v-card-text class="justify-center">
@@ -54,9 +54,9 @@
         </v-card>
     </v-container>
 
-    <v-alert>
+    <!-- <v-alert>
       color="red" dense icon="$mdi-account" type="error"
-    </v-alert>
+    </v-alert> -->
   </v-app>
 </template>
 
@@ -115,7 +115,7 @@ export default {
     }
 </script>
 
-<style>
+<style scoped>
 .Login-box {
   margin-top: 80px;
   width: 400px;
@@ -188,8 +188,10 @@ textarea.form-control {
 .container-loginbox{
   display: flex;
   justify-content: center;
-  background-color: #fafafa;
-  /* background: url("~@/assets/tmlogo_sized.png") repeat center center fixed !important; */
+  background-color: #FFFFFF
+  /* background-color: #F7D2A7; */
+  /* background-color: #fafafa; */
+  /* background: url("~@/assets/tmbackground_light.png") fixed; */
 
 }
 .card-bottom {
@@ -197,6 +199,10 @@ textarea.form-control {
   height: 400px;
   box-sizing: border-box;
   padding-bottom: 5%;
+  /* background-color: #FFFFFF; */
+}
+.theme--light.v-sheet {
+  background-color: white;
 }
 .v-text-field{
   width: 200px;

@@ -1,12 +1,14 @@
 <template>
-<v-app >
+<v-app>
+	<v-container fluid class="fill-height background container-profilebox">
+		<v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
     <div class="main" >
         <div class="profileStatusOutline">
             <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
                 <div class="profileImgDiv">
 					<v-avatar size="200" class="profileImg">
-						<img v-if="this.photoUrl !== 'no-photo.jpg'" :src="`${url}/uploads${this.photoUrl}`"/>	
+						<img v-if="this.photoUrl !== 'no-photo'" :src="`${url}/uploads${this.photoUrl}`"/>	
 						<img v-else src="../assets/human.jpg"/>
 					</v-avatar>
 						<v-btn @click="openPhotoEditModal" style="margin-top:20px;">
@@ -140,10 +142,12 @@
             </div>
 			</div>
         </div>
-		<UploadPhotoModal :openDialog="photoEditModalStatus"
-		v-on:closeDialog="closeDialogEditPhoto">	
-		</UploadPhotoModal>
-    </div>
+			<UploadPhotoModal :openDialog="photoEditModalStatus"
+			v-on:closeDialog="closeDialogEditPhoto">	
+			</UploadPhotoModal>
+		</div>
+		</v-card>
+	</v-container>
 </v-app>	
 </template>
 <script>
@@ -294,7 +298,7 @@ export default {
 				)
 				.then((response)=>{
 					console.log(response.data.data);
-					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
+					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo.jpg"){
 						this.photoUrl = "../assets/human.jpg";
 					}else{
 						this.photoUrl = response.data.data.photoUrl
@@ -370,9 +374,9 @@ export default {
 					if(this.showMyAttendListStatus){
 						this.showMyAttendListStatus = false;
 					}else{
-						console.log("loadMyAttendList - response ", response.data.myHistoryList_2);
-						console.log(response.data.myHistoryList_2);
-						this.myHistoryList = response.data.myHistoryList_2;
+						console.log("loadMyAttendList - response ", response);
+						this.myHistoryList = response.data.myHistoryList;
+						console.log(this.myHistoryList);
 						this.showMyAttendListStatus = true;
 					}
 
@@ -398,224 +402,237 @@ export default {
 }
 </script>
 <style >
-    .main {
-		/* border: 1px solid black; */
-		height: auto;
-        align-items: center;
-        display: flex;
-        justify-content: center;
-		padding-top: 80px;
-    }
+.main {
+/* border: 1px solid black; */
+height: auto;
+align-items: center;
+display: flex;
+justify-content: center;
+padding-top: 80px;
+}
 
 
-    .profileStatusOutline {
-        /* align-items: center; */
-        border: 1px black;
-		border-radius: 15px;
-		/* box-shadow: 1px 1px 1px 1px; */
-        height: auto;
-        margin-top: 40px;
-        /* justify-content: center; */
-        width: 1080px;
-		-webkit-box-shadow: 9px 10px 15px 6px #000000; 
-		box-shadow: 9px 10px 15px 6px #000000;
-    }
+.profileStatusOutline {
+/* align-items: center; */
+border: 1px black;
+border-radius: 15px;
+/* box-shadow: 1px 1px 1px 1px; */
+height: auto;
+margin-top: 40px;
+/* justify-content: center; */
+width: 1080px;
+-webkit-box-shadow: 9px 10px 15px 6px #000000; 
+box-shadow: 9px 10px 15px 6px #000000;
+}
 
-    .title {
-        box-sizing: border-box;
-        /* background-color: yellow; */
-        height: 80px;
-        padding: 30px 0px;
-        text-align: center;
-        
-    }
-    .profileStatus {
-        display:flex;
-        box-sizing: border-box;
-        /* background-color: green; */
-        height: 420px;
-    }
+.title {
+box-sizing: border-box;
+/* background-color: yellow; */
+height: 80px;
+padding: 30px 0px;
+text-align: center;
 
-    .menuList {
-        box-sizing: border-box;
-        /* background-color: black; */
-				display:flex;	
-        height: 140px;
-    }
-    .menuDetail{
-        box-sizing: border-box;
-        /* background-color: red; */
-				display: flex;
-				flex-direction: row;
-				flex-wrap: wrap;
-				justify-content: space-between;
-				width: 900px;
-        height: 300px;
-				/* padding: 0 0 0 90px; */
-    }
-    .profileImgDiv{
-				align-items: center;
-				box-sizing: border-box;
-        /* background-color: red; */
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-        padding: 60px 30px;
-        width: 360px;
-    }
-    .profileInfoDiv{
-        box-sizing: border-box;
-        /* background-color: blue; */
-        padding: 90px 30px 20px 30px;
-        width:720px;
-    }
+}
+.profileStatus {
+display:flex;
+box-sizing: border-box;
+/* background-color: green; */
+height: 420px;
+}
 
-		/* .profileImg{
-			size: 200;
-		} */
+.menuList {
+box-sizing: border-box;
+/* background-color: black; */
+		display:flex;	
+height: 140px;
+}
+.menuDetail{
+box-sizing: border-box;
+/* background-color: red; */
+		display: flex;
+		flex-direction: row;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		width: 900px;
+height: 300px;
+		/* padding: 0 0 0 90px; */
+}
+.profileImgDiv{
+		align-items: center;
+		box-sizing: border-box;
+/* background-color: red; */
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+padding: 60px 30px;
+width: 360px;
+}
+.profileInfoDiv{
+box-sizing: border-box;
+/* background-color: blue; */
+padding: 90px 30px 20px 30px;
+width:720px;
+}
 
-		.profileInfoDiv2{
-			align-content: center;
-			box-sizing: border-box;
-      /* background-color: grey; */
-			display:flex;
-			height: 50px;
-		}
+/* .profileImg{
+	size: 200;
+} */
 
-		.profileInfoDiv3{
-			padding-top: 20px;
-			box-sizing: border-box;
-      /* background-color: purple; */
-			height: 150px;
-		}
+.profileInfoDiv2{
+	align-content: center;
+	box-sizing: border-box;
+/* background-color: grey; */
+	display:flex;
+	height: 50px;
+}
 
-		.profileInfoDiv4{
-			box-sizing: border-box;
-      /* background-color: orange; */
-			display: flex;
-			height: 50px;
-		}
+.profileInfoDiv3{
+	padding-top: 20px;
+	box-sizing: border-box;
+/* background-color: purple; */
+	height: 150px;
+}
 
-		.menuListDiv2{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: brown; */
-		}
+.profileInfoDiv4{
+	box-sizing: border-box;
+/* background-color: orange; */
+	display: flex;
+	height: 50px;
+}
 
-		.menuListDiv3{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: ivory; */
-		}
+.menuListDiv2{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: brown; */
+}
 
-		.menuListDiv4{
-			width: 360px;
-			box-sizing: border-box;
-      /* background-color: aqua; */
-		}
-		.friendBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.friendBtn2 {
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.postBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.postBtn2{
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
-		.attendBtn{
-			/* border: 1px solid #000000; */
-			border-radius: 5.5px;
-			height: 74px !important;
-			width: 360px;
-		}
+.menuListDiv3{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: ivory; */
+}
 
-		.attendBtn2{
-			border-top: 1px solid;
-			/* border: 1px solid #000000; */
-			/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
-			/* background-color:#E100FF; */
-			/* border-radius: 5.5px; */
-			font-size: 20px;
-			height: 74px !important;
-			width: 360px;
-		}
+.menuListDiv4{
+	width: 360px;
+	box-sizing: border-box;
+/* background-color: aqua; */
+}
+.friendBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
+.friendBtn2 {
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
+.postBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
+.postBtn2{
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
+.attendBtn{
+	/* border: 1px solid #000000; */
+	border-radius: 5.5px;
+	height: 74px !important;
+	width: 360px;
+}
 
-		.userIdForm{
-			font-size: 40px;
-		}
-		.profileMessageForm{
-			font-size: 20px;
-			height: 120px;
-			width: 400px;
-		}
+.attendBtn2{
+	border-top: 1px solid;
+	/* border: 1px solid #000000; */
+	/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
+	/* background-color:#E100FF; */
+	/* border-radius: 5.5px; */
+	font-size: 20px;
+	height: 74px !important;
+	width: 360px;
+}
 
-		.profileTextArea{
-			font-size:16px;
-		}
+.userIdForm{
+	font-size: 40px;
+}
+.profileMessageForm{
+	font-size: 20px;
+	height: 120px;
+	width: 400px;
+}
 
-		.profileTextArea2{
-			font-size:16px;
-		}
+.profileTextArea{
+	font-size:16px;
+}
 
-		.genderForm{
-			padding-left: 20px;
-			font-size: 20px;
-		}
-		.ageForm{
-			padding-left: 20px;
-			font-size: 20px;
-		}
+.profileTextArea2{
+	font-size:16px;
+}
 
-		.friendInfo{
-			align-items: center;
-			border: 1px solid black;
-			border-radius: 8px;
-			box-sizing: border-box;
-			display: flex;
-			font-size: 35px;
-			height: 120px;
-			/* justify-content: center; */
-			width: 440px;
-			margin-left: 45px;
+.genderForm{
+	padding-left: 20px;
+	font-size: 20px;
+}
+.ageForm{
+	padding-left: 20px;
+	font-size: 20px;
+}
+
+.friendInfo{
+	align-items: center;
+	border: 1px solid black;
+	border-radius: 8px;
+	box-sizing: border-box;
+	display: flex;
+	font-size: 35px;
+	height: 120px;
+	/* justify-content: center; */
+	width: 440px;
+	margin-left: 45px;
 
 
-		}
-		.friendInfoMother{
-			padding: left 90px;
-		}
+}
+.friendInfoMother{
+	padding: left 90px;
+}
 
-		.friendInfoFor{
-			width: 350px;
-			height: 120px;
-		}
+.friendInfoFor{
+	width: 350px;
+	height: 120px;
+}
 
-		
-		span {
-			display: flex;
-			align-items: center;
-			justify-content: center;
-		}
+
+span {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.background {
+	height:100vh;
+}
+
+.container-profilebox {
+  display: flex;
+  justify-content: center;
+  background-color: #FFFFFF
+  /* background-color: #F7D2A7; */
+  /* background-color: #fafafa; */
+  /* background: url("~@/assets/tmbackground_light.png") fixed; */
+}
 </style>
