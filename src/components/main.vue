@@ -21,6 +21,8 @@
         data() {
             return {
                 items:[
+                    {src: require("../assets/tmlogo_original.png")},
+                    {src: require("../assets/slide1.png")},
                     {src: require("../assets/selfie.png")},
                     {src: require("../assets/Personal_trainer.png")},
                     {src: require("../assets/together.png")},

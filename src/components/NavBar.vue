@@ -1,33 +1,40 @@
 <template>
 <v-app>
     <nav>
-        <v-app-bar app flat color="white">
-            <div>
+        <v-app-bar elevation="4" app flat color="white">
+            <div class="paddingmargin_left">
                 <router-link to='/'>
-                    <img src="../assets/logo.png" stye="width: 100px; height: 36px;">
+                    <img src="../assets/tmlogo.png">
                 </router-link>
             </div>
-
-            <!-- 왼쪽 -->
             <div>
-                <router-link to="/posts" v-if="$route.name === 'posts'">
-                    <v-btn plain text style="color: red;">
-                        <v-icon dark left size="30">mdi-post</v-icon>
-                        게시글
-                    </v-btn>
-                </router-link>
-                <router-link to="/posts" v-else>
-                    <v-btn plain text>
-                        <v-icon dark left size="30">mdi-post</v-icon>
-                        게시글
-                    </v-btn>
+                <router-link to='/'>
+                    <span class="titletext">오늘의 메이트</span>
                 </router-link>
             </div>
 
             <v-spacer></v-spacer>
 
+            <!-- 왼쪽 -->
+            <div class="posttab">
+                <router-link to="/posts" v-if="$route.name === 'posts'">
+                    <v-btn icon plain style="color: red;">
+                        <v-icon dark size="30">mdi-home</v-icon>
+                        
+                    </v-btn>
+                </router-link>
+                <router-link to="/posts" v-else>
+                    <v-btn icon plain class="black--text">
+                        <v-icon dark size="30">mdi-home</v-icon>
+                        
+                    </v-btn>
+                </router-link>
+            </div>
+
+            
+
             <!-- 오른쪽 -->
-            <div v-if="!isAuth">
+            <div v-if="!isAuth" class="paddingmargin_right">
                 <v-btn elevation="2" rounded router to="/Login">
                     <v-icon left size="26">mdi-account-circle</v-icon>
                     시작하기
@@ -37,7 +44,7 @@
 
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn plain icon v-on="on" class="Nav-bell-btn">
+                    <v-btn icon v-on="on" class="Nav-bell-btn">
                         <v-avatar size="32" >
                             <img src="../assets/bell.png">
                         </v-avatar>
@@ -228,4 +235,27 @@ import { mapGetters, mapState, mapActions } from 'vuex'
     color: red;
     text-decoration: none;
 }
+
+.paddingmargin_left {
+    padding-left: 5%;
+    margin-left: 4%;
+}
+
+.paddingmargin_right {
+    padding-right: 8%;
+    /* padding-left: 8%; */
+}
+.titletext {
+    color: black;
+    display: flex;
+    padding-left: 4%;
+    width: 100px;
+}
+.theme--light.v-btn.v-btn--has-bg {
+    background-color: #FFFFFF
+}
+.posttab {
+    margin-left: 2%;
+}
+
 </style>
