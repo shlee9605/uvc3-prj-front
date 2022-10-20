@@ -188,7 +188,7 @@ textarea.form-control {
 .container-loginbox{
   display: flex;
   justify-content: center;
-  background-color: #FFFFFF
+  background-color: #FFF7EE;
   /* background-color: #F7D2A7; */
   /* background-color: #fafafa; */
   /* background: url("~@/assets/tmbackground_light.png") fixed; */
@@ -207,5 +207,11 @@ textarea.form-control {
 .v-text-field{
   width: 200px;
 }
+
+.span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
 </style>
