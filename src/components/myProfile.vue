@@ -499,9 +499,6 @@ box-sizing: border-box;
 	width:720px;
 }
 
-.profileImg{
-	
-}
 
 .profileInfoDiv2{
 	align-content: center;
