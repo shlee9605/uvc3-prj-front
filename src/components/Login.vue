@@ -199,7 +199,7 @@ textarea.form-control {
   padding-bottom: 5%;
 }
 .v-text-field{
-  width: 100%;
+  width: 200px;
 }
 
 </style>

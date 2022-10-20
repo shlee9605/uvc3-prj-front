@@ -88,8 +88,8 @@
 
 
             <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn plain icon v-on="on" class="Nav-btn">
+                <template v-slot:activator="{ on }" >
+                    <v-btn plain icon v-on="on">
                         <v-avatar>
                             <img src="../assets/human.jpg">
                         </v-avatar>
