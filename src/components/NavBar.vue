@@ -189,10 +189,10 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                 'ACCEPT_REQ',
                 'REJECT_REQ',
             ]),
-
+            //친구 요청 상태값
             fetchRelationship(){
                 return this.FETCH_STATUS(localStorage.getItem('UserId')).then(() => {
-                    console.log('req UserId : ',localStorage.getItem('UserId'));
+                    console.log('(store friend) req UserId : ',localStorage.getItem('UserId'));
                 })
             },
             //친구 요청 수락
