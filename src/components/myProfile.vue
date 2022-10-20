@@ -1,6 +1,6 @@
 <template>
-<v-app>
-    <div class="main">
+<v-app >
+    <div class="main" >
         <div class="profileStatusOutline">
             <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
@@ -39,13 +39,16 @@
 				<!-- <hr style="margin-bottom:20px"> -->
             <div class="menuList">
 				<div class="menuListDiv2">
-					<v-btn class="friendBtn" @click="loadMyAttendList">신청 목록({{this.myHistoryList.length}})</v-btn>
+					<button v-if="showMyAttendListStatus === false" class="attendBtn" @click="loadMyAttendList"><span style="color: grey;">신청 목록({{this.myHistoryList.length}})</span></button>
+					<button v-else class="attendBtn2" @click="loadMyAttendList">신청 목록({{this.myHistoryList.length}})</button>
 				</div>
 				<div class="menuListDiv3">
-					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
+					<button v-if="showFriendListStatus === false" class="friendBtn" @click="loadFriendList"><span style="color: grey;">친구({{this.friendInfoList.length}})</span></button>
+					<button v-else class="friendBtn2" @click="loadFriendList">친구({{this.friendInfoList.length}})</button>
 				</div>
 				<div class="menuListDiv4">
-					<v-btn class="postBtn" @click="loadMyPostList">게시물({{this.myPostList.length}})</v-btn>
+					<button v-if="showMyPostListStatus === false" class="postBtn" @click="loadMyPostList"><span style="color: grey;">게시물({{this.myPostList.length}})</span></button>
+					<button v-else class="postBtn2" @click="loadMyPostList">게시물({{this.myPostList.length}})</button>
 				</div>
 			</div>
 			<div v-if="showMyAttendListStatus === true" class="menuDetail3">
@@ -397,6 +400,7 @@ export default {
 <style >
     .main {
 		/* border: 1px solid black; */
+		height: auto;
         align-items: center;
         display: flex;
         justify-content: center;
@@ -510,13 +514,55 @@ export default {
       /* background-color: aqua; */
 		}
 		.friendBtn{
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
 			height: 74px !important;
-			width: 240px;
+			width: 360px;
+		}
+		.friendBtn2 {
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
+			width: 360px;
 		}
 		.postBtn{
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
 			height: 74px !important;
-			width: 240px;
+			width: 360px;
 		}
+		.postBtn2{
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
+			width: 360px;
+		}
+		.attendBtn{
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
+			height: 74px !important;
+			width: 360px;
+		}
+
+		.attendBtn2{
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
+			width: 360px;
+		}
+
 		.userIdForm{
 			font-size: 40px;
 		}
