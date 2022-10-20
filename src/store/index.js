@@ -15,7 +15,7 @@ import { Post } from './Post'
 import { Comment } from './Comment'
 import { Attend } from './Attend'
 import { Relationship } from './Relationship'
-
+// import createPersistedState from "vuex-persistedstate";
 
 
 const store = new Vuex.Store({

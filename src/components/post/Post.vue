@@ -38,43 +38,82 @@
                     <v-spacer></v-spacer>
                 </div>
             </div>
+
+
+            <!-- 1.작성자가 페이지 접속 -->
             <div style="display:flex;" v-if="post.UserId === UserId" >
-                <router-link
-                class="header-btn-area"
-                :to="`/editpost/${post.id}`">
-                    <div 
-                    class="header-btn"
-                    style="margin:40px 15px 0 0;">
-                        <v-btn
-                        rounded
-                        color="primary"
-                        >수정</v-btn>
+
+                <!-- 1-1. 게시물 날짜가 지난 경우 -->
+                <div v-if="new Date(this.post.date) < new Date()">
+                    <div class="header-btn-area">
+                        <div class="header-btn">
+                            <v-btn
+                            rounded
+                            color="error"
+                            @click ="deletePost"
+                            >삭제</v-btn>
+                        </div>
                     </div>
-                </router-link>
-                <div class="header-btn-area">
-                    <div class="header-btn">
-                        <v-btn
-                        rounded
-                        color="error"
-                        @click ="deletePost"
-                        >삭제</v-btn>
+                </div>
+                
+                <!-- 1-2. 게시물 날짜가 유효한 경우 -->
+                <div 
+                v-else
+                style="display:flex;"
+                class="header-btn-area"
+                >
+                    <router-link
+                    :to="`/editpost/${post.id}`">
+                        <div 
+                        class="header-btn"
+                        style="margin:0 15px 0 0;">
+                            <v-btn
+                            rounded
+                            color="primary"
+                            >수정</v-btn>
+                        </div>
+                    </router-link>
+                    <div >
+                        <!-- class="header-btn-area" -->
+                        <div style="margin: 0 15px 0 0;">
+                            <!-- class="header-btn" -->
+                            <v-btn
+                            rounded
+                            color="error"
+                            @click ="deletePost"
+                            >삭제</v-btn>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="header-aply-btn" v-else>
-                <div class="header-btn" v-if="!attendUser.success">
+
+
+            <!-- 2. another 접속자 -->
+            <div class="header-btn-area" v-else>
+                <!-- 2-1. only 신청자만 -->
+                <div class="header-btn" v-if="attendUser.success">
+                    <v-btn
+                    rounded
+                    color="gray"
+                    @click ="deleteAttend"
+                    >신청 취소</v-btn>
+                </div>
+                <!-- 2-2. 미신청자, 정원마감 -->
+                <div class="header-btn" v-else-if="attendList.acceptlist.length === post.capacity">
+                    <v-btn
+                    rounded
+                    color="primary"
+                    disabled
+                    >신청 마감</v-btn>
+                </div>
+                <!-- 2-3. 미신청자, 신청가능 -->
+                <div class="header-btn" v-else>
+                    
                     <v-btn
                     rounded
                     color="primary"
                     @click ="attend"
                     >신청하기</v-btn>
-                </div>
-                <div class="header-btn" v-else>
-                    <v-btn
-                    rounded
-                    color="gray"
-                    disabled
-                    >신청 완료</v-btn>
                 </div>
             </div>
 
@@ -119,7 +158,7 @@
                     max-width="344"
                     >
                         <div>
-                            <h2>참가자</h2>
+                            <h2>참가인원</h2>
                         </div>
                         <div style="font-size: 80px;">
                             {{attendList.acceptlist.length}}/{{post.capacity}}
@@ -170,6 +209,9 @@ import {mapState, mapActions} from 'vuex'
             this.fetchAttendList(),
             this.attendUserInfo(),
             console.log(this.attendUser)
+            console.log(new Date());
+            console.log(this.post.date);
+            console.log(new Date(this.post.date) < new Date());
         },
 
         methods:{
@@ -180,6 +222,7 @@ import {mapState, mapActions} from 'vuex'
             ]),
             ...mapActions('Attend',[
                 "ATTEND_POST",
+                'DELETE_ATTEND',
                 'FETCH_ATTENDLIST',
                 'FETCH_AUSER',
             ]),
@@ -221,7 +264,9 @@ import {mapState, mapActions} from 'vuex'
                     console.log('참가 실패',err);
                 })
             },
-
+            deleteAttend(){
+                this.DELETE_ATTEND({pid:this.$route.params.pid, UserId:localStorage.getItem('UserId')})
+            },
             /* *페이지 접속자 참가 유무 확인 */
             attendUserInfo(){
                 return this.FETCH_AUSER({pid: this.$route.params.pid, UserId: localStorage.getItem('UserId')})
@@ -259,14 +304,14 @@ import {mapState, mapActions} from 'vuex'
     display: flex;
     height: 20%;
 }
-/* 버튼 영역 */
-/* .header-btn-area{
-    margin:10px
-} */
-
-.header-btn{
+/* /* 버튼 영역 */
+.header-btn-area{
     margin: 40px 60px 0 0;
-}
+} 
+
+/* .header-btn{
+    margin: 40px 60px 0 0;
+} */
 
 
 /* title,user정보 영역 */

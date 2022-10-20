@@ -121,6 +121,7 @@ import {mapState,mapActions} from 'vuex'
             onSubmit() {
                 this.CREATE_COMMENT({pid: this.$route.params.pid,content: this.content})
                 .then(() => console.log('onsubmit 댓글 전송'))
+                .finally(() => {})
             },
              //댓글 리스트 조회
             fetchCommentList(){
@@ -152,6 +153,9 @@ import {mapState,mapActions} from 'vuex'
             getUserId() {
                 console.log('이건', localStorage.getItem('UserId') );
             }
+        },
+        mounted(){
+            this.fetchCommentList()
         }
     }
 </script>

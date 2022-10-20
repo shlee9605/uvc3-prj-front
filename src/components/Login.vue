@@ -22,36 +22,6 @@
           <a class="auth-font" href="/Auth">회원가입</a>
         </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
       </div>
-      <div class="another-log">
-          <div class="another-log-icon">
-            <a href="">
-              <v-btn @click="GoogleSignIn" icon x-large>
-                <v-avatar 
-                  color="primary">
-                  <img src="../assets/Google.png" alt="">
-                </v-avatar>
-              </v-btn>
-            </a>
-          </div>
-          <div class="another-log-icon">
-            <a href="">
-              <v-btn icon x-large>
-                <v-avatar color="red white--text" >
-                  <img src="../assets/Naver.png" alt="">
-                </v-avatar>
-              </v-btn>
-            </a>
-          </div>
-          <div class="another-log-icon">
-            <a href="">
-              <v-btn icon x-large>
-                <v-avatar color="black white--text">
-                  <img src="../assets/kakao.png" alt="">
-                </v-avatar>
-              </v-btn>
-            </a>
-          </div>
-      </div>
       </form>
   </div>
 </template>
@@ -88,12 +58,12 @@ export default {
             this.LOGIN({id: this.id, password: this.password})
               // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
             // auth.login(this.email,this.password)
-          .then(
+          .then(() => {
             // console.log('여기는 찍히나?')
             this.$router.push(this.rPath)
             // console.log("성공?")
             // console.log(data)image.png
-          )
+          })
           .catch(err => {
             console.log(err);
           })
