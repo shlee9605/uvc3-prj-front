@@ -1,5 +1,5 @@
 //회원가입 로그인 로그아웃
-import {setAuthInHeader } from '../api'
+import { setAuthInHeader } from '../api'
 import { auth } from '../api/auth'
 
 
@@ -11,10 +11,11 @@ export const Auth = {
 
     state: {
         token: localStorage.getItem('token') || null,
-        UserId: localStorage.getItem('UserId') || null
+        UserId: localStorage.getItem('UserId') || null,
+        UserPhotoUrl: localStorage.getItem('UserPhotoUrl') || 'no-photo',
     },
-    getters:{
-        isAuth (state) {
+    getters: {
+        isAuth(state) {
             return !!state.token //boolean 값으로 반환
         }
     },
@@ -22,12 +23,14 @@ export const Auth = {
 
         //로그인
         //변이 (동기)
-        LOGIN(state,data) {
-            if(!data.token) return
+        LOGIN(state, data) {
+            if (!data.token) return
             state.token = data.token //token 갱신
             localStorage.setItem('token', data.token) //localstorage에 token 저장
             state.UserId = data.id
             localStorage.setItem('UserId', data.id)
+            localStorage.setItem('UserPhotoUrl', data.data)
+            state.UserPhotoUrl = data.data
             setAuthInHeader(data.token) //header에 token 세팅
         },
 
@@ -49,10 +52,14 @@ export const Auth = {
 
     actions: {
 
-        LOGIN({commit}, { id, password }) {
+        LOGIN({ commit }, { id, password }) {
             return auth.login(id, password)
-            //accessToken값을 LOGIN변이에 전달해줌 
-            .then(data => commit('LOGIN', data))
+                //accessToken값을 LOGIN변이에 전달해줌 
+                .then(data => {
+                    console.log(data);
+                    commit('LOGIN', data)
+                })
+
             // .finally(({ id }) => commit('SET_USERID', id))
         },
 

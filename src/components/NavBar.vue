@@ -1,33 +1,40 @@
 <template>
 <v-app>
     <nav>
-        <v-app-bar app flat color="white" style="padding-top:20px; height:100px;">
-            <div class="logo">
+        <v-app-bar elevation="4" app flat color="white">
+            <div class="paddingmargin_left">
                 <router-link to='/'>
-                    <img src="../assets/logo.png" stye="width: 100px; height: 36px;">
+                    <img src="../assets/tmlogo.png">
                 </router-link>
             </div>
-
-            <!-- 왼쪽 -->
-            <div class="menu">
-                <router-link to="/posts" v-if="$route.name === 'posts'">
-                    <v-btn plain text style="color: red;">
-                        <v-icon dark left size="30">mdi-post</v-icon>
-                        게시글
-                    </v-btn>
-                </router-link>
-                <router-link to="/posts" v-else>
-                    <v-btn class="toPost" plain text>
-                        <v-icon dark left size="30">mdi-post</v-icon>
-                        게시글
-                    </v-btn>
+            <div>
+                <router-link to='/'>
+                    <span class="titletext">오늘의 메이트</span>
                 </router-link>
             </div>
 
             <v-spacer></v-spacer>
 
+            <!-- 왼쪽 -->
+            <div class="posttab">
+                <router-link to="/posts" v-if="$route.name === 'posts'">
+                    <v-btn icon plain style="color: red;">
+                        <v-icon dark size="30">mdi-home</v-icon>
+                        
+                    </v-btn>
+                </router-link>
+                <router-link to="/posts" v-else>
+                    <v-btn icon plain class="black--text">
+                        <v-icon dark size="30">mdi-home</v-icon>
+                        
+                    </v-btn>
+                </router-link>
+            </div>
+
+            
+
             <!-- 오른쪽 -->
-            <div v-if="!isAuth">
+            <div v-if="!isAuth" class="paddingmargin_right">
                 <v-btn elevation="2" rounded router to="/Login">
                     <v-icon left size="26">mdi-account-circle</v-icon>
                     시작하기
@@ -36,7 +43,7 @@
             <div v-else style="margin-right:50px">
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn plain icon v-on="on" class="Nav-bell-btn">
+                    <v-btn icon v-on="on" class="Nav-bell-btn">
                         <v-avatar size="32" >
                             <img src="../assets/bell.png">
                         </v-avatar>
@@ -49,7 +56,7 @@
                         <template v-if="relationship.length">
                             <v-list-item v-for="(item,index) in relationship" :key="index">
                                 <v-list-item-avatar>
-                                    <v-img src="../assets/human.jpg"></v-img>
+                                    <v-img src="../assets/tmlogo_sized.png"></v-img>
                                 </v-list-item-avatar>
                                 <v-list-item-content>
                                     <div style="display:flex; margin-right: 15px;">
@@ -80,10 +87,14 @@
 
 
             <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn plain icon v-on="on" class="Nav-btn">
-                        <v-avatar>
+                <template v-slot:activator="{ on }" >
+                    <v-btn plain icon v-on="on">
+                        <v-avatar v-if="`${getUserPhotoUrl}` === 'no-photo'" size="32">
                             <img src="../assets/human.jpg">
+                        </v-avatar>
+                        <v-avatar v-else>
+                            <img
+							:src="`${url}/uploads${UserPhotoUrl}`">
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -123,7 +134,8 @@ import { mapGetters, mapState, mapActions } from 'vuex'
         data(){
             return {
                 GET_LOGIN_STATUS: localStorage.getItem('token') ? true : false,
-                items: ['내 프로필', '로그아웃']
+                items: ['내 프로필', '로그아웃'],
+                // UserPhotoUrl: localStorage.getItem('UserPhotoUrl'),
             }
         },
         watch: {
@@ -151,7 +163,15 @@ import { mapGetters, mapState, mapActions } from 'vuex'
             ]),
             ...mapState('Relationship',{
                 relationship:'relationship'
-            })
+            }),
+            url (){
+				return process.env.VUE_APP_API;
+			},
+            getUserPhotoUrl (){
+                const UserPhotoUrl = localStorage.getItem('UserPhotoUrl');
+                console.log("NavBar - computed ", UserPhotoUrl);
+                return UserPhotoUrl
+            }
         },
         methods: {
             async signOut() {
@@ -168,7 +188,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                     .then((response) => {
                         console.log('logout - response:', response);
                         localStorage.removeItem('token');
-                        
+                        localStorage.removeItem('UserPhotoUrl');
                         localStorage.removeItem('UserId');
 
                         this.GET_LOGIN_STATUS = false
@@ -235,4 +255,27 @@ import { mapGetters, mapState, mapActions } from 'vuex'
     color: red;
     text-decoration: none;
 }
+
+.paddingmargin_left {
+    padding-left: 5%;
+    margin-left: 4%;
+}
+
+.paddingmargin_right {
+    padding-right: 8%;
+    /* padding-left: 8%; */
+}
+.titletext {
+    color: black;
+    display: flex;
+    padding-left: 4%;
+    width: 100px;
+}
+.theme--light.v-btn.v-btn--has-bg {
+    background-color: #FFFFFF
+}
+.posttab {
+    margin-left: 2%;
+}
+
 </style>

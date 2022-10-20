@@ -3,7 +3,7 @@
         <section>
             <v-carousel 
                 hide-delimiters
-                height="92.5vh"
+                height="100vh"
                 :cycle="true"
                 :interval="4000">
                 <v-carousel-item
@@ -21,10 +21,12 @@
         data() {
             return {
                 items:[
-                    {src: require("../assets/selfie.png")},
-                    {src: require("../assets/Personal_trainer.png")},
-                    {src: require("../assets/together.png")},
-                    {src: require("../assets/partying.png")},
+                    {src: require("../assets/1.png")},
+                    {src: require("../assets/2.png")},
+                    {src: require("../assets/3.png")},
+                    {src: require("../assets/4.png")},
+                    {src: require("../assets/5.png")},
+                    {src: require("../assets/6.png")},
                 ]
             }
         }
@@ -68,7 +70,9 @@ section:before{
   color: rgb(84, 82, 82);
 }
 
-
+.background {
+    height:100vh;
+}
 
 /* 
 .v-window__prev:hover {

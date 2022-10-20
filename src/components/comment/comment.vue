@@ -189,4 +189,9 @@ import {mapState,mapActions} from 'vuex'
 .icon-tag {
     padding: 8px 3px 3px 3px;
 }
+
+.theme--light.v-sheet {
+  background-color: white !important;
+}
+
 </style>

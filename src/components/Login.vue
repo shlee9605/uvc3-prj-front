@@ -1,36 +1,73 @@
 <template>
-  <div>
-    <form class="Login-box" @submit.prevent="onSubmit">
-      <div>
-        <h2>Login</h2>
-      </div>
-      <div class="input-table">
-        <div>
-          <label for="id">Id:</label>
-          <input class="form-control" type="text" name="id"
-          v-model="id" placeholder="123@xxx.com">
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input class="form-control" type="password"
-          v-model="password" placeholder="password">
-        </div>
-        <div>
-          <v-btn class="Log-btn" type="submit">Login</v-btn>
-        </div>
-        <div>
-          <a class="auth-font" href="/Auth">회원가입</a>
-        </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-      </div>
-      </form>
-  </div>
+  <v-app>
+    <v-container fluid class="fill-height background container-loginbox">
+        <v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
+          <v-card-title class="justify-center" style="font-size: 2rem">로그인</v-card-title>
+          <v-spacer></v-spacer>
+          <v-card-text class="justify-center">
+            <ValidationObserver
+              ref="signInForm"
+              v-slot="{ handleSubmit, invalid, validate }">
+              <form @submit.prevent="handleSubmit(onSubmit)">
+
+                <ValidationProvider
+                  name="아이디"
+                  rules="required"
+                  v-slot="{ errors }">
+                    <v-text-field
+                      clearable
+                      dense
+                      outlined
+                      label="아이디"
+                      v-model="id"
+                      placeholder="여기에 아이디 입력하삼"
+                      
+                      :error-messages="errors">
+                    </v-text-field>
+                </ValidationProvider>
+
+                <ValidationProvider
+                  name="비밀번호"
+                  rules="required"
+                  v-slot="{ errors }">
+                    <v-text-field
+                      clearable
+                      dense
+                      outlined
+                      label="비밀번호"
+                      type="password"
+                      v-model="password"
+                      placeholder="여기에 비밀번호 입력하삼"
+                      
+                      :error-messages="errors">
+                    </v-text-field>
+                </ValidationProvider>
+
+                  <div>
+                  <v-btn :disabled="invalid || !validate" type="submit" :loading="loading">
+                    접속할래요</v-btn>
+                    <a class="auth-font" href="/Auth">회원가입</a>
+                  </div>
+              </form>
+            </ValidationObserver>
+            </v-card-text>
+        </v-card>
+    </v-container>
+
+    <!-- <v-alert>
+      color="red" dense icon="$mdi-account" type="error"
+    </v-alert> -->
+  </v-app>
 </template>
 
 <script>
 // import axios from 'axios'
 import { mapActions } from 'vuex'
+import Validate from '@/mixin/Validate.vue';
+
 export default {
   name:'Login',
+  mixins: [Validate],
   data() {
     return {
       id: '',
@@ -78,7 +115,7 @@ export default {
     }
 </script>
 
-<style>
+<style scoped>
 .Login-box {
   margin-top: 80px;
   width: 400px;
@@ -141,7 +178,40 @@ textarea.form-control {
   margin: 0 0 0 43px
 }
 
+.background {
+    height:100vh;
+}
 
+.row {
+	justify-content: space-evenly;
+}
+.container-loginbox{
+  display: flex;
+  justify-content: center;
+  background-color: #FFF7EE;
+  /* background-color: #F7D2A7; */
+  /* background-color: #fafafa; */
+  /* background: url("~@/assets/tmbackground_light.png") fixed; */
 
+}
+.card-bottom {
+  width: 400px;
+  height: 400px;
+  box-sizing: border-box;
+  padding-bottom: 5%;
+  /* background-color: #FFFFFF; */
+}
+.theme--light.v-sheet {
+  background-color: white;
+}
+.v-text-field{
+  width: 200px;
+}
+
+.span {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
 
 </style>
