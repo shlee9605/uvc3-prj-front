@@ -36,7 +36,8 @@
                                     type="email"
                                     label="이메일"
                                     v-model="email"
-                                    :error-messages="errors">
+                                    :error-messages="errors"
+                                    @change="checkEmail">
                                 </v-text-field>
                             </ValidationProvider>
 
@@ -50,13 +51,14 @@
                                     outlined
                                     label="아이디"
                                     v-model="id"
-                                    :error-message="errors">
+                                    :error-messages="errors"
+                                    @change="checkId">
                                 </v-text-field>
                             </ValidationProvider>
 
                             <ValidationProvider
                                 name="비밀번호"
-                                rules="required|min:3|max:16"
+                                rules="required"
                                 v-slot="{ errors }">
                                 <v-text-field
                                     clearable
@@ -65,13 +67,13 @@
                                     label="비밀번호"
                                     type="password"
                                     v-model="password"
-                                    :error-message="errors">
+                                    :error-messages="errors">
                                 </v-text-field>
                             </ValidationProvider>
 
                             <ValidationProvider
-                                name="password"
-                                rules="required|confirmed:비밀번호"
+                                name="비밀번호"
+                                rules="required|confirmed:'비밀번호'"
                                 v-slot="{ errors }">
                                 <v-text-field
                                     clearable
@@ -95,7 +97,7 @@
                                     label="성별"
                                     v-model="gender"
                                     :items="genderSel"
-                                    :error-message="errors">
+                                    :error-messages="errors">
                                 </v-select>
                             </ValidationProvider>
 
@@ -212,10 +214,6 @@ export default {
 	created() {
     this.rPath = this.$route.query.rPath || '/'
   },
-    components: {
-        // UploadPhotoModal
-        // PictureInput,
-    },
     methods: {
     async signUp() {
             if (this.loading) return;
@@ -243,18 +241,53 @@ export default {
 				})
 				.catch((error) => {
 					console.log('auth/signUp - error: ', error);
-
-                    // 에러문구 표시
-                    this.$refs.signUpForm.setErrors({
-                        이메일: ['이미 가입된 이메일 입니다.'],
-                        아이디: ['이미 가입된 아이디 입니다.'],
-                    });
 				})
 				.finally(() => {
 					this.loading = false;
 					console.log('here?')
                     this.$router.push({ name: 'Login'});
 				})
+        },
+
+    async checkId() {
+        const axiosBody = {
+            id: this.id,
+        }
+        console.log(axiosBody);
+
+        await axios
+            .post(process.env.VUE_APP_API + '/auth/userIdChk/', axiosBody)
+            .then(async (response) => {
+                console.log('checkId - response', response);
+            })
+            .catch((error) => {
+                console.log('checkId - error:', error);
+                // 에러문구 표시
+                this.$refs.signUpForm.setErrors({
+                    아이디: ['이미 존재하는 아이디 입니다.'],
+                });
+            })
+        },
+
+    async checkEmail() {
+        const axiosBody = {
+            email: this.email,
+        }
+        console.log(axiosBody);
+
+        await axios
+            .post(process.env.VUE_APP_API + '/auth/emailChk', axiosBody)
+            .then(async (response) => {
+                console.log('checkEmail - response', response);
+            })
+            .catch((error) => {
+                console.log('checkEmail - error:', error);
+
+                // 에러문구 표시
+                this.$refs.signUpForm.setErrors({
+                    이메일: ['이미 가입된 이메일 입니다.'],
+                });
+            })
         },
     }
 }
