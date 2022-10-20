@@ -1,5 +1,5 @@
 <template>
-    <v-app inspire style="height: 900px;">
+    <v-app inspire style="height: 900px; margin-top:80px;">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
 		<ValidationObserver
