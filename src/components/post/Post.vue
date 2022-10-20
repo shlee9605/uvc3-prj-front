@@ -189,8 +189,8 @@ import axios from 'axios'
 			},
         },
         
-        created() {
-            this.fetchpost(),
+        async created() {
+            await this.fetchpost(),
             this.fetchAttendList(),
             this.attendUserInfo(),
             console.log(this.attendUser)
@@ -232,7 +232,7 @@ import axios from 'axios'
 
 
             //게시글 상세 get
-            fetchpost(){
+            async fetchpost(){
                 this.FETCH_POST({id:this.$route.params.pid}).then( () => {
                     console.log('포스트상세 req 전송');
                 })
