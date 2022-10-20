@@ -89,7 +89,7 @@
             <v-menu offset-y>
                 <template v-slot:activator="{ on }" >
                     <v-btn plain icon v-on="on">
-                        <v-avatar v-if="`${UserPhotoUrl}` === 'no-photo.jpg'" size="32">
+                        <v-avatar v-if="`${getUserPhotoUrl}` === 'no-photo'" size="32">
                             <img src="../assets/human.jpg">
                         </v-avatar>
                         <v-avatar v-else>
@@ -135,7 +135,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
             return {
                 GET_LOGIN_STATUS: localStorage.getItem('token') ? true : false,
                 items: ['내 프로필', '로그아웃'],
-                UserPhotoUrl: localStorage.getItem('UserPhotoUrl'),
+                // UserPhotoUrl: localStorage.getItem('UserPhotoUrl'),
             }
         },
         watch: {
@@ -167,6 +167,11 @@ import { mapGetters, mapState, mapActions } from 'vuex'
             url (){
 				return process.env.VUE_APP_API;
 			},
+            getUserPhotoUrl (){
+                const UserPhotoUrl = localStorage.getItem('UserPhotoUrl');
+                console.log("NavBar - computed ", UserPhotoUrl);
+                return UserPhotoUrl
+            }
         },
         methods: {
             async signOut() {
@@ -183,7 +188,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                     .then((response) => {
                         console.log('logout - response:', response);
                         localStorage.removeItem('token');
-                        
+                        localStorage.removeItem('UserPhotoUrl');
                         localStorage.removeItem('UserId');
 
                         this.GET_LOGIN_STATUS = false
