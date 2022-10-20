@@ -13,8 +13,6 @@ const onUnauthorized = () => {
     router.push(`/login?returnPath=${encodeURIComponent(location.pathname)}`)
 }
 
-
-
 //axios
 export const request = (method, url, data) => {
     return axios({
