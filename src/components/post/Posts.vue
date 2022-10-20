@@ -282,7 +282,7 @@ import {mapState,mapActions} from 'vuex'
     }
 </script>
 
-<style>
+<style scoped>
 .header-size{
     width:50%;
     margin: 80px 25% 0 25%;

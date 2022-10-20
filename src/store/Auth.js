@@ -12,7 +12,7 @@ export const Auth = {
     state: {
         token: localStorage.getItem('token') || null,
         UserId: localStorage.getItem('UserId') || null,
-        UserPhotoUrl: localStorage.getItem('UserPhotoUrl') || 'no_photo.jpg',
+        UserPhotoUrl: localStorage.getItem('UserPhotoUrl') || 'no-photo',
     },
     getters: {
         isAuth(state) {

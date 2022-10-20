@@ -210,7 +210,7 @@ export default {
 
 }
 </script>
-<style >
+<style scoped >
     .main {
 		/* border: 1px solid black; */
         align-items: center;
