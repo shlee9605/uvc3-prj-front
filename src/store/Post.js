@@ -40,12 +40,14 @@ export const Post = {
 
         FETCH_POSTLIST({ commit }, { cateName }) {
             console.log('store actions');
+
             return postlist.fetch(cateName).then(response => {
                 // date에 time DATA를 넣어줌
                 const Time = setTimeArr(response.data)
 
                 //date를 기준으로 정렬
                 const result = sortDate(Time)
+
 
 
                 commit('SET_POSTLIST', result)
@@ -72,6 +74,7 @@ export const Post = {
 
 // /**시간 순으로 정렬 */
 function sortDate(arr) {
+
     arr.sort((a, b) => new Date(a.date) - new Date(b.date))
     return arr
 }
