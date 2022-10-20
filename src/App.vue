@@ -24,7 +24,15 @@ export default {
 };
 </script>
 <style>
-.body{
+/* .body{
   margin-top:80px;
+} */
+
+/* html,body,#app{
+ height: 100vh;
+} */
+
+body {
+  height: 100vh;
 }
 </style>

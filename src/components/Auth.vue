@@ -1,8 +1,9 @@
 <template>
 <v-app>
-    <v-container fluid class="fill-height teal">
+    <v-container fluid class="fill-height background auth-box">
+        <!-- <v-flex class="green flex darken-3 overflow-auto"> -->
             <v-col cols="12" xs="12" sm="8" md="8" lg="7" class="ma-auto">
-                <v-card outlined class="pa-10 mt-10">
+                <v-card outlined class="pa-10 mt-10" style="height: 600px; overflow-y: scroll">
                     <v-card-title class="justify-center" style="font-size: 2rem">회원가입</v-card-title>
                     <v-spacer></v-spacer>
                     <v-card-text>
@@ -58,7 +59,7 @@
 
                             <ValidationProvider
                                 name="비밀번호"
-                                rules="required"
+                                rules="required|min:8|max:16"
                                 v-slot="{ errors }">
                                 <v-text-field
                                     clearable
@@ -73,7 +74,7 @@
 
                             <ValidationProvider
                                 name="비밀번호"
-                                rules="required|confirmed:'비밀번호'"
+                                rules="required|confirmed:비밀번호"
                                 v-slot="{ errors }">
                                 <v-text-field
                                     clearable
@@ -171,6 +172,7 @@
                     </v-card-text>
                 </v-card>
             </v-col>
+            <!-- </v-flex> -->
     </v-container>
 </v-app>
 </template>
@@ -293,7 +295,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .auth-font{
   font-size: 8px;
   float: right;
@@ -303,5 +305,21 @@ export default {
 .row {
 	justify-content: space-evenly;
 }
+
+.background {
+    height:100vh;
+}
+.theme--light.v-sheet {
+  background-color: white !important;
+}
+.auth-box {
+    display: flex;
+    justify-content: center;
+    background-color: #FFF7EE;
+    /* background-color: #FFF4E8; */
+    /* background: url("~@/assets/tmbackground_light.png") fixed; */
+    /* background: url("~@/assets/tmlogo_sized.png") repeat center center fixed !important; */
+}
+
 
 </style>
