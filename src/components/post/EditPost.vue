@@ -5,12 +5,6 @@
 		<div class="input-header">
 			
 			<div class="checkbox" style="margin-left: 30px;">
-				<v-container fluid>
-					<v-checkbox
-						v-model="checkbox1"
-						:label="`비공개: ${checkbox1.toString()}`"
-					></v-checkbox>
-				</v-container>
 			</div>
 			<v-spacer></v-spacer>
 			<div class="div-save-btn">
@@ -216,9 +210,6 @@ import {mapState, mapActions} from 'vuex'
 			// 정원
 			counter: 1,
 
-			//공개 비공개
-			visibility:'',
-
 			//카테고리
 			categoryId: '',
 
@@ -248,12 +239,6 @@ import {mapState, mapActions} from 'vuex'
             this.fetchpost(),
             this.dateNtime(),
 			this.title=this.post.title
-			if(this.post.visibility=='Y'){
-				this.checkbox1=true
-			}
-			else{
-				this.checkbox1=false
-			}
 			this.cost=this.post.cost
 			this.date=this.post.date
 			this.categoryId=this.categoryList[this.post.CategoryId-1]
@@ -294,8 +279,6 @@ import {mapState, mapActions} from 'vuex'
             },
 
 			onSubmit() {
-				//공개 비공개 Y or N 
-				const visibility = this.checkbox1 ? 'Y': 'N'
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
 				
@@ -308,7 +291,7 @@ import {mapState, mapActions} from 'vuex'
 				// const cost = parseInt(this.cost)
 				console.log(typeof this.cost);
 
-				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
+				console.log("전송",this.title,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
 				console.log("전송")
 				// this.fetchPostlist()
 				
@@ -326,7 +309,6 @@ import {mapState, mapActions} from 'vuex'
 					capacity:this.counter,
 					date:this.date,
 					time,
-					visibility,
 				}).then(this.$router.push('/posts'))
 				.catch(err => {
 					console.log(err);

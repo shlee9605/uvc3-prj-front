@@ -367,9 +367,9 @@ export default {
 					if(this.showMyAttendListStatus){
 						this.showMyAttendListStatus = false;
 					}else{
-						console.log("loadMyAttendList - response ", response.data.myHistoryList);
-						console.log(response.data.myHistoryList);
-						this.myHistoryList = response.data.myHistoryList;
+						console.log("loadMyAttendList - response ", response.data.myHistoryList_2);
+						console.log(response.data.myHistoryList_2);
+						this.myHistoryList = response.data.myHistoryList_2;
 						this.showMyAttendListStatus = true;
 					}
 

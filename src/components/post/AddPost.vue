@@ -5,12 +5,6 @@
 		<div class="input-header">
 			
 			<div class="checkbox" style="margin-left: 30px;">
-				<v-container fluid>
-					<v-checkbox
-						v-model="checkbox1"
-						:label="`비공개: ${checkbox1.toString()}`"
-					></v-checkbox>
-				</v-container>
 			</div>
 			<v-spacer></v-spacer>
 			<div class="div-save-btn">
@@ -216,8 +210,6 @@ import {mapActions} from 'vuex'
 			
 			// 정원
 			counter: 1,
-			//공개 비공개
-			visibility:'',
 			//카테고리
 			categoryId: '',
             //timevalue
@@ -237,8 +229,6 @@ import {mapActions} from 'vuex'
 				"FETCH_POSTLIST"
 			]),
 			onSubmit() {
-				//공개 비공개 Y or N 
-				const visibility = this.checkbox1 ? 'Y': 'N'
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
 				
@@ -246,7 +236,7 @@ import {mapActions} from 'vuex'
 				
 				// const cost = parseInt(this.cost)
 				console.log(typeof this.cost);
-				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
+				console.log("전송",this.title,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
 				console.log("전송")
 				// this.fetchPostlist()
 				
@@ -263,7 +253,6 @@ import {mapActions} from 'vuex'
 					capacity:this.counter,
 					date:this.date,
 					time,
-					visibility,
 					CategoryId
 				}).then(this.$router.push('/posts'))
 				.catch(err => {
