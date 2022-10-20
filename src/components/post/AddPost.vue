@@ -89,19 +89,24 @@
 										</v-date-picker>
 									</v-menu>
 								</v-col>
+								<!-- <h5 v-if="TimeValue.HH === '' || TimeValue.mm === '' ">입력해주세요</h5> -->
 								<div class="category-time">
 									<vue-timepicker
+										v-if="TimeValue"
 										v-model="TimeValue"
+										@error="errorHanlder"
 										:minute-interval="10"
-										format="HH:mm"
-										@change="changeHandler"
-									>
+										:required="true"
+										close-on-complete
+										@change="changeHandler"> 
+			
 									</vue-timepicker>
 									<div v-if="(TimeValue.HH=== ''||TimeValue.mm==='')&&timestatus">
 										<h6 style="color:red;">
 											시간 항목을 입력해주세요.
 										</h6>
 									</div>
+
 								</div>
 							</div>
 							<div style="display: flex;">
@@ -265,8 +270,7 @@ import {mapActions} from 'vuex'
             //timevalue
             TimeValue: {
                 HH:'',
-                mm:'',
-                ss:'"00"'
+                mm:''
             },
 
 			timesatatus : false,
@@ -275,6 +279,11 @@ import {mapActions} from 'vuex'
             //description
             content:''
         }),
+		watch:{
+			TimeValue: function () {
+				this.timestatus = false
+			}
+		},
         methods:{
 			...mapActions('Post',[
 				'CREATE_POST',
@@ -283,7 +292,6 @@ import {mapActions} from 'vuex'
 			onSubmit() {
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
-				
 				const time = `${this.TimeValue.HH}:${this.TimeValue.mm}:00`
 				
 				// const cost = parseInt(this.cost)
@@ -294,7 +302,7 @@ import {mapActions} from 'vuex'
 				
 				
 				//confirm이 취소일 경우 리턴, 확인일 경우 진행
-				if (!window.confirm('저장하시겠습니까?')) return
+				// if (!window.confirm('저장하시겠습니까?')) return
 				
 				this.CREATE_POST({
 					title:this.title,
@@ -326,9 +334,11 @@ import {mapActions} from 'vuex'
                 this.TimeValue.HH = data.HH
                 this.TimeValue.mm = data.mm
                 this.TimeValue.ss = data.ss
-				this.timestatus=true;
-				return 1;
+				        this.timestatus=true;
+				        return 1;
+
             },
+            
 			changeCounter: function(num){
 				this.counter += +num
 				console.log(this.counter)
@@ -338,6 +348,9 @@ import {mapActions} from 'vuex'
 			fetchPostlist(){
                 this.FETCH_POSTLIST({cateName:'all'})
             },
+			errorHanlder(eventData){
+				alert('뭐죠?',eventData);
+			},
         }
     }
 </script>

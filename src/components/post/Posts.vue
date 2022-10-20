@@ -131,17 +131,16 @@ import {mapState,mapActions} from 'vuex'
             ...mapState('Post',{
                 postlist:'postlist'
             }),
-            ...mapState('Attend',{
-                attendList:'attendList'
-            })
+            // ...mapState('Attend',{
+            //     attendList:'attendList'
+            // })
         },
         async created(){
             await this.fetchPostlist(),
-            this.sortingorigin(),       
-            //날짜별 정렬
-            // this.fetchAttendList(),
+            this.sortingorigin(),//날짜별 정렬
+
             console.log('리스트',this.postlist);
-            console.log('언탠드 리스트',this.attendList);
+            // console.log('언탠드 리스트',this.attendList);
 
             // this.sortingpostlist(),     //카테고리/지역별 정렬
             this.date()
@@ -150,9 +149,9 @@ import {mapState,mapActions} from 'vuex'
             ...mapActions('Post',[
                 "FETCH_POSTLIST"
             ]),
-            ...mapActions('Attend',[
-                'FETCH_ATTENDLIST',
-            ]),
+            // ...mapActions('Attend',[
+            //     'FETCH_ATTENDLIST',
+            // ]),
 
 
             async fetchPostlist(){
@@ -161,13 +160,13 @@ import {mapState,mapActions} from 'vuex'
             },
 
             // //참가자 리스트 조회
-            fetchAttendList(){
-                return this.FETCH_ATTENDLIST({id: this.$route.params.pid}).then(() => {
-                    console.log('참가자 리스트 req');
-                }).catch(err => {
-                    console.log('참가자 리스트 조회 req 실패',err);
-                })
-            },
+            // fetchAttendList(){
+            //     return this.FETCH_ATTENDLIST({id: this.$route.params.pid}).then(() => {
+            //         console.log('참가자 리스트 req');
+            //     }).catch(err => {
+            //         console.log('참가자 리스트 조회 req 실패',err);
+            //     })
+            // },
 
             
             
@@ -242,11 +241,11 @@ import {mapState,mapActions} from 'vuex'
             },
 
         },
-        mounted(){
-            this.fetchPostlist(),
-            this.sortingorigin(),       //날짜별 정렬
-            this.fetchAttendList()
-        }
+        // mounted(){
+        //     this.fetchPostlist(),
+        //     this.sortingorigin()       //날짜별 정렬
+        //     // this.fetchAttendList()
+        // }
         
     }
 </script>

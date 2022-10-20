@@ -38,16 +38,17 @@ export const Post = {
         },
 
 
-        async FETCH_POSTLIST({commit},{cateName}){
-            return await postlist.fetch(cateName).then( response =>{
+        FETCH_POSTLIST({commit},{cateName}){
+            console.log('store actions');
+            return postlist.fetch(cateName).then( response =>{
                 //date에 time DATA를 넣어줌
-                const Time = setTimeArr(response.data)
+                // const Time = setTimeArr(response.data)
 
-                //date를 기준으로 정렬
-                const result = sortDate(Time)
+                // //date를 기준으로 정렬
+                // const result = sortDate(Time)
  
 
-                commit('SET_POSTLIST', result)
+                commit('SET_POSTLIST', response.data)
             })
         },
         
@@ -69,29 +70,29 @@ export const Post = {
 
 
 
-/**시간 순으로 정렬 */
-function sortDate(arr) {
-    arr.sort((a,b) => new Date(a.date) - new Date(b.date))
-    return arr
-}
+// /**시간 순으로 정렬 */
+// function sortDate(arr) {
+//     arr.sort((a,b) => new Date(a.date) - new Date(b.date))
+//     return arr
+// }
 
-/**배열의 시간data를 날짜 data에 넣어줌 */
-function setTimeArr(arr) {
-    // const result = []
+// /**배열의 시간data를 날짜 data에 넣어줌 */
+// function setTimeArr(arr) {
+//     // const result = []
     
-    for(let i = 0 ; i < arr.length;i++){
+//     for(let i = 0 ; i < arr.length;i++){
         
-        const dateH = dayjs(arr[i].date)
+//         const dateH = dayjs(arr[i].date)
         
-        let Newdate = dateH.set('h', arr[i].time.slice(0,2)).format()
+//         let Newdate = dateH.set('h', arr[i].time.slice(0,2)).format()
         
-        const dateM = dayjs(Newdate)
+//         const dateM = dayjs(Newdate)
         
-        arr[i].date = dateM.set('m', arr[i].time.slice(3,5)).format() 
-        // result.push(arr[i])
-    }
-    return arr
-}
+//         arr[i].date = dateM.set('m', arr[i].time.slice(3,5)).format() 
+//         // result.push(arr[i])
+//     }
+//     return arr
+// }
 
 /**data의 시간data를 날짜 data에 넣어줌 */
 function setTimeData(a) {
