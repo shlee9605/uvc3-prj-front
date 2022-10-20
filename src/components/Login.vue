@@ -22,37 +22,6 @@
           <a class="auth-font" href="/Auth">회원가입</a>
         </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
       </div>
-      <div class="another-log">
-          <div class="another-log-icon">
-            <a href="">
-              <v-btn @click="GoogleSignIn" icon x-large>
-                <v-avatar 
-                  color="primary">
-                  <img src="../assets/Google.png" alt="">
-                </v-avatar>
-              </v-btn>
-            </a>
-          </div>
-          
-          <div @click="naverCallback" class="another-log-icon">
-            <!-- <a href=""> -->
-              <v-btn icon x-large>
-                <v-avatar color="red white--text" >
-                  <img src="../assets/Naver.png" alt="">
-                </v-avatar>
-              </v-btn>
-            <!-- </a> -->
-          </div>
-          <div class="another-log-icon">
-            <a href="">
-              <v-btn icon x-large>
-                <v-avatar color="black white--text">
-                  <img src="../assets/kakao.png" alt="">
-                </v-avatar>
-              </v-btn>
-            </a>
-          </div>
-      </div>
       </form>
   </div>
 </template>

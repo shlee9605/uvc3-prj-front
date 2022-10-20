@@ -38,7 +38,7 @@
             </div>
 				<hr style="margin-bottom:20px">
             <div class="menuList">
-				<div class="menuListDiv2">	 </div>
+				<div class="menuListDiv2"></div>
 				<div class="menuListDiv3">
 					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
 				</div>

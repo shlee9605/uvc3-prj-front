@@ -26,7 +26,7 @@
                         v-for=" (comment,index) in commentlist" :key="index">
                         <td style="display:flex;">
                             <div style="display:flex;">
-                                <h4>{{comment.UserId}} : {{comment.content}}</h4>
+                                <h4> {{comment.UserId}} : {{comment.content}}</h4>
                             </div>
                             <v-spacer></v-spacer>
                             <div class="UD-btn" v-if="comment.UserId === UserId && !inputnewCon">
@@ -106,6 +106,7 @@ import {mapState,mapActions} from 'vuex'
             ...mapState('Comment',{
                 commentlist: 'commentlist'
             }),
+            
         },
         created(){
             this.fetchCommentList()
