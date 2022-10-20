@@ -1,6 +1,6 @@
 <template>
-<v-app>
-    <div class="main">
+<v-app >
+    <div class="main" >
         <div class="profileStatusOutline">
             <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
@@ -16,7 +16,7 @@
                 <div class="profileInfoDiv">
 
 					<div class="profileInfoDiv2">
-						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" disabled>
+						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" readonly>
 							<v-spacer></v-spacer>
 						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
 						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
@@ -24,26 +24,31 @@
 
 					</div>
 					<div class="profileInfoDiv3">
-						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode" :outline-style="this.outlineStyle">
-						<v-spacer></v-spacer>
-				
+						<textarea v-if="this.editMode" class="profileTextArea" cols="50" rows="3" v-model="profileMessage" readonly></textarea>
+						<v-textarea filled v-else class="profileTextArea2" cols="50" rows="3" v-model="profileMessage" counter="150"></v-textarea>
+						<!-- <input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode" :outline-style="this.outlineStyle"> -->
 					</div>
 					<div class="profileInfoDiv4">
 						<span style="font-size:20px; ">생년월일</span>
-							<input class="ageForm" type="text" name="Age" v-model="birthdate" placeholder="Age" disabled>
+							<input class="ageForm" type="text" name="Age" v-model="birthdate" placeholder="Age"  readonly>
 						<span style="font-size:20px;">성별</span>
-							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" disabled>
+							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" readonly>
 					</div>
 				</div>
             </div>
-				<hr style="margin-bottom:20px">
+				<!-- <hr style="margin-bottom:20px"> -->
             <div class="menuList">
-				<div class="menuListDiv2">	 </div>
+				<div class="menuListDiv2">
+					<button v-if="showMyAttendListStatus === false" class="attendBtn" @click="loadMyAttendList"><span style="color: grey;">신청 목록({{this.myHistoryList.length}})</span></button>
+					<button v-else class="attendBtn2" @click="loadMyAttendList">신청 목록({{this.myHistoryList.length}})</button>
+				</div>
 				<div class="menuListDiv3">
-					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
+					<button v-if="showFriendListStatus === false" class="friendBtn" @click="loadFriendList"><span style="color: grey;">친구({{this.friendInfoList.length}})</span></button>
+					<button v-else class="friendBtn2" @click="loadFriendList">친구({{this.friendInfoList.length}})</button>
 				</div>
 				<div class="menuListDiv4">
-					<v-btn class="postBtn" @click="loadMyPostList">게시물({{this.myPostList.length}})</v-btn>
+					<button v-if="showMyPostListStatus === false" class="postBtn" @click="loadMyPostList"><span style="color: grey;">게시물({{this.myPostList.length}})</span></button>
+					<button v-else class="postBtn2" @click="loadMyPostList">게시물({{this.myPostList.length}})</button>
 				</div>
 			</div>
 			<div v-if="showMyAttendListStatus === true" class="menuDetail3">
@@ -66,7 +71,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.id}}</td>
+                                        <td>{{item.UserId}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
@@ -121,7 +126,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.id}}</td>
+                                        <td>{{item.UserId}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
@@ -246,7 +251,9 @@ export default {
 			async editProfile(){
 				console.log(this.editMode);
 				this.editMode = false;
+				this.outlineStyle = "solid";
 				console.log(this.editMode);
+				console.log(this.outlineStyle);
 			},
 
 			async editProfileMessageComplete(){
@@ -262,7 +269,9 @@ export default {
 				.then((response)=>{
 					console.log(response);
 					this.editMode = true;
+					this.outlineStyle = "none";
 					this.getMyProfile();
+					console.log(this.outlineStyle)
 				})
 				.catch((error)=>{
 					console.log(error);
@@ -361,9 +370,9 @@ export default {
 					if(this.showMyAttendListStatus){
 						this.showMyAttendListStatus = false;
 					}else{
-						console.log("loadMyAttendList - response ", response.data.myHistoryList);
-						console.log(response.data.myHistoryList);
-						this.myHistoryList = response.data.myHistoryList;
+						console.log("loadMyAttendList - response ", response.data.myHistoryList_2);
+						console.log(response.data.myHistoryList_2);
+						this.myHistoryList = response.data.myHistoryList_2;
 						this.showMyAttendListStatus = true;
 					}
 
@@ -391,6 +400,7 @@ export default {
 <style >
     .main {
 		/* border: 1px solid black; */
+		height: auto;
         align-items: center;
         display: flex;
         justify-content: center;
@@ -473,6 +483,7 @@ export default {
 		}
 
 		.profileInfoDiv3{
+			padding-top: 20px;
 			box-sizing: border-box;
       /* background-color: purple; */
 			height: 150px;
@@ -503,25 +514,78 @@ export default {
       /* background-color: aqua; */
 		}
 		.friendBtn{
-			height: 110px !important;
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
+			height: 74px !important;
+			width: 360px;
+		}
+		.friendBtn2 {
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
 			width: 360px;
 		}
 		.postBtn{
-			height: 110px !important;
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
+			height: 74px !important;
 			width: 360px;
 		}
+		.postBtn2{
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg, lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
+			width: 360px;
+		}
+		.attendBtn{
+			/* border: 1px solid #000000; */
+			border-radius: 5.5px;
+			height: 74px !important;
+			width: 360px;
+		}
+
+		.attendBtn2{
+			border-top: 1px solid;
+			/* border: 1px solid #000000; */
+			/* background: linear-gradient(45deg ,lightCyan, skyBlue, deepSkyBlue); */
+			/* background-color:#E100FF; */
+			/* border-radius: 5.5px; */
+			font-size: 20px;
+			height: 74px !important;
+			width: 360px;
+		}
+
 		.userIdForm{
 			font-size: 40px;
 		}
 		.profileMessageForm{
-			margin-top: 30px;
-			width: 400px;
 			font-size: 20px;
+			height: 120px;
+			width: 400px;
 		}
+
+		.profileTextArea{
+			font-size:16px;
+		}
+
+		.profileTextArea2{
+			font-size:16px;
+		}
+
 		.genderForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 		.ageForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 

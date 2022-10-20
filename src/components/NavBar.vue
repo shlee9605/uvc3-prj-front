@@ -40,8 +40,7 @@
                     시작하기
                 </v-btn>
             </div>
-            <div v-else>
-
+            <div v-else style="margin-right:50px">
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
                     <v-btn icon v-on="on" class="Nav-bell-btn">
@@ -197,10 +196,10 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                 'ACCEPT_REQ',
                 'REJECT_REQ',
             ]),
-
+            //친구 요청 상태값
             fetchRelationship(){
                 return this.FETCH_STATUS(localStorage.getItem('UserId')).then(() => {
-                    console.log('req UserId : ',localStorage.getItem('UserId'));
+                    console.log('(store friend) req UserId : ',localStorage.getItem('UserId'));
                 })
             },
             //친구 요청 수락
@@ -219,6 +218,14 @@ import { mapGetters, mapState, mapActions } from 'vuex'
 </script>
 
 <style>
+.logo{
+    margin: 5px 0 0 50px;
+}
+
+.menu{
+    margin-left: 30px;
+}
+
 .v-application--wrap {
     min-height: 0vh;
 }
@@ -230,7 +237,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
 .v-btn__content{
     cursor: pointer;
 }
-
+.toPost
 .v-btn__content:hover {
     color: red;
     text-decoration: none;

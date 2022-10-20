@@ -26,7 +26,7 @@
                     {src: require("../assets/selfie.png")},
                     {src: require("../assets/Personal_trainer.png")},
                     {src: require("../assets/together.png")},
-                    {src: require("../assets/partying2.png")},
+                    {src: require("../assets/partying.png")},
                 ]
             }
         }

@@ -84,16 +84,19 @@
                                     <td style="text-align: right;">{{item.region}}</td>
                                     <td>{{item.cost}}원</td>
                                 </div>
-                                <div class="table-a-btn">    
-                                    <td class="apply-btn">
-                                        신청하기
+                                <div class="table-a-btn" >    
+                                    <td class="apply-btn-end" v-if="new Date(item.date) < new Date()">
+                                        마감
                                     </td>
-                                    <!-- <td class="apply-btn" v-else-if="">
+                                    <td class="apply-btn-end" v-else-if="item.capacity === item.count">
+                                        마감
+                                    </td>
+                                    <td class="apply-btn-before-end" v-else-if="item.capacity - item.count <= 2">
                                         마감임박
                                     </td>
                                     <td class="apply-btn" v-else>
-                                        마감
-                                    </td> -->
+                                        신청가능
+                                    </td>
                                 </div>
                             </router-link>
                     </tbody>
@@ -127,11 +130,18 @@ import {mapState,mapActions} from 'vuex'
         computed:{
             ...mapState('Post',{
                 postlist:'postlist'
-            })
+            }),
+            // ...mapState('Attend',{
+            //     attendList:'attendList'
+            // })
         },
         async created(){
             await this.fetchPostlist(),
-            this.sortingorigin(),       //날짜별 정렬
+            this.sortingorigin(),//날짜별 정렬
+
+            console.log('리스트',this.postlist);
+            // console.log('언탠드 리스트',this.attendList);
+
             // this.sortingpostlist(),     //카테고리/지역별 정렬
             this.date()
         },
@@ -139,11 +149,26 @@ import {mapState,mapActions} from 'vuex'
             ...mapActions('Post',[
                 "FETCH_POSTLIST"
             ]),
-            
+            // ...mapActions('Attend',[
+            //     'FETCH_ATTENDLIST',
+            // ]),
+
+
             async fetchPostlist(){
                 await this.FETCH_POSTLIST({cateName:'all'})
                 .then(console.log('postlist req 전송!'))
             },
+
+            // //참가자 리스트 조회
+            // fetchAttendList(){
+            //     return this.FETCH_ATTENDLIST({id: this.$route.params.pid}).then(() => {
+            //         console.log('참가자 리스트 req');
+            //     }).catch(err => {
+            //         console.log('참가자 리스트 조회 req 실패',err);
+            //     })
+            // },
+
+            
             
             //카테고리/지역 정렬
             // sortingpostlist(){
@@ -213,8 +238,15 @@ import {mapState,mapActions} from 'vuex'
                 }
                 console.log(time);
                 this.times = time
-            }
+            },
+
         },
+        // mounted(){
+        //     this.fetchPostlist(),
+        //     this.sortingorigin()       //날짜별 정렬
+        //     // this.fetchAttendList()
+        // }
+        
     }
 </script>
 
@@ -317,6 +349,26 @@ import {mapState,mapActions} from 'vuex'
     padding-top: .4em;
     color: white;
     background-color: rgb(67, 91, 211);
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.apply-btn-before-end{
+    text-align: center;
+    padding-top: .4em;
+    color: white;
+    background-color: orangered;
+    height: 30px;
+    width: 100px;
+    border-radius: 15px;
+}
+
+.apply-btn-end{
+    text-align: center;
+    padding-top: .4em;
+    color: rgb(39, 38, 38);
+    background-color: rgb(156, 155, 155);
     height: 30px;
     width: 100px;
     border-radius: 15px;

@@ -95,12 +95,12 @@ export default {
             this.LOGIN({id: this.id, password: this.password})
               // this.$store.dispatch('LOGIN',{email: this.email, password: this.password})
             // auth.login(this.email,this.password)
-          .then(
+          .then(() => {
             // console.log('여기는 찍히나?')
             this.$router.push(this.rPath)
             // console.log("성공?")
             // console.log(data)image.png
-          )
+          })
           .catch(err => {
             console.log(err);
           })
