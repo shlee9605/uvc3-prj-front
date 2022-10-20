@@ -16,7 +16,7 @@
                 <div class="profileInfoDiv">
 
 					<div class="profileInfoDiv2">
-						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" disabled>
+						<input class="userIdForm" type="text" name="id" v-model="id" placeholder="Your Id" readonly>
 							<v-spacer></v-spacer>
 						<v-btn v-if="this.editMode" @click="editProfile"> 프로필 편집 </v-btn>
 						<v-btn v-else @click="editProfileMessageComplete"> 편집 완료 </v-btn>
@@ -24,21 +24,23 @@
 
 					</div>
 					<div class="profileInfoDiv3">
-						<input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode" :outline-style="this.outlineStyle">
-						<v-spacer></v-spacer>
-				
+						<textarea v-if="this.editMode" class="profileTextArea" cols="50" rows="3" v-model="profileMessage" readonly></textarea>
+						<v-textarea filled v-else class="profileTextArea2" cols="50" rows="3" v-model="profileMessage" counter="150"></v-textarea>
+						<!-- <input class="profileMessageForm" type="text" name="profileMessage" v-model="profileMessage" :disabled="this.editMode" :outline-style="this.outlineStyle"> -->
 					</div>
 					<div class="profileInfoDiv4">
 						<span style="font-size:20px; ">생년월일</span>
-							<input class="ageForm" type="text" name="Age" v-model="birthdate" placeholder="Age" disabled>
+							<input class="ageForm" type="text" name="Age" v-model="birthdate" placeholder="Age"  readonly>
 						<span style="font-size:20px;">성별</span>
-							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" disabled>
+							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" readonly>
 					</div>
 				</div>
             </div>
-				<hr style="margin-bottom:20px">
+				<!-- <hr style="margin-bottom:20px"> -->
             <div class="menuList">
-				<div class="menuListDiv2">	 </div>
+				<div class="menuListDiv2">
+					<v-btn class="friendBtn" @click="loadMyAttendList">신청 목록({{this.myHistoryList.length}})</v-btn>
+				</div>
 				<div class="menuListDiv3">
 					<v-btn class="friendBtn" @click="loadFriendList">친구({{this.friendInfoList.length}})</v-btn>
 				</div>
@@ -66,7 +68,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.id}}</td>
+                                        <td>{{item.UserId}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
@@ -121,7 +123,7 @@
                                     </div>
                                     <div class="postList-user" 
                                         style="font-size: 5px; color: #7b7b7b;">
-                                        <td>{{item.id}}</td>
+                                        <td>{{item.UserId}}</td>
                                     </div>
                                 </div>
                                 <v-spacer></v-spacer> 
@@ -246,7 +248,9 @@ export default {
 			async editProfile(){
 				console.log(this.editMode);
 				this.editMode = false;
+				this.outlineStyle = "solid";
 				console.log(this.editMode);
+				console.log(this.outlineStyle);
 			},
 
 			async editProfileMessageComplete(){
@@ -262,7 +266,9 @@ export default {
 				.then((response)=>{
 					console.log(response);
 					this.editMode = true;
+					this.outlineStyle = "none";
 					this.getMyProfile();
+					console.log(this.outlineStyle)
 				})
 				.catch((error)=>{
 					console.log(error);
@@ -473,6 +479,7 @@ export default {
 		}
 
 		.profileInfoDiv3{
+			padding-top: 20px;
 			box-sizing: border-box;
       /* background-color: purple; */
 			height: 150px;
@@ -503,25 +510,36 @@ export default {
       /* background-color: aqua; */
 		}
 		.friendBtn{
-			height: 110px !important;
-			width: 360px;
+			height: 74px !important;
+			width: 240px;
 		}
 		.postBtn{
-			height: 110px !important;
-			width: 360px;
+			height: 74px !important;
+			width: 240px;
 		}
 		.userIdForm{
 			font-size: 40px;
 		}
 		.profileMessageForm{
-			margin-top: 30px;
-			width: 400px;
 			font-size: 20px;
+			height: 120px;
+			width: 400px;
 		}
+
+		.profileTextArea{
+			font-size:16px;
+		}
+
+		.profileTextArea2{
+			font-size:16px;
+		}
+
 		.genderForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 		.ageForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 
