@@ -94,7 +94,7 @@
                         </v-avatar>
                         <v-avatar v-else>
                             <img
-							:src="`${url}/uploads${UserPhotoUrl}`">
+							:src="`${url}/uploads${getUserPhotoUrl}`">
                         </v-avatar>
                     </v-btn>
                 </template>
@@ -150,9 +150,9 @@ import { mapGetters, mapState, mapActions } from 'vuex'
             //         return this.fetchRelationship() }
             // }
         },
-        created(){
-            this.fetchRelationship()
-            
+        async created(){
+            const relationshipcheck = await this.fetchRelationship()
+            relationshipcheck;
             //test
             // this.data(this.$route.params.index)
         },
@@ -210,8 +210,8 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                 'REJECT_REQ',
             ]),
             //친구 요청 상태값
-            fetchRelationship(){
-                return this.FETCH_STATUS(localStorage.getItem('UserId')).then(() => {
+            async fetchRelationship(){
+                return await this.FETCH_STATUS(localStorage.getItem('UserId')).then(() => {
                     console.log('(store friend) req UserId : ',localStorage.getItem('UserId'));
                 })
             },
