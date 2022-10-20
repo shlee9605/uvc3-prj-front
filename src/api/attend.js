@@ -11,5 +11,8 @@ export const attend = {
     },
     attendUser(pid,UserId){
         return request('get',`/attend/${pid}/acceptlist/${UserId}`)
+    },
+    deleteAttend(pid,UserId){
+        return request('delete',`/attend/${pid}/acceptlist/${UserId}`)
     }
 }
