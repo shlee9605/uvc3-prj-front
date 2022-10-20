@@ -2,19 +2,19 @@
     <v-app inspire style="height: 900px;">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
+		<ValidationObserver
+                ref="signUpForm"
+                v-slot="{ handleSubmit, invalid, validate }">
+		<form  @submit.prevent="handleSubmit(signUp)">				
 		<div class="input-header">
 			
 			<div class="checkbox" style="margin-left: 30px;">
-				<v-container fluid>
-					<v-checkbox
-						v-model="checkbox1"
-						:label="`비공개: ${checkbox1.toString()}`"
-					></v-checkbox>
-				</v-container>
 			</div>
 			<v-spacer></v-spacer>
 			<div class="div-save-btn">
 				<v-btn 
+					:disabled="(invalid || !validate)||(TimeValue.HH=== ''||TimeValue.mm==='')" type="submit"
+					:loading="loading"
 					color="primary"
 					rounded
 					@click="onSubmit">저장</v-btn>
@@ -23,13 +23,18 @@
 					
         <main class="input-main">
 			<form>
-				
 				<div class="title">
+					<ValidationProvider
+					name="제목"
+					rules="required"
+					v-slot="{ errors }">
 					<v-text-field
 						label="제목"
 						hide-details="auto"
 						v-model="title"
+						:error-messages="errors"
 					></v-text-field>
+				</ValidationProvider>
 				</div>
 				<form class="category-form">
 					<div class="category-form-div">
@@ -90,34 +95,52 @@
 										format="HH:mm"
 										@change="changeHandler"
 									></vue-timepicker>
+									<div v-if="(TimeValue.HH=== ''||TimeValue.mm==='')&&timestatus">
+										<h6 style="color:red;">
+											시간 항목을 입력해주세요.
+										</h6>
+									</div>
 								</div>
 							</div>
 							<div style="display: flex;">
 								<div class="category-region">
+									<ValidationProvider
+									name="지역"
+									rules="required"
+									v-slot="{ errors }">									
 									<v-col 
 										class="d-flex"
 										cols="5"
-										sm="5"
+										sm="8"
+										style="margin-left:-44px"
 										>
 										<v-select
 											v-model="region"
 											:items="items"
 											label="지역 선택"
+											:error-messages="errors"
 										></v-select>
 									</v-col>
+									</ValidationProvider>
 								</div>
 								<div class="category-region">
+									<ValidationProvider
+									name="카테고리"
+									rules="required"
+									v-slot="{ errors }">
 									<v-col 
 										class="d-flex"
-										cols="10"
-										sm="10"
+										cols="5"
+										sm="8"
 										>
 										<v-select
 											v-model="categoryId"
 											:items="categoryList"
 											label="카테고리"
+											:error-messages="errors"
 										></v-select>
 									</v-col>
+									</ValidationProvider>
 								</div>
 							</div>
 						</div>
@@ -143,25 +166,39 @@
 					</div>
 				</form>
 				<div class="region-detail">
+					<ValidationProvider
+                    name="상세주소"
+                    rules="required"
+                    v-slot="{ errors }">					
 					<v-text-field
 						label="상세주소"
 						v-model="address"
+						:error-messages="errors"
 						></v-text-field>
+				</ValidationProvider>
 				</div>
 				<!-- 내용  -->
 				<div class="description">
-					<div>
+					<ValidationProvider
+                    name="상세주소"
+                    rules="required|min:5"
+                    v-slot="{ errors }">					
 						<v-textarea
 							color="black"
 							label="설명"
 							v-model="content"
+							:error-messages="errors"
 						></v-textarea>
-					</div>
+					</ValidationProvider>
 				</div>
 				<div class="form-fotter">
 					<v-spacer></v-spacer>
 					<div>
 						<v-container fluid>
+							<ValidationProvider
+							name="정수"
+							rules="required|numeric"
+							v-slot="{ errors }">							
 							<v-row>
 								<v-col cols="">
 								</v-col>
@@ -170,22 +207,29 @@
 									label="회비"
 									value="0"
 									prefix="￦"
+									type="number"									
 									v-model.number="cost"
+									:error-messages="errors"
 								></v-text-field>
 								</v-col>
 							</v-row>
+							</ValidationProvider>
 						</v-container>
 					</div>
 				</div>
 			</form>
         </main>
+		</form>
+		</ValidationObserver>
     </v-app>
 </template>
 
 <script>
 import VueTimepicker from 'vue2-timepicker'
+import Validate from '@/mixin/Validate.vue';
 import {mapState, mapActions} from 'vuex'
     export default {
+		mixins: [Validate],
         components: { VueTimepicker },
         data: () => ({
 			
@@ -216,9 +260,6 @@ import {mapState, mapActions} from 'vuex'
 			// 정원
 			counter: 1,
 
-			//공개 비공개
-			visibility:'',
-
 			//카테고리
 			categoryId: '',
 
@@ -230,7 +271,7 @@ import {mapState, mapActions} from 'vuex'
             },
             /*console.log(this.TimeValue)
             // outputs -> {HH: "14", mm: "30", ss: "15"} */
-
+			timesatatus : false,
 
             //description
             content:''
@@ -248,12 +289,6 @@ import {mapState, mapActions} from 'vuex'
             this.fetchpost(),
             this.dateNtime(),
 			this.title=this.post.title
-			if(this.post.visibility=='Y'){
-				this.checkbox1=true
-			}
-			else{
-				this.checkbox1=false
-			}
 			this.cost=this.post.cost
 			this.date=this.post.date
 			this.categoryId=this.categoryList[this.post.CategoryId-1]
@@ -294,8 +329,6 @@ import {mapState, mapActions} from 'vuex'
             },
 
 			onSubmit() {
-				//공개 비공개 Y or N 
-				const visibility = this.checkbox1 ? 'Y': 'N'
 				//카테고리 Id 값으로 변환
 				const CategoryId= this.categoryList.indexOf(this.categoryId) + 1
 				
@@ -308,7 +341,7 @@ import {mapState, mapActions} from 'vuex'
 				// const cost = parseInt(this.cost)
 				console.log(typeof this.cost);
 
-				console.log("전송",this.title,visibility,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
+				console.log("전송",this.title,this.date,time,this.counter,this.region,this.address,this.content,CategoryId,this.cost)
 				console.log("전송")
 				// this.fetchPostlist()
 				
@@ -326,7 +359,6 @@ import {mapState, mapActions} from 'vuex'
 					capacity:this.counter,
 					date:this.date,
 					time,
-					visibility,
 				}).then(this.$router.push('/posts'))
 				.catch(err => {
 					console.log(err);
@@ -342,6 +374,8 @@ import {mapState, mapActions} from 'vuex'
 				console.log(data.HH)
 				console.log(this.TimeValue)
 				this.TimeValue=data
+				this.timestatus=true;
+				return 1;
             },
 			changeCounter: function(num){
 				this.counter += +num

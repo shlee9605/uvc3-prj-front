@@ -23,7 +23,7 @@ export const Comment = {
         CREATE_COMMENT(_,{pid,content}){
             return comment.create(pid,content).then(() => {
                 // dispatch('SET_COMMENT',{contentlist:state.contentlist})
-                location.reload();
+                // location.reload();
             }).catch(err => {
                 console.log('댓글 작성 실패',err);
             })

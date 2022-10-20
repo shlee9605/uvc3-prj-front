@@ -2,11 +2,9 @@ import axios from 'axios'
 import router from '../router'
 
 
-
-
 // const DOMAIN = 'http://localhost:8080'
-// const DOMAIN = 'http://192.168.0.69:8080'
-const DOMAIN = 'http://192.168.0.63:8080'
+const DOMAIN = 'http://192.168.0.69:8080'
+// const DOMAIN = 'http://192.168.0.63:8080'
 
 const UNAUTHORIZED = 401
 
@@ -14,8 +12,6 @@ const UNAUTHORIZED = 401
 const onUnauthorized = () => {
     router.push(`/login?returnPath=${encodeURIComponent(location.pathname)}`)
 }
-
-
 
 //axios
 export const request = (method, url, data) => {
