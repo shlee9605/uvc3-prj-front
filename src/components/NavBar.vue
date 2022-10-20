@@ -4,7 +4,7 @@
         <v-app-bar app flat color="white" style="padding-top:20px; height:100px;">
             <div class="logo">
                 <router-link to='/'>
-                    <img src="../assets/logo.png" stye="width: 100px; height: 36px;">
+                    <img src="../assets/4040TodayMateLogoFinally.png" stye="width: 100px; height: 36px;">
                 </router-link>
             </div>
 
