@@ -334,8 +334,8 @@ import {mapActions} from 'vuex'
                 this.TimeValue.HH = data.HH
                 this.TimeValue.mm = data.mm
                 this.TimeValue.ss = data.ss
-				        this.timestatus=true;
-				        return 1;
+				this.timestatus=true;
+				return 1;
 
             },
             
