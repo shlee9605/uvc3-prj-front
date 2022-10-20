@@ -6,3 +6,9 @@ export const getMyProfile = {
         return request('post', '/profile/my', { token })
     }
 }
+
+export const getMyAttend = {
+    fetch(token) {
+        return request('get', '/myattend', { token })
+    }
+}

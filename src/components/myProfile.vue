@@ -46,6 +46,39 @@
 					<v-btn class="postBtn" @click="loadMyPostList">게시물({{this.myPostList.length}})</v-btn>
 				</div>
 			</div>
+			<div v-if="showMyAttendListStatus === true" class="menuDetail3">
+				<div style="margin-top:50px;">
+                <table class="contents-table">
+                    <tbody class="contents-table-tbody">
+                            <router-link 
+                            class="contents-table-a"
+                            v-for="item in myHistoryList"
+                            :to="`/posts/${item.id}`"
+                            :key="item.Id">
+                                <div class="table-a-time">
+                                    <p style="margin-righ:20px;">
+                                        {{item.time.slice(0,5)}}
+                                    </p>
+                                </div>
+                                <div class="table-a-title">
+                                    <div>
+                                        <td>{{item.title}}</td>
+                                    </div>
+                                    <div class="postList-user" 
+                                        style="font-size: 5px; color: #7b7b7b;">
+                                        <td>{{item.id}}</td>
+                                    </div>
+                                </div>
+                                <v-spacer></v-spacer> 
+                                <div class="content-detail">
+                                    <td style="text-align: right;">{{item.region}}</td>
+                                    <td>{{item.cost}}원</td>
+                                </div>
+                            </router-link>
+                    </tbody>
+                </table>
+            </div>
+			</div>
             <div v-if="showFriendListStatus === true" class="menuDetail">
 				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
 					<div class="friendInfoMother">
@@ -122,6 +155,7 @@ export default {
 				birthdate:"",
 				friendInfoList:[],
 				myPostList:[],
+				myHistoryList:[],
 				photoUrl: "",
 				selectedPhotoUrl: "",
 				oldprofileMessage: "",
@@ -129,6 +163,8 @@ export default {
 
 				showFriendListStatus: false,
 				showMyPostListStatus: false,
+				showMyAttendListStatus: false,
+
 				editPhotoStatus: false,
 				photoEditModalStatus: false,
 				editMode: true,
@@ -170,8 +206,9 @@ export default {
 					}
 				})
 				.then((response)=>{
-					if(this.showMyPostListStatus){
+					if(this.showMyPostListStatus||this.showMyAttendListStatus){
 						this.showMyPostListStatus = false;
+						this.showMyAttendListStatus = false;
 					}
 					if(this.showFriendListStatus === true){
 						this.showFriendListStatus = false;
@@ -289,13 +326,15 @@ export default {
 					}
 				})
 				.then((response)=>{
-					if(this.showFriendListStatus){
+					if(this.showFriendListStatus||this.showMyAttendListStatus){
 						this.showFriendListStatus = false;
+						this.showMyAttendListStatus=false;
 					}
 					if(this.showMyPostListStatus){
 						this.showMyPostListStatus = false;
 					}else{
 						console.log("loadMyPostList - response ", response.data.myPostList);
+						console.log(response.data.myPostList);
 						this.myPostList = response.data.myPostList
 						this.showMyPostListStatus = true;
 					}
@@ -305,7 +344,36 @@ export default {
 					console.log("loadMyPostList - error", error);
 				})
 
+			},
+
+			async loadMyAttendList(){
+				await axios
+				.get(process.env.VUE_APP_API + '/profile/myattend',{
+					headers:{
+						Authorization: `${localStorage.getItem('token')}`
+					}
+				})
+				.then((response)=>{
+					if(this.showFriendListStatus||this.showMyPostListStatus){
+						this.showFriendListStatus = false;
+						this.showMyPostListStatus=false;
+					}
+					if(this.showMyAttendListStatus){
+						this.showMyAttendListStatus = false;
+					}else{
+						console.log("loadMyAttendList - response ", response.data.myHistoryList);
+						console.log(response.data.myHistoryList);
+						this.myHistoryList = response.data.myHistoryList;
+						this.showMyAttendListStatus = true;
+					}
+
+				})
+				.catch((error)=>{
+					console.log("loadMyAttendList - error", error);
+				})
+
 			}
+
 
 		},
 

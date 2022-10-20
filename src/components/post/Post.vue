@@ -16,7 +16,7 @@
                     </div>
                 </div>
                 <div class="post-user-area">
-                    <div class="post-user">
+                    <div v-if="`${post.UserId}`!== `${this.UserId}`" class="post-user">
                         <router-link
                         :to="`/profile/${post.UserId}`">
                             <div style="display:flex;">
@@ -26,7 +26,26 @@
                                         color="red"
                                         size="36"
                                         >
-                                        <span class="white--text text-h5">C</span>
+                                    <img :src="`${url}/uploads${this.photoUrl}`"/>
+                                    </v-avatar>
+                                </v-row>
+                                <div style="margin:5px 0 0 25px; color:black;">
+                                    <button>{{post.UserId}}</button>
+                                </div>
+                            </div>
+                        </router-link>
+                    </div>
+                    <div v-else class="post-user">
+                        <router-link
+                        :to="`/myProfile`">
+                            <div style="display:flex;">
+                                <v-row>
+                                    <v-avatar
+                                        class="userIcon"
+                                        color="red"
+                                        size="36"
+                                        >
+                                    <img :src="`${url}/uploads${this.photoUrl}`"/>
                                     </v-avatar>
                                 </v-row>
                                 <div style="margin:5px 0 0 25px; color:black;">
@@ -141,6 +160,7 @@
 <script>
 import Comment from '../comment/comment.vue'
 import {mapState, mapActions} from 'vuex'
+import axios from 'axios'
     export default {
         components:{Comment},
         data(){
@@ -152,6 +172,7 @@ import {mapState, mapActions} from 'vuex'
                 HH:'',
                 mm:'',
                 UserId: localStorage.getItem('UserId'),
+                photoUrl: "",
 
             }
         },
@@ -162,14 +183,20 @@ import {mapState, mapActions} from 'vuex'
             ...mapState('Attend',{
                 attendList: 'attendList',
                 attendUser:'attendUser'
-            })
+            }),
+            url (){
+				return process.env.VUE_APP_API;
+			},
         },
         
-        created() {
-            this.fetchpost(),
+        async created() {
+            await this.fetchpost(),
             this.fetchAttendList(),
             this.attendUserInfo(),
             console.log(this.attendUser)
+        },
+        mounted(){
+            this.getWriterInfo()
         },
 
         methods:{
@@ -184,8 +211,28 @@ import {mapState, mapActions} from 'vuex'
                 'FETCH_AUSER',
             ]),
 
+
+            // 게시글 작성자 정보 조회
+            async getWriterInfo(){
+                await axios
+                .get(process.env.VUE_APP_API + `/post/${this.$route.params.pid}/writer`,{
+                    headers:{
+                        Authorization: `${localStorage.getItem('token')}`
+                    }
+                })
+                .then((response)=>{
+                    console.log("getWriterInfo - response", response.data);
+                    this.photoUrl = response.data.data.photoUrl
+                })
+                .catch((error)=>{
+                    console.log('getWriterInfo - error', error);
+                })
+            },
+
+
+
             //게시글 상세 get
-            fetchpost(){
+            async fetchpost(){
                 this.FETCH_POST({id:this.$route.params.pid}).then( () => {
                     console.log('포스트상세 req 전송');
                 })

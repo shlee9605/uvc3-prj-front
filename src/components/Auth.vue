@@ -6,98 +6,128 @@
                     <v-card-title class="justify-center" style="font-size: 2rem">회원가입</v-card-title>
                     <v-spacer></v-spacer>
                     <v-card-text>
-                        <form @submit.prevent="signUp">
-							<!-- <div class="profileImgDiv"> -->
-                                <!-- <v-avatar size="200">
-                                    <img :src="`/src/assets/human.jpg`" />	
-                                </v-avatar>
-                                <v-btn @click="handleFileImport" style="margin-top:20px;">
-                                프로필 사진 등록
-                                 </v-btn> -->
-                                 <!-- <input id="editPhoto" ref="uploader" class="d-none" type="file" accept=".png, .jpg, .jpeg" @change="onFileChanged"> -->
-                            <!-- <div>
-								<picture-input type="file"
-									ref="pictureInput"
-									width="150" height="160" margin="5" accept="image/*" size="10" button-class="btn"
-									:custom-strings="{
-										upload: '<h1>Upload Here!</h1>',
-										drag: '프로필 사진 등록'
-									}"
-									@change="onChange">
-								</picture-input>
-							</div> -->
-                            <div class="dropbox">
-                                <input class="input-file" type="file" name="myfile" @change="upload($event.target.name, $event.target.files)"
-                                @drop="upload($event.target.name, $event.target.files)">
-                            </div>
+                        <ValidationObserver
+                            ref="signUpForm"
+                            v-slot="{ handleSubmit, invalid, validate }">
+                        <form @submit.prevent="handleSubmit(signUp)">
+
+                            <ValidationProvider
+                                name="이름"
+                                rules="required"
+                                v-slot="{ errors }">
+                                <v-text-field
+                                    clearable
+                                    dense
+                                    outlined
+                                    label="이름"
+                                    v-model="name"
+                                    :error-messages="errors">
+                                </v-text-field>  
+                            </ValidationProvider>
                             
-                            <v-text-field
-                                clearable
-                                dense
-                                outlined
-                                label="이름"
-                                v-model="name">                                
-                            </v-text-field>
-                            <v-text-field
-                                clearable
-                                dense
-                                outlined
-                                type="email"
-                                label="이메일"
-                                v-model="email">
-                            </v-text-field>
-                            <v-text-field
-                                clearable
-                                dense
-                                outlined
-                                label="아이디"
-                                v-model="id">
-                            </v-text-field>
-                            <v-text-field
-                                clearable
-                                dense
-                                outlined
-                                label="비밀번호"
-                                type="password"
-                                v-model="password">
-                            </v-text-field>
-                            <v-text-field
-                                clearable
-                                dense
-                                outlined
-                                label="비밀번호 확인"
-                                type="password"
-                                v-model="passwordChk">
-                            </v-text-field>
-							<v-select
-								v-model="gender"
-								:items="genderSel"
-								dense
-								label="성별"
-								outlined>
-							</v-select>
-							<v-menu
-								ref="menu"
-								v-model="menu"
-								:close-on-content-click="false"
-								:nudge-right="40"
-								transition="scale-transition"
-								offset-y
-								min-width="auto">
-								<template v-slot:activator="{ on, attrs }">
-								<v-text-field
-									v-model="birthdate"
-									label="생년월일"
-									prepend-icon="mdi-calendar"
-									readonly
-									v-bind="attrs"
-									v-on="on"
-								></v-text-field>
-								</template>
-								<v-date-picker
-								v-model="birthdate"
-								@input="menu=false"
-								>
+                            <ValidationProvider
+                                name="이메일"
+                                rules="required|email"
+                                v-slot="{ errors }">
+                                <v-text-field
+                                    clearable
+                                    dense
+                                    outlined
+                                    type="email"
+                                    label="이메일"
+                                    v-model="email"
+                                    :error-messages="errors">
+                                </v-text-field>
+                            </ValidationProvider>
+
+                            <ValidationProvider
+                                name="아이디"
+                                rules="required|min:3"
+                                v-slot="{ errors }">
+                                <v-text-field
+                                    clearable
+                                    dense
+                                    outlined
+                                    label="아이디"
+                                    v-model="id"
+                                    :error-message="errors">
+                                </v-text-field>
+                            </ValidationProvider>
+
+                            <ValidationProvider
+                                name="비밀번호"
+                                rules="required|min:3|max:16"
+                                v-slot="{ errors }">
+                                <v-text-field
+                                    clearable
+                                    dense
+                                    outlined
+                                    label="비밀번호"
+                                    type="password"
+                                    v-model="password"
+                                    :error-message="errors">
+                                </v-text-field>
+                            </ValidationProvider>
+
+                            <ValidationProvider
+                                name="password"
+                                rules="required|confirmed:비밀번호"
+                                v-slot="{ errors }">
+                                <v-text-field
+                                    clearable
+                                    dense
+                                    outlined
+                                    label="비밀번호 확인"
+                                    type="password"
+                                    v-model="passwordChk"
+                                    :error-messages="errors">
+                                </v-text-field>
+                            </ValidationProvider>
+
+                            <ValidationProvider
+                                name="성별"
+                                rules="required"
+                                v-slot="{ errors }">
+                                <!-- <v-field type="text" name="성별" v-model="gender" style="display:none;"></v-field> -->
+                                <v-select
+                                    outlined
+                                    dense
+                                    label="성별"
+                                    v-model="gender"
+                                    :items="genderSel"
+                                    :error-message="errors">
+                                </v-select>
+                            </ValidationProvider>
+
+                            <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto">
+                            <template v-slot:activator="{ on, attrs }">
+
+                                <ValidationProvider
+                                    name="생년월일"
+                                    rules="required"
+                                    v-slot="{ errors }">
+                                    <v-text-field
+                                        v-model="birthdate"
+                                        label="생년월일"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        :error-messages="errors">
+                                    </v-text-field>
+                                </ValidationProvider>
+
+                            </template>
+                                <v-date-picker
+                                v-model="birthdate"
+                                @input="menu=false">
 								<v-spacer></v-spacer>
 								<v-btn
 									text
@@ -130,11 +160,12 @@
                                 label="서비스 이용 약관 및 개인정보 이용 및 수집 방침에 동의합니다."
                                 required>
                             </v-checkbox>
-                            <v-btn :disabled="!valid" type="submit" :loading="loading"
+                            <v-btn :disabled="invalid || !validate" type="submit" :loading="loading"
                             >회원가입</v-btn>
                             <a class="auth-font" href="/Login">이미 유저입니다</a>
                             </div>
                        </form>
+                       </ValidationObserver>
                     </v-card-text>
                 </v-card>
             </v-col>
@@ -144,11 +175,13 @@
 
 <script>
 import axios from 'axios';
+import Validate from '../mixin/Validate.vue';
 // import UploadPhotoModal from '@/components/Modal/UploadPhotoModal.vue'
 // import PictureInput from 'vue-picture-input'
 
 export default {
 	name: 'signUp',
+    mixins: [Validate],
     data () {
         return {
             name: '',
@@ -198,77 +231,30 @@ export default {
                 photoUrl: this.photoUrl,
                 profileMessage: this.profileMessage,
             };
-
-            const dataForm = new FormData();
-            dataForm.append('name', this.name);
-            dataForm.append('email', this.email);
-            dataForm.append('id', this.id);
-            dataForm.append('password', this.password);
-            dataForm.append('birthdate', this.birthdate);
-            dataForm.append('gender', this.gender);
-            dataForm.append('photoUrl', this.photoUrl);
-            dataForm.append('profileMessage', this.profileMessage);
             
 
-			console.log('auth/signUp - dataForm: ', dataForm);
-            for(let item of dataForm.entries()) {
-                console.log(item);
-            }
+			console.log('auth/signUp - axiosBody: ', axiosBody);
 
 			await axios
-				.post(process.env.VUE_APP_API + '/auth/signUp', dataForm)
+				.post(process.env.VUE_APP_API + '/auth/signUp', axiosBody)
 					// console.log('this is postS');
 				.then(async (response) => {
-					console.log('auth/signUp - response: ', response);
-                    
-                    // 폼 데이터 설정
-                    this.dataForm.name = response.data.data.name;
-                    this.dataForm.email = response.data.data.email;
-                    this.dataForm.id = response.data.data.id;
-                    this.dataForm.password = response.data.data.password;
-                    this.dataForm.birthdate = response.data.data.birthdate;
-                    this.dataForm.gender = response.data.data.gender;
-                    this.dataForm.photoUrl = response.data.data.photoUrl;
-                    this.dataForm.profileMessage = response.data.data.profileMessage;
-
-                    // 로그인 페이지로 리라우팅
-					
+					console.log('auth/signUp - response: ', response);	
 				})
 				.catch((error) => {
 					console.log('auth/signUp - error: ', error);
+
+                    // 에러문구 표시
+                    this.$refs.signUpForm.setErrors({
+                        이메일: ['이미 가입된 이메일 입니다.'],
+                        아이디: ['이미 가입된 아이디 입니다.'],
+                    });
 				})
 				.finally(() => {
 					this.loading = false;
 					console.log('here?')
                     this.$router.push({ name: 'Login'});
 				})
-        },
-        upload(name, files) {
-            const formData = new FormData();
-            formData.append(name, files[0], files[0].name);
-            const url = 'VUE_APP_API/upload/'
-        },
-
-		onChange (image) {        
-            if(image) {
-                console.log('picture loaded')
-                this.photoUrl = image
-            } else {
-                console.log('FileReader API not supported.')
-            }
-        },
-
-
-        async handleFileImport() {
-            this.isSelecting = true;
-
-            // After obtaining the focus when closing the FilePicker, return the button state to normal
-            window.addEventListener('focus', () => {
-            this.isSelecting = false
-            }, { once: true });
-                
-            // Trigger click on the FileInput
-            this.$refs.uploader.click();
         },
     }
 }
@@ -285,38 +271,4 @@ export default {
 	justify-content: space-evenly;
 }
 
-.profileImgDiv{
-				align-items: center;
-				box-sizing: border-box;
-        /* background-color: red; */
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-        padding: 60px 30px;
-        width: 360px;
-    }
-
-    .dropbox {
-    outline: 2px dashed #aaa;
-    background: #7fb4dd;
-    width: 300px;
-    height: 300px;
-    position: relative; 
-     margin: 0 auto;
-  } 
-  .dropbox > h2{
-    position: absolute;
-    top: 50px;
-    left: 0;
-    z-index: 2;
-  }
-  .input-file{
-    position: absolute;
-    opacity: 0;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-     z-index: 3;
-  }
 </style>
