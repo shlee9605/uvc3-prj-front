@@ -31,8 +31,8 @@ export const Post = {
             })
         },
 
-        CREATE_POST(_,{title, content, region, address, cost, capacity, date, time, visibility, CategoryId}) {
-            return post.create(title, content, region, address, cost, capacity, date, time, visibility, CategoryId)
+        CREATE_POST(_,{title, content, region, address, cost, capacity, date, time, CategoryId}) {
+            return post.create(title, content, region, address, cost, capacity, date, time, CategoryId)
             .then(() => console.log('보내기 성공'))
         },
 
@@ -43,8 +43,8 @@ export const Post = {
             })
         },
         
-        REVICE_POST(_,{id, title, content, region, address, cost, capacity, date, time, visibility}){
-            return post.revice(id, title, content, region, address, cost, capacity, date, time, visibility)
+        REVICE_POST(_,{id, title, content, region, address, cost, capacity, date, time}){
+            return post.revice(id, title, content, region, address, cost, capacity, date, time)
             .then(()=>console.log('수정 성공'))
         },        
 

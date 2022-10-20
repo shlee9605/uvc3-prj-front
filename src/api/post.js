@@ -4,8 +4,8 @@ import { request} from '../api'
 
 export const post =  {
     //게시글 작성
-    create(title, content, region, address, cost, capacity, date, time, visibility, CategoryId) {
-        return request('post', '/post',{title, content, region, address, cost, capacity, date, time, visibility, CategoryId})
+    create(title, content, region, address, cost, capacity, date, time, CategoryId) {
+        return request('post', '/post',{title, content, region, address, cost, capacity, date, time, CategoryId})
     },
     //게시글 불러오기
     fetch(id) {
@@ -14,8 +14,8 @@ export const post =  {
     
     //---------------------------------------------------
     //게시글 수정
-    revice(id,title, content, region, address, cost, capacity, date, time, visibility) {
-        return request('patch',`/post/all/${id}`,{title, content, region, address, cost, capacity, date, time, visibility})
+    revice(id,title, content, region, address, cost, capacity, date, time) {
+        return request('patch',`/post/all/${id}`,{title, content, region, address, cost, capacity, date, time})
     },
 
     // //게시글 삭제
