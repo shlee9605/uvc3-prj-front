@@ -4,7 +4,6 @@ import {
   email,
   max,
   confirmed,
-  size,
   min,
 } from 'vee-validate/dist/rules';
 import { ValidationProvider, extend, ValidationObserver } from 'vee-validate'; // vee-validate 로 부터 사용할 기능 import
