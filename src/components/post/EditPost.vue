@@ -1,25 +1,15 @@
 <template>
-    <v-app inspire style="height: 900px; margin-top:80px;">
+	<v-app inspire>
+		<v-container fluid class="fill-height background justify-center xcontainer-profilebox">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
+		<v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
+		<v-app-bar-title class="text-center titlestyle">나의 메이트를 구해줘!</v-app-bar-title>
+
 		<ValidationObserver
                 ref="signUpForm"
                 v-slot="{ handleSubmit, invalid, validate }">
-		<form  @submit.prevent="handleSubmit(signUp)">				
-		<div class="input-header">
-			
-			<div class="checkbox" style="margin-left: 30px;">
-			</div>
-			<v-spacer></v-spacer>
-			<div class="div-save-btn">
-				<v-btn 
-					:disabled="(invalid || !validate)||(TimeValue.HH=== ''||TimeValue.mm==='')" type="submit"
-					:loading="loading"
-					color="primary"
-					rounded
-					@click="onSubmit">저장</v-btn>
-			</div>
-		</div>
+		<form  @submit.prevent="handleSubmit(signUp)">	
 					
         <main class="input-main">
 			<form>
@@ -43,7 +33,7 @@
 								<v-col class="category-select-date"
 									cols="2"
 									sm="3"
-									md="3"
+									md="5"
 									>
 									<v-menu
 										ref="menu"
@@ -112,7 +102,7 @@
 										class="d-flex"
 										cols="5"
 										sm="8"
-										style="margin-left:-44px"
+										style="margin-left:0px"
 										>
 										<v-select
 											v-model="region"
@@ -145,7 +135,7 @@
 							</div>
 						</div>
 						<div style="display: flex;">
-							<div class="div-capacipy">
+							<div class="div-capacipy" style="margin-left:250px">
 								<div>
 									<div style="display:flex;">
 										<v-icon style="margin-left:5px;">mdi-human-child</v-icon>
@@ -192,8 +182,7 @@
 					</ValidationProvider>
 				</div>
 				<div class="form-fotter">
-					<v-spacer></v-spacer>
-					<div>
+					<div style="margin-left:-25px">
 						<v-container fluid>
 							<ValidationProvider
 							name="정수"
@@ -216,11 +205,25 @@
 							</ValidationProvider>
 						</v-container>
 					</div>
+					<!-- 저장버튼 -->
+					<div class="checkbox" style="margin-left: 30px;">
+					</div>
+						<v-spacer></v-spacer>
+						<div class="div-save-btn">
+						<v-btn 
+						:disabled="(invalid || !validate)||(TimeValue.HH=== ''||TimeValue.mm==='')" type="submit"
+						:loading="loading"
+						color="primary"
+						rounded
+						@click="onSubmit">저장</v-btn>
+						</div>
 				</div>
 			</form>
         </main>
 		</form>
 		</ValidationObserver>
+		</v-card>
+	</v-container>
     </v-app>
 </template>
 
@@ -395,8 +398,14 @@ import {mapState, mapActions} from 'vuex'
     }
 </script>
 
-<style>
-
+<style scoped>
+.card-bottom {
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
+  padding-bottom: 5%;
+  /* background-color: #FFFFFF; */
+}
 .input-header{
 	margin: auto;
 	display: flex;
@@ -424,8 +433,13 @@ import {mapState, mapActions} from 'vuex'
 }
 
 .title{
-    /* margin-top: 70px; */
+    margin-top: 50px;
     margin-bottom: 30px;
+}
+
+.titlestyle {
+	font-size: 38px;
+	margin-top: 20px;
 }
 
 .category-form{
@@ -522,5 +536,7 @@ button:focus,
 input:focus {
   outline:0;
 }
-
+.background {
+    background-color: #FFF7EE;
+}
 </style>

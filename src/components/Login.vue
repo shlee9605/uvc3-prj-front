@@ -14,6 +14,11 @@
                   name="아이디"
                   rules="required"
                   v-slot="{ errors }">
+                  <v-col
+                    class="d-flex"
+										cols="15"
+										sm="15"
+										style="margin-left:0px">
                     <v-text-field
                       clearable
                       dense
@@ -21,15 +26,20 @@
                       label="아이디"
                       v-model="id"
                       placeholder="여기에 아이디 입력하삼"
-                      
                       :error-messages="errors">
                     </v-text-field>
+                  </v-col>
                 </ValidationProvider>
 
                 <ValidationProvider
                   name="비밀번호"
                   rules="required"
                   v-slot="{ errors }">
+                  <v-col
+                    class="d-flex"
+										cols="15"
+										sm="15"
+										style="margin-left:0px">
                     <v-text-field
                       clearable
                       dense
@@ -38,9 +48,9 @@
                       type="password"
                       v-model="password"
                       placeholder="여기에 비밀번호 입력하삼"
-                      
                       :error-messages="errors">
                     </v-text-field>
+                  </v-col>                    
                 </ValidationProvider>
 
                   <div>
