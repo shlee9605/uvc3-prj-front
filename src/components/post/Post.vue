@@ -3,9 +3,10 @@
     <v-container fluid class="background">
     <v-card
         elevation="4"
-        class="mx-auto"
+        outlined class="mx-auto"
         max-width="900"
-        style="margin-top:130px;">
+        style="margin-top:130px;"
+        >  
     <main class="post-main">
         <!-- ------------------------------------------------ -->
         <div class="post-header">
