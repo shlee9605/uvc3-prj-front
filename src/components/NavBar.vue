@@ -152,7 +152,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
         },
         async created(){
             const relationshipcheck = await this.fetchRelationship()
-            relationshipcheck;
+            this.relationshipcheck;
             //test
             // this.data(this.$route.params.index)
         },

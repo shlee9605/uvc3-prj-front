@@ -45,7 +45,7 @@
 								<v-col class="category-select-date"
 									cols="2"
 									sm="3"
-									md="3"
+									md="5"
 									>
 									<v-menu
 										ref="menu"
@@ -281,11 +281,6 @@ import {mapActions} from 'vuex'
             //description
             content:''
         }),
-		watch:{
-			TimeValue: function () {
-				this.timestatus = false
-			}
-		},
         methods:{
 			...mapActions('Post',[
 				'CREATE_POST',
@@ -316,7 +311,9 @@ import {mapActions} from 'vuex'
 					date:this.date,
 					time,
 					CategoryId
-				}).then(this.$router.push('/posts'))
+				}).then(
+					this.$router.push('/posts')
+				)
 				.catch(err => {
 					console.log(err);
 				})

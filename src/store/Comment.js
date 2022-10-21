@@ -31,7 +31,14 @@ export const Comment = {
         //댓글 list
         FETCH_COMMENT({commit},{pid}){
             return comment.fetch(pid).then(data => {
-                commit('SET_COMMENT', data.comments.reverse())
+                console.log('첫번째',data.comments.reverse());
+                const reverseData = data.comments.reverse()
+                console.log(reverseData);
+                let result = setCommentIndex(reverseData)
+                console.log('가공 후(status 추가)', result);
+                
+                
+                commit('SET_COMMENT', result)
             }).catch(err => {
                 console.log('댓글 조회 실패',err);
             })
@@ -40,15 +47,24 @@ export const Comment = {
         UPDATE_COMMENT(_,{pid,cid,content}){
             return comment.update(pid,cid,content).then(() => {
                 console.log('store수정완료');
-                location.reload();
             }).catch(err => {
                 console.log('댓글 수정 실패',err);
             })
         },
         DELETE_COMMENT(_,{pid,cid}){
             return comment.delete(pid,cid).then(() => {
-                location.reload();
             })
         }
     },
+}
+
+
+
+
+
+function setCommentIndex(data) {
+    for(let i in data ) {
+       data[i].status = false
+    }
+    return data
 }

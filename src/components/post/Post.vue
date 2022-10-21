@@ -124,6 +124,13 @@
                     disabled
                     >신청 마감</v-btn>
                 </div>
+                <div class="header-btn" v-else-if="new Date(post.date) < new Date()">
+                    <v-btn
+                    rounded
+                    color="primary"
+                    disabled
+                    >기간 만료</v-btn>
+                </div>
                 <!-- 2-3. 미신청자, 신청가능 -->
                 <div class="header-btn" v-else>
                     
