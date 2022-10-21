@@ -1,27 +1,14 @@
 <template>
     <v-app inspire>
-		<v-container fluid class="background" style="height: 900px; margin-top:60px">
+		<v-container fluid class="fill-height background justify-center xcontainer-profilebox">
         <!-- 작성 완료 버튼 -->
         <!-- title -->
+		<v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom">
 		<v-app-bar-title class="text-center titlestyle">나의 메이트를 구해줘!</v-app-bar-title>
 		<ValidationObserver
                 ref="signUpForm"
                 v-slot="{ handleSubmit, invalid, validate }">
 		<form  @submit.prevent="handleSubmit(signUp)">
-		<div class="input-header">
-			<div class="checkbox" style="margin-left: 30px;">
-			</div>
-			<v-spacer></v-spacer>
-			<div class="div-save-btn">
-
-				<v-btn 
-					:disabled="(invalid || !validate)||(TimeValue.HH=== ''||TimeValue.mm==='')" type="submit"
-					:loading="loading"
-					color="primary"
-					rounded
-					@click="onSubmit">저장</v-btn>
-			</div>
-		</div>
 					
         <main class="input-main">
 			<form>		
@@ -120,7 +107,7 @@
 										class="d-flex"
 										cols="5"
 										sm="8"
-										style="margin-left:-44px"
+										style="margin-left:0px"
 										>
 										<v-select
 											v-model="region"
@@ -153,7 +140,7 @@
 							</div>
 						</div>
 						<div style="display: flex;">
-							<div class="div-capacipy">
+							<div class="div-capacipy" style="margin-left:250px">
 								<div>
 									<div style="display:flex;">
 										<v-icon style="margin-left:5px;">mdi-human-child</v-icon>
@@ -173,7 +160,7 @@
 						</div>
 					</div>
 				</form>
-				<div class="region-detail">
+				<div class="region-detail" >
 					<ValidationProvider
                     name="상세주소"
                     rules="required"
@@ -188,7 +175,7 @@
 				<!-- 내용  -->
 				<div class="description">
 					<ValidationProvider
-                    name="상세주소"
+                    name="상세설명"
                     rules="required|min:5"
                     v-slot="{ errors }">
 						<v-textarea
@@ -200,8 +187,8 @@
 					</ValidationProvider>
 				</div>
 				<div class="form-fotter">
-					<v-spacer></v-spacer>
-					<div>
+					<!-- <v-spacer></v-spacer> -->
+					<div style="margin-left:-25px">
 						<v-container fluid>
 							<ValidationProvider
 							name="정수"
@@ -224,11 +211,24 @@
 							</ValidationProvider>
 						</v-container>
 					</div>
+					<!-- 저장버튼 -->
+					<div class="checkbox" style="margin-left: 30px;">
+					</div>
+						<v-spacer></v-spacer>
+						<div class="div-save-btn">
+						<v-btn 
+						:disabled="(invalid || !validate)||(TimeValue.HH=== ''||TimeValue.mm==='')" type="submit"
+						:loading="loading"
+						color="primary"
+						rounded
+						@click="onSubmit">저장</v-btn>
+						</div>
 				</div>
 			</form>
         </main>
 		</form>
 		</ValidationObserver>
+		</v-card>
 	</v-container>
     </v-app>
 </template>
@@ -281,6 +281,7 @@ import {mapActions} from 'vuex'
             //description
             content:''
         }),
+
         methods:{
 			...mapActions('Post',[
 				'CREATE_POST',
@@ -354,7 +355,14 @@ import {mapActions} from 'vuex'
     }
 </script>
 
-<style>
+<style scoped>
+.card-bottom {
+  width: auto;
+  height: auto;
+  box-sizing: border-box;
+  padding-bottom: 5%;
+  /* background-color: #FFFFFF; */
+}
 .input-header{
 	margin: auto;
 	display: flex;
@@ -369,8 +377,8 @@ import {mapActions} from 'vuex'
     float: right;
     color: black;
     /* margin-right: ; */
-    margin-right: 50px;
-	padding-top: 20px;
+    /* margin-right: 50px; */
+	/* padding-top: 20px; */
     font-size: 20px;
 }
 .input-main {
@@ -380,7 +388,7 @@ import {mapActions} from 'vuex'
     width: 600px;
 }
 .title{
-    margin-top: 70px;
+    margin-top: 50px;
     margin-bottom: 30px;
 }
 .category-form{
