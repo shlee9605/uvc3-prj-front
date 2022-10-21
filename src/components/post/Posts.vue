@@ -1,5 +1,5 @@
 <template>
-    <v-app>
+    <v-app class="background">
         <v-container fluid class="background">
         <div class="header-size">
         <!-- 카테고리, filter list -->
@@ -406,9 +406,24 @@ import {mapState,mapActions} from 'vuex'
     border-radius: 15px;
 }
 
-/* .background {
+.background {
     background-color: #FFF7EE !important;
-} */
+    height: auto;
+    /* height: 100vh; */
+    background-size : cover;
+
+}
+
+.body{
+    background-color: #FFF7EE !important;
+    height: auto;
+}
+
+
+
+
+
+
 .theme--light.v-sheet {
     background-color: #FFF7EE !important;
 }

@@ -24,16 +24,12 @@ export default {
 };
 </script>
 <style>
-/* .body{
-  margin-top:80px;
-} */
 
-html,body,#app{
- height: auto;
+
+html{
+ height: 100vh;
+ background-color: #FFF7EE !important;
 }
 
-body {
-  height: 100vh;
-  
-}
+
 </style>

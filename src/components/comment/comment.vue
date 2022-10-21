@@ -1,26 +1,40 @@
 <template>
     <v-app>
-        <form action="" @submit.prevent="onSubmit">
+        <ValidationObserver
+        ref="signUpForm"
+        v-slot="{ handleSubmit, invalid, validate }">
+        <form action="" @submit.prevent="handleSubmit(onSubmit)">
             <div class="post-comment">
                 <h3>댓글</h3>
+                
+                <ValidationProvider
+                    name="댓글"
+                    rules="comment"
+                    v-slot="{ errors }">
                 <div style="display:flex;">
+                    
+                                            
                     <v-col
-                    cols="20"
-                    sm="9"
+                    cols="12"
+                    md="9"
                     >
                         <v-text-field
                         v-model="content"
                         solo
                         height=5
-                        clearable
+                        clearable= "true"
+                        ref="postcomment"
+                        :error-messages="errors"
                         ></v-text-field>
                     </v-col>
                     <div style="margin:5px 0 0 0;">
                         <v-btn
                         type="submit"
+                        :disabled="(invalid || !validate)"
                         >작성</v-btn>
                     </div>
                 </div>
+                    </ValidationProvider>                             <!-- :disabled="content === '' " -->
                 <table>
                     <tr class="content-item"
                         v-for=" (comment,index) in commentlist" :key="index">
@@ -32,7 +46,7 @@
                             <div class="UD-btn" v-if="comment.UserId === UserId && !inputnewCon">
                                 <!-- v-if="" -->
                                     <a class="a-tag">
-                                        <button  @click.prevent="inputnewCon=true" style="display:flex;">수정</button>
+                                        <button  @click.prevent="comment.status=true" style="display:flex;">수정</button>
                                     </a>
                                     
                                     <a class="a-tag">
@@ -45,7 +59,7 @@
                             </div>
                         </td>
                         <td>
-                            <div v-if="inputnewCon">
+                            <div v-if="comment.status">
                                 <form @submit.prevent="updateComment(comment.id)" style="display:flex;" v-if="comment.UserId === UserId">
                                     <v-col
                                     cols="20"
@@ -57,6 +71,7 @@
                                         height=5
                                         clearable
                                         autofocus
+                                        ref="updatecom"
                                         style="width:400px;height:50px;font-size:15px;"
                                         >
                                     </v-col>
@@ -87,12 +102,15 @@
                 </table>
             </div>
         </form>
+        </ValidationObserver>
     </v-app>
 </template>
 
 <script>
 import {mapState,mapActions} from 'vuex'
+import Validate from '@/mixin/Validate.vue';
     export default {
+        mixins: [Validate],
         data() {
             return{
                 content:'',
@@ -121,8 +139,16 @@ import {mapState,mapActions} from 'vuex'
             ]),
             onSubmit() {
                 this.CREATE_COMMENT({pid: this.$route.params.pid,content: this.content})
-                .then(() => console.log('onsubmit 댓글 전송'))
-                .finally(() => {})
+                .then(() => {
+                    console.log('onsubmit 댓글 전송')
+                    // this.$store.commit('Post','')
+                    // this.$refs["comment"].value = "";
+                    // this.$refs.comment.reset()
+                       this.$refs.postcomment.reset()
+                })
+                .finally(() => {
+                    this.fetchCommentList()
+                })
             },
              //댓글 리스트 조회
             fetchCommentList(){
@@ -137,12 +163,31 @@ import {mapState,mapActions} from 'vuex'
             updateComment(cid){
                 console.log('수정값',this.newContent);
                 this.UPDATE_COMMENT({pid:this.$route.params.pid, cid , content:this.newContent})
+                .then(() => {
+                    console.log('댓글 수정')
+                    location.reload();
+                })
+                .catch(() => {
+                    console.log('댓글 수정 실패');
+                })
+                .finally(() => {
+                    this.fetchCommentList()
+                })
             },
 
             //댓글 삭제
             deleteComment(cid){
                 console.log("삭제");
                 this.DELETE_COMMENT({pid:this.$route.params.pid, cid})
+                .then(() => {
+                    console.log('댓글 삭제')
+                })
+                .catch(() => {
+                    console.log('댓글 삭제 실패');
+                })
+                .finally(() => {
+                    this.fetchCommentList()
+                })
             },
 
             commentReverse(){
@@ -168,6 +213,9 @@ import {mapState,mapActions} from 'vuex'
     width: 100%;
 }
 
+.flex{
+
+}
 
 .UD-btn{
     padding: 3px 5px 0 5px;
