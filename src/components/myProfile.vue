@@ -525,18 +525,21 @@ box-sizing: border-box;
 .menuListDiv2{
 	width: 360px;
 	box-sizing: border-box;
+	height: auto;
 /* background-color: brown; */
 }
 
 .menuListDiv3{
 	width: 360px;
 	box-sizing: border-box;
+	height: auto;
 /* background-color: ivory; */
 }
 
 .menuListDiv4{
 	width: 360px;
 	box-sizing: border-box;
+	height: auto;
 /* background-color: aqua; */
 }
 .friendBtn{
@@ -652,7 +655,8 @@ span {
 .container-profilebox {
   display: flex;
   justify-content: center;
-  background-color: #FFFFFF
+  background-color: #FFFFFF;
+  
   /* background-color: #F7D2A7; */
   /* background-color: #fafafa; */
   /* background: url("~@/assets/tmbackground_light.png") fixed; */
@@ -750,5 +754,9 @@ span {
 .v-btn__content:hover {
     color: rgba(229, 134, 26, 0.927);
     text-decoration: none;
+}
+.card-bottom {
+	top: 10%;
+	height: auto;
 }
 </style>

@@ -28,11 +28,12 @@ export default {
   margin-top:80px;
 } */
 
-/* html,body,#app{
- height: 100vh;
-} */
+html,body,#app{
+ height: auto;
+}
 
 body {
   height: 100vh;
+  
 }
 </style>

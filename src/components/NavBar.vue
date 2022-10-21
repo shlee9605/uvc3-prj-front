@@ -276,7 +276,7 @@ import { mapGetters, mapState, mapActions } from 'vuex'
     width: 100px;
 }
 .theme--light.v-btn.v-btn--has-bg {
-    background-color: #FFFFFF !
+    background-color: #FFFFFF;
 }
 .posttab {
     margin-left: 2%;
