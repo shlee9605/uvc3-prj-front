@@ -46,8 +46,8 @@
 					<button v-else class="attendBtn2" @click="loadMyAttendList">신청 목록({{this.myHistoryList.length}})</button>
 				</div>
 				<div class="menuListDiv3">
-					<button v-if="showFriendListStatus === false" class="friendBtn" @click="loadFriendList"><span style="color: grey;">친구({{this.friendInfoList.length}})</span></button>
-					<button v-else class="friendBtn2" @click="loadFriendList">친구({{this.friendInfoList.length}})</button>
+					<button v-if="showFriendListStatus === false" class="friendBtn" @click="loadFriendList"><span style="color: grey;">메이트({{this.friendInfoList.length}})</span></button>
+					<button v-else class="friendBtn2" @click="loadFriendList">메이트({{this.friendInfoList.length}})</button>
 				</div>
 				<div class="menuListDiv4">
 					<button v-if="showMyPostListStatus === false" class="postBtn" @click="loadMyPostList"><span style="color: grey;">게시물({{this.myPostList.length}})</span></button>
@@ -56,7 +56,9 @@
 			</div>
 			<div v-if="showMyAttendListStatus === true" class="menuDetail3" style="margin-bottom: 0px; margin-top: 20px;width: 100%">
 				<!-- <div style="margin-top:50px;"> -->
+
                 <table class="contents-table">
+
                     <tbody class="contents-table-tbody">
                             <router-link 
                             class="contents-table-a"
@@ -102,7 +104,7 @@
 							</span>
 							</router-link>
 							<span> {{ item.id }}</span>
-							<v-btn style="margin-left:50px" @click="deleteFriend(item.id)"> 친구 삭제 </v-btn>
+							<v-btn style="margin-left:50px" @click="deleteFriend(item.id)"> 메이트 삭제 </v-btn>
 						</div>
 						<v-spacer></v-spacer>	
 					</div>
@@ -141,8 +143,9 @@
                 </table>
 			</div>
         </div>
-			<UploadPhotoModal :openDialog="photoEditModalStatus"
-			v-on:closeDialog="closeDialogEditPhoto">	
+			<UploadPhotoModal :openDialog="photoEditModalStatus "
+			@closeDialog="closeDialogEditPhoto"
+			@getMyProfile="getMyProfile">	
 			</UploadPhotoModal>
 		</v-card>
 	</v-container>
@@ -287,6 +290,7 @@ export default {
 
 
 			async getMyProfile(){
+				console.log('getMYProfile 1')
 				await axios
 				.post(process.env.VUE_APP_API + '/profile/my',{
 						headers:{
@@ -747,5 +751,4 @@ span {
     color: rgba(229, 134, 26, 0.927);
     text-decoration: none;
 }
-
 </style>

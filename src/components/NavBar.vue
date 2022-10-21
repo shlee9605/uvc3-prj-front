@@ -43,7 +43,7 @@
             <div v-else style="margin-right:50px">
             <v-menu offset-y>
                 <template v-slot:activator="{ on }">
-                    <v-btn icon v-on="on" class="Nav-bell-btn">
+                    <v-btn icon v-on="on" @click="fetchRelationship" class="Nav-bell-btn">
                         <v-avatar size="32" >
                             <img src="../assets/bell.png">
                         </v-avatar>
@@ -172,6 +172,10 @@ import { mapGetters, mapState, mapActions } from 'vuex'
                 console.log("NavBar - computed ", UserPhotoUrl);
                 return UserPhotoUrl
             }
+        },
+        mounted(){
+            this.fetchRelationship();
+            
         },
         methods: {
             async signOut() {

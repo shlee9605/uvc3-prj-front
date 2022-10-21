@@ -94,8 +94,9 @@ export default {
                 }
             })
             .then((response)=>{ 
-                console.log("onFileChange - response", response)
-                this.closeModal();
+                localStorage.setItem('UserPhotoUrl', response.data.photoUrl);
+                this.$emit('getMyProfile')
+                this.closeModal()
 
             })
             .catch((error)=>{
