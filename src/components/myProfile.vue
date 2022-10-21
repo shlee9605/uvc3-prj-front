@@ -103,7 +103,7 @@
 							</v-avatar>
 							</span>
 							</router-link>
-							<span> {{ item.id }}</span>
+							<h6> {{ item.id }}</h6>
 							<v-btn style="margin-left:50px" @click="deleteFriend(item.id)"> 메이트 삭제 </v-btn>
 						</div>
 						<v-spacer></v-spacer>	
