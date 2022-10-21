@@ -144,8 +144,8 @@
 			</div>
         </div>
 			<UploadPhotoModal :openDialog="photoEditModalStatus "
-			v-on:closeDialog="closeDialogEditPhoto"
-			v-on:getMyProfile="getMyProfile">	
+			@closeDialog="closeDialogEditPhoto"
+			@getMyProfile="getMyProfile">	
 			</UploadPhotoModal>
 		</v-card>
 	</v-container>
@@ -290,6 +290,7 @@ export default {
 
 
 			async getMyProfile(){
+				console.log('getMYProfile 1')
 				await axios
 				.post(process.env.VUE_APP_API + '/profile/my',{
 						headers:{
