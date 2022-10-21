@@ -54,9 +54,8 @@
 					<button v-else class="postBtn2" @click="loadMyPostList">게시물({{this.myPostList.length}})</button>
 				</div>
 			</div>
-			<div v-if="showMyAttendListStatus === true" class="menuDetail3">
+			<div v-if="showMyAttendListStatus === true" class="menuDetail3" style="margin-bottom: 0px; margin-top: 20px;width: 100%">
 				<!-- <div style="margin-top:50px;"> -->
-				<div>
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
@@ -86,7 +85,6 @@
                             </router-link>
                     </tbody>
                 </table>
-            </div>
 			</div>
             <div v-if="showFriendListStatus === true" class="menuDetail">
 				<div class="friendInfoFor" v-for="(item, index) in friendInfoList" :key="index">
@@ -110,9 +108,8 @@
 					</div>
 				</div>
 			</div>
-            <div v-if="showMyPostListStatus === true" class="menuDetail2">
+            <div v-if="showMyPostListStatus === true" class="menuDetail2" style="margin-bottom: 0px; margin-top: 20px;width: 100%">
 				<!-- <div style="margin-top:50px;"> -->
-				<div>
                 <table class="contents-table">
                     <tbody class="contents-table-tbody">
                             <router-link 
@@ -142,7 +139,6 @@
                             </router-link>
                     </tbody>
                 </table>
-            </div>
 			</div>
         </div>
 			<UploadPhotoModal :openDialog="photoEditModalStatus"
