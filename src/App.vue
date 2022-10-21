@@ -24,15 +24,12 @@ export default {
 };
 </script>
 <style>
-/* .body{
-  margin-top:80px;
-} */
 
-/* html,body,#app{
+
+html{
  height: 100vh;
-} */
-
-body {
-  height: 100vh;
+ background-color: #FFF7EE !important;
 }
+
+
 </style>

@@ -49,6 +49,11 @@ extend('confirmed', {
   message: '비밀번호가 맞지 않습니다.',
 });
 
+extend('comment', {
+  ...required,
+  message: '{_field_}을 입력해 주세요.',
+});
+
 
 export default {
   components: {

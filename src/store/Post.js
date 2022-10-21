@@ -34,7 +34,10 @@ export const Post = {
 
         CREATE_POST(_, { title, content, region, address, cost, capacity, date, time, CategoryId }) {
             return post.create(title, content, region, address, cost, capacity, date, time, CategoryId)
-                .then(() => console.log('보내기 성공'))
+                .then(() => {
+                    
+                    console.log('보내기 성공')
+                })
         },
 
 
@@ -44,12 +47,8 @@ export const Post = {
             return postlist.fetch(cateName).then(response => {
                 // date에 time DATA를 넣어줌
                 const Time = setTimeArr(response.data)
-
                 //date를 기준으로 정렬
                 const result = sortDate(Time)
-
-
-
                 commit('SET_POSTLIST', result)
             })
         },

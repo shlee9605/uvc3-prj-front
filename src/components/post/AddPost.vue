@@ -312,7 +312,9 @@ import {mapActions} from 'vuex'
 					date:this.date,
 					time,
 					CategoryId
-				}).then(this.$router.push('/posts'))
+				}).then(
+					this.$router.push('/posts')
+				)
 				.catch(err => {
 					console.log(err);
 				})
