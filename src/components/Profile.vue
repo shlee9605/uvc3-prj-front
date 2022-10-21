@@ -1,11 +1,18 @@
 <template>
 <v-app>
-    <div class="main">
+	<v-container fluid class="fill-height background container-profilebox justify-center">
+		<v-card elevation="5" outlined class="pa-10 mt-10 justify-center card-bottom" style="height:600px">
+		<v-card-title style="font-size: 4rem"> 이게 나야!!</v-card-title>
+		<v-divider class="mt-4"></v-divider>
         <div class="profileStatusOutline">
             <!-- <div class="title">내 프로필</div> -->
             <div class="profileStatus">
                 <div class="profileImgDiv">
-					<v-avatar size="200" class="profileImg">
+					<v-avatar v-if="this.photoUrl === 'no-photo'" size="200" class="profileImg">
+						<img src="../assets/human.jpg">
+					</v-avatar>
+					<v-avatar v-else size="200" class="profileImg">
+						<img :src="`${url}/uploads/${this.photoUrl}`">
 					</v-avatar>
 				</div>
 
@@ -13,12 +20,12 @@
                 <div class="profileInfoDiv">
 					<div class="profileInfoDiv2">
 						<input class="userIdForm" type="text" name="userId" v-model="userId" placeholder="Your Id" disabled>
-                        <v-btn v-if="this.relationship === '1'" @click="sendRequest" > 친구 요청 </v-btn>
+                        <v-btn v-if="this.relationship === '1'" @click="sendRequest" > 메이트 요청 </v-btn>
                         <div v-else-if="this.relationship === '2'" >
                         <v-btn @click="acceptRequest"> 수락 </v-btn>
                         <v-btn @click="rejectRequest"> 거절 </v-btn>
                         </div>
-                        <v-btn v-else-if="this.relationship === '3'"> 요청 중 </v-btn>
+                        <v-btn v-else-if="this.relationship === '3'"> 메이트 요청 중 </v-btn>
                         <v-btn v-else> 친구입니다 </v-btn>
 							<v-spacer></v-spacer>
 					</div>
@@ -35,8 +42,7 @@
 							<input class="genderForm" type="text" name="Gender" v-model="gender" placeholder="Gender" disabled>
 					</div>
 				</div>
-            </div>
-				<hr style="margin-bottom:20px">
+            </div>	
             <div class="menuList">
 				<div class="menuListDiv2">
                 </div>
@@ -46,7 +52,8 @@
 				</div>
 			</div>
         </div>
-    </div>
+		</v-card>
+	</v-container>
 </v-app>	
 </template>
 <script>
@@ -82,6 +89,9 @@ export default {
 			const setprofileAvatar = "A"
 			console.log('setprofileAvatar : ', setprofileAvatar);
 			return setprofileAvatar;
+			},
+			url (){
+				return process.env.VUE_APP_API;
 			},
 
 		},
@@ -131,9 +141,11 @@ export default {
 				.then((response)=>{
 					console.log(response.data.data);
 					if(response.data.data.photoUrl === "" || response.data.data.photoUrl === "no-photo"){
-						this.photoUrl = "../assets/human.jpg";
+						this.photoUrl = response.data.data.photoUrl;
+						console.log("response -if", this.photoUrl)
 					}else{
 						this.photoUrl = response.data.data.photoUrl
+						console.log("response -else", this.photoUrl)
 					}
 					this.userId = response.data.data.id;
 					this.profileMessage = response.data.data.profileMessage;
@@ -222,15 +234,15 @@ export default {
 
     .profileStatusOutline {
         /* align-items: center; */
-        border: 1px black;
-		border-radius: 15px;
+        /* border: 1px black; */
+		border-radius: 6px;
 		/* box-shadow: 1px 1px 1px 1px; */
         height: auto;
         margin-top: 40px;
         /* justify-content: center; */
         width: 1080px;
-		-webkit-box-shadow: 9px 10px 15px 6px #000000; 
-		box-shadow: 9px 10px 15px 6px #000000;
+		/* -webkit-box-shadow: 9px 10px 15px 6px #000000;  */
+		/* box-shadow: 9px 10px 15px 6px #000000; */
     }
 
     .title {
@@ -245,7 +257,7 @@ export default {
         display:flex;
         box-sizing: border-box;
         /* background-color: green; */
-        height: 420px;
+        height: 360px;
     }
 
     .menuList {
@@ -266,13 +278,13 @@ export default {
 				/* padding: 0 0 0 90px; */
     }
     .profileImgDiv{
-				align-items: center;
-				box-sizing: border-box;
+		align-items: center;
+		box-sizing: border-box;
         /* background-color: red; */
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-        padding: 60px 30px;
+		display: flex;
+		flex-direction: column;
+		/* justify-content: center; */
+        padding: 40px 30px;
         width: 360px;
     }
     .profileInfoDiv{
@@ -341,9 +353,11 @@ export default {
 			font-size: 20px;
 		}
 		.genderForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 		.ageForm{
+			padding-left: 20px;
 			font-size: 20px;
 		}
 
