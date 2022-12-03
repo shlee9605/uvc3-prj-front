@@ -115,3 +115,27 @@ Vue Component 추가 (Add the Vue Component)
 # for Vue 2.x
 > npm i --save @fortawesome/vue-fontawesome@latest-2
 ```
+
+
+## dotenv
+`.env`파일을 사용하기 위해 `dotenv` 라이브러리를 설치한다.
+
+### dotenv 설치
+```console
+> npm install dotenv --save
+```
+
+### dotenv 사용
+`.env`환경을 사용하려면 다음과 같이 사용할 수 있다.
+```javascript
+const dotenv = require('dotenv');
+
+dotenv.config();
+
+const NODE_ENV = process.env.NODE_ENV;
+```
+
+> /.env
+```
+VUE_APP_API = 'server Domain'
+```
