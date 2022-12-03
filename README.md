@@ -4,6 +4,7 @@
 You are looking at the repository for Vue2.
 
 # 전체구조
+```
 .
 ├── public
 │   ├── fabicon.ico
@@ -59,6 +60,7 @@ You are looking at the repository for Vue2.
 ├── package-lock.json
 ├── package.json
 └── vue.config.js
+```
 
 
 ## 라이브러리 버전
